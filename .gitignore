@@ -5,3 +5,4 @@ npm-debug.log
 build/
 test/testbundle.js
 .sass-cache/*
+misc/
