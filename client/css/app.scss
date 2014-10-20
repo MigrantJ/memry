@@ -1,0 +1,113 @@
+$body-bgcolor: #1a366a;
+$body-font: Myriad Pro;
+$body-fontcolor-default: #a2b9cf;
+$body-fontcolor-deflink: #cccccf;
+$title-size: 1.2em;
+$definition-bgcolor: #142952;
+$definition-bgcolor-even: #102142;
+//you should add a 'debug' style that can be applied to elements quickly for testing borders and padding
+
+body {
+  background-color: $body-bgcolor;
+  font-family: $body-font;
+}
+
+a {
+  &:link {
+    text-decoration: none;
+    color: $body-fontcolor-default;
+  }
+  &:visited {
+    text-decoration: none;
+    color: $body-fontcolor-default;
+  }
+}
+
+h1 {
+  margin: 0 0 0 0;
+}
+
+header {
+  position: fixed;
+  margin: 20% 0% 0% 3%;
+  width: 20%;
+}
+p {
+  margin: 0 0 0 0;
+}
+
+#app-title {
+  color: $body-fontcolor-default;
+  font-size: 3em;
+  font-variant: small-caps;
+}
+
+#app-tagline {
+  color: $body-fontcolor-default;
+}
+
+#input_form {
+  border: red 1px solid;
+}
+
+#definition-list {
+  margin-left: 30%;
+  width: 50%;
+  padding: 800px 0;
+}
+
+#definition-container {
+  background-color: $definition-bgcolor;
+  &:nth-child(even) {
+    background-color: $definition-bgcolor-even;
+  }
+  padding: 1% 1% 10% 1%;
+  height: 50%;
+}
+
+.main_input {
+  border-radius: 10px;
+}
+
+.title {
+  font-family: $body-font;
+  margin: 0 0 0 0;
+}
+
+#input-title {
+  font-size: $title-size;
+}
+
+#input-description {
+  display: block;
+}
+
+.definition {
+  color: $body-fontcolor-default;
+  .title {
+    font-size: $title-size;
+  }
+  .hover_only {
+    opacity: 0;
+  }
+}
+
+.definition_hover {
+  .hover_only {
+    opacity: 100;
+  }
+  .fake-a {
+    color: $body-fontcolor-deflink;
+    border-bottom: 1px $body-fontcolor-default dotted;
+    cursor: pointer;
+    &:hover {
+      color: white;
+      border-bottom: 1px solid;
+    }
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+

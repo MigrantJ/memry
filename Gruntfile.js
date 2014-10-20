@@ -88,10 +88,19 @@ module.exports  = function(grunt) {
           run: true
         }
       }
+    },
+
+    compass: {
+      dev: {
+        options: {
+          sassDir: 'client/css',
+          cssDir: 'build'
+        }
+      }
     }
   });
 
   grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('build', ['clean','copy:client','browserify:client','browserify:test']);
+  grunt.registerTask('build', ['clean','copy:client','browserify:client','browserify:test','compass:dev']);
   grunt.registerTask('dev', ['build','test','concurrent:dev']);
 };

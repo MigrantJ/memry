@@ -23,7 +23,8 @@
     "grunt-mocha": "^0.4.11",
     "grunt-nodemon": "^0.3.0",
     "load-grunt-tasks": "^0.6.0",
-    "mocha": "^1.21.4"
+    "mocha": "^1.21.4",
+    "grunt-contrib-compass": "~1.0.1"
   },
   "dependencies": {
     "body-parser": "^1.6.5",
