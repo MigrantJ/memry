@@ -3,6 +3,7 @@ var   express = require('express'),
       bodyParser = require('body-parser'),
       http = require('http'),
       routes = require('./server/routes.js'),
+      db = require('./server/database.js'),
       app = express();
 
 app.set('port', process.env.PORT || 8000);

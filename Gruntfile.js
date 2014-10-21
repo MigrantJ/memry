@@ -42,7 +42,7 @@ module.exports  = function(grunt) {
       dev: {
         script: 'server.js',
         options: {
-          watch: ['server']
+          watch: ['server.js','server']
         }
       }
     },
