@@ -26,14 +26,6 @@ module.exports  = function(grunt) {
         },
         src: ['client/js/**/*.js'],
         dest: 'build/bundle.js'
-      },
-      test: {
-        options: {
-          transform: ['debowerify'],
-          debug: true
-        },
-        src: ['test/mocha/**/*.js'],
-        dest: 'test/testbundle.js'
       }
     },
 
@@ -63,29 +55,24 @@ module.exports  = function(grunt) {
 
     watch: {
       compileClient: {
-        files: ['client/**/*.*','test/testbundle.js'],
+        files: ['client/**/*.*'],
         tasks: ['build','test']
       },
-      compileTests: {
-        files: ['test/mocha/**/*.js'],
-        tasks: ['browserify:test']
+      testServer: {
+        files: ['server.js','server/*.js'],
+        tasks: ['test']
+      },
+      testTests: {
+        files: ['test/**/*.js'],
+        tasks: ['test']
       }
     },
 
     concurrent: {
       dev: {
-        tasks: ['nodemon:dev', 'watch:compileTests', 'watch:compileClient'],
+        tasks: ['nodemon:dev', 'watch:testTests', 'watch:compileClient','watch:testServer'],
         options: {
           logConcurrentOutput: true
-        }
-      }
-    },
-
-    mocha: {
-      test: {
-        src: ['test/test.html'],
-        options: {
-          run: true
         }
       }
     },
@@ -97,10 +84,21 @@ module.exports  = function(grunt) {
           cssDir: 'build'
         }
       }
+    },
+
+    simplemocha: {
+      options: {
+        globals: ['should'],
+        timeout: 3000,
+        ignoreLeaks: false,
+        ui: 'bdd',
+        reporter: 'spec'
+      },
+      all: { src: 'test/mocha/*.js' }
     }
   });
 
-  grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('build', ['clean','copy:client','browserify:client','browserify:test','compass:dev']);
-  grunt.registerTask('dev', ['build','test','concurrent:dev']);
+  grunt.registerTask('test', ['simplemocha']);
+  grunt.registerTask('build', ['clean','copy:client','browserify:client','compass:dev']);
+  grunt.registerTask('dev', ['build','concurrent:dev','test']);
 };
