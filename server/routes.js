@@ -1,4 +1,6 @@
 module.exports.initialize = function(app) {
+  'use strict';
+
   app.get('/test', function(req, res) {
     res.json({test: 'hi'});
   });

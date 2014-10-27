@@ -1,6 +1,6 @@
-'use strict';
-
 module.exports  = function(grunt) {
+  'use strict';
+
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
@@ -95,10 +95,31 @@ module.exports  = function(grunt) {
         reporter: 'spec'
       },
       all: { src: 'test/mocha/*.js' }
+    },
+
+    jshint: {
+      options: {
+        bitwise: true,
+        curly: false,
+        eqeqeq: true,
+        forin: true,
+        immed: true,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        noempty: true,
+        nonew: true,
+        regexp: true,
+        undef: true,
+        strict: true,
+        trailing: true,
+        node: true
+      },
+      all: ['Gruntfile.js', 'client/**/*.js', 'server/**/*.js']
     }
   });
 
   grunt.registerTask('test', ['simplemocha']);
-  grunt.registerTask('build', ['clean','copy:client','browserify:client','compass:dev']);
+  grunt.registerTask('build', ['jshint','clean','copy:client','browserify:client','compass:dev']);
   grunt.registerTask('dev', ['build','concurrent:dev','test']);
 };
