@@ -6,7 +6,6 @@ var expect = chai.expect;
 describe('Testing Framework', function(){
   it('should pass a simple test', function() {
     expect(true).to.equal(true);
-    expect(true).to.be.true;
   });
 });
 //
@@ -22,7 +21,7 @@ describe('REST API', function() {
       });
   });
 
-  it('should read the test route', function (done) {
+  it('should read the test route', function (done) {//
     chai.request(baseUrl)
       .get('/test')
       .res(function (res) {
@@ -31,7 +30,7 @@ describe('REST API', function() {
         done();
       })
   });
-/*
+  /*
   it('GET - Random Definition', function (done) {
     chai.request(baseUrl)
       .get('/api/defs/random')

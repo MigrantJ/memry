@@ -97,6 +97,15 @@ module.exports  = function(grunt) {
       all: { src: 'test/mocha/*.js' }
     },
 
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/mocha/*.js']
+      }
+    },
+
     jshint: {
       options: {
         bitwise: true,
@@ -119,7 +128,7 @@ module.exports  = function(grunt) {
     }
   });
 
-  grunt.registerTask('test', ['simplemocha']);
+  grunt.registerTask('test', ['mochaTest']);
   grunt.registerTask('build', ['jshint','clean','copy:client','browserify:client','compass:dev']);
   grunt.registerTask('dev', ['build','concurrent:dev','test']);
 };

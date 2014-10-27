@@ -9,7 +9,7 @@ var   express = require('express'),
 app.set('port', process.env.PORT || 8000);
 app.set('root', __dirname);
 
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/build/'));

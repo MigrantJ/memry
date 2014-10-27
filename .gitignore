@@ -1,7 +1,6 @@
 node_modules
 *.DS_Store
-.idea/*
+.idea/workspace.xml
 npm-debug.log
 build/
-test/testbundle.js
 .sass-cache/*
