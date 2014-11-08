@@ -70,7 +70,7 @@ module.exports  = function(grunt) {
 
     concurrent: {
       dev: {
-        tasks: ['nodemon:dev', 'watch:testTests', 'watch:compileClient','watch:testServer'],
+        tasks: ['watch:testTests', 'watch:compileClient','watch:testServer', 'nodemon:dev'],
         options: {
           logConcurrentOutput: true
         }
@@ -130,5 +130,5 @@ module.exports  = function(grunt) {
 
   grunt.registerTask('test', ['mochaTest']);
   grunt.registerTask('build', ['jshint','clean','copy:client','browserify:client','compass:dev']);
-  grunt.registerTask('dev', ['build','concurrent:dev','test']);
+  grunt.registerTask('dev', ['build','concurrent:dev']);
 };
