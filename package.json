@@ -28,7 +28,8 @@
     "grunt-mocha-test": "~0.12.2",
     "chai-http": "~1.0.0",
     "mocha": "~2.0.1",
-    "es6-shim": "~0.20.2"
+    "es6-shim": "~0.20.2",
+    "request": "~2.47.0"
   },
   "dependencies": {
     "body-parser": "^1.6.5",
