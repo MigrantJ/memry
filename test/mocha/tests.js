@@ -1,11 +1,7 @@
-require('es6-shim');
 var chai = require('chai');
-var chaihttp = require('chai-http');
-chai.use(chaihttp);
-var expect = chai.expect;
-chai.request.addPromises(global.Promise);
-
 var request = require('request');
+
+var expect = chai.expect;
 
 describe('Testing Framework', function(){
   it('should pass a simple test', function() {
@@ -22,6 +18,11 @@ describe('REST API', function() {
     description: "This is a test definition",
     descriptionURL: "This is a test definition"
   };
+  var modifiedDef = {
+    title: "testModified",
+    description: "This test definition has been modified",
+    descriptionURL: "This test definition has been modified"
+  };
 
   it('should get 200 on connect - request', function(done) {
     request.get(baseUrl, function (err, res, body) {
@@ -29,43 +30,46 @@ describe('REST API', function() {
       done();
     });
   });
-//
-  it('should read the test route - request', function (done) {
-    request.get(baseUrl + '/test', function (err, res, body) {
-      expect(res).to.have.status(200);
-      var jsonBody = JSON.parse(body);
-      expect(jsonBody).to.have.property('test');
-      done();
-    });
-  });
 
   it('should POST a definition and return the mongofied version', function (done) {
-    request.post({url: defsAPIUrl, form: testDef}, function (err, res, body) {
-      expect(res).to.have.status(200);
-      var jsonBody = JSON.parse(body);
-      expect(jsonBody).to.have.property('title');
-      expect(jsonBody).to.have.property('_id');
-      id = jsonBody._id;
+    request.post({url: defsAPIUrl, json: testDef}, function (err, res, body) {
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.an('object');
+      expect(body).to.have.property('title');
+      expect(body).to.have.property('_id');
+      id = body._id;
       done();
     });
   });
 
   it('should GET the definition that was just created', function (done) {
-    request.get(defsAPIUrl + "/" + id, function (err, res, body) {
-      expect(res).to.have.status(200);
-      var jsonBody = JSON.parse(body);
-      expect(jsonBody).to.have.property('_id');
-      expect(jsonBody._id).to.equal(id);
+    request.get({url: defsAPIUrl + "/" + id, json: true}, function (err, res, body) {
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.an('object');
+      expect(body).to.have.property('_id');
+      expect(body._id).to.equal(id);
       done();
-    })
+    });
+  });
+
+  it('should PUT changes to the definition', function (done) {
+    request.put({url: defsAPIUrl + "/" + id, json: modifiedDef}, function (err, res, body) {
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.an('object');
+      expect(body).to.have.property('_id');
+      expect(body._id).to.equal(id);
+      expect(body).to.have.property('title');
+      expect(body.title).to.equal('testModified');
+      done();
+    });
   });
 
   it('should DELETE the definition and return its contents', function (done) {
-    request.del(defsAPIUrl + "/" + id, function (err, res, body) {
-      expect(res).to.have.status(200);
-      var jsonBody = JSON.parse(body);
-      expect(jsonBody).to.have.property('_id');
-      expect(jsonBody._id).to.equal(id);
+    request.del({url: defsAPIUrl + "/" + id, json: true}, function (err, res, body) {
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.an('object');
+      expect(body).to.have.property('_id');
+      expect(body._id).to.equal(id);
       done();
     });
   });
