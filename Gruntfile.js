@@ -129,6 +129,6 @@ module.exports  = function(grunt) {
   });
 
   grunt.registerTask('test', ['mochaTest']);
-  grunt.registerTask('build', ['jshint','clean','copy:client','browserify:client','compass:dev']);
+  grunt.registerTask('build', ['clean','copy:client','browserify:client','compass:dev']);
   grunt.registerTask('dev', ['build','concurrent:dev']);
 };

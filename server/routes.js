@@ -59,7 +59,7 @@ module.exports.initialize = function(app) {
           return res.status(500).json(err);
         }
         return res.send(defToModify);
-      })
+      });
     });
   });
 

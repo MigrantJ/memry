@@ -1,5 +1,9 @@
-//var $ = require('jquery');
-//var _ = require('lodash');
+'use strict';
 
-//testing jquery functionality
-//$('#content').html('<h1>hi</h1>');
+require('angular/angular');
+
+var memryApp = angular.module('memryApp', []);
+
+memryApp.controller('MemryController', function ($scope) {
+  $scope.test = 'testing angular';
+});

@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="memryApp">
 <head>
   <meta charset="UTF-8">
   <title>whattup</title>
 </head>
 <body>
-  <div id="content"></div>
+  <div id="content" ng-controller="MemryController">
+    {{test}}
+  </div>
   <script src="bundle.js"></script>
 </body>
 </html>
