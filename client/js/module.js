@@ -1,6 +1,5 @@
+/*global angular*/
 'use strict';
-
-require('angular/angular');
 
 var memryApp = angular.module('memryApp', []);
 

@@ -1,5 +1,7 @@
+'use strict';
+
 var   express = require('express'),
-      morgan = require('morgan'),
+      //morgan = require('morgan'),
       bodyParser = require('body-parser'),
       http = require('http'),
       routes = require('./server/routes.js'),

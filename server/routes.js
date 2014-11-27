@@ -3,8 +3,8 @@ var Def = require('./database.js');
 module.exports.initialize = function(app) {
   'use strict';
 
-  app.get('/api/defs/:def_id', function (req, res) {
-    Def.findOne({'_id':req.params.def_id}, function (err, returnDef) {
+  app.get('/api/defs/:defID', function (req, res) {
+    Def.findOne({'_id':req.params.defID}, function (err, returnDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -24,12 +24,12 @@ module.exports.initialize = function(app) {
     });
   });
 
-  app.delete('/api/defs/:def_id', function (req, res) {
-    Def.findOne({'_id':req.params.def_id}, function (err, defToRemove) {
+  app.delete('/api/defs/:defID', function (req, res) {
+    Def.findOne({'_id':req.params.defID}, function (err, defToRemove) {
       if (err) {
         return res.status(500).json(err);
       }
-      Def.remove({'_id': req.params.def_id}, function (err) {
+      Def.remove({'_id': req.params.defID}, function (err) {
         if (err) {
           return res.status(500).json(err);
         } else {
@@ -39,14 +39,14 @@ module.exports.initialize = function(app) {
     });
   });
 
-  app.put('/api/defs/:def_id', function (req, res) {
+  app.put('/api/defs/:defID', function (req, res) {
     //check if this is a valid def
     if (typeof req.body === 'object' && req.body.title) {
       var newDef = req.body;
     } else {
       return res.status(500).send(req.body + ' is not a valid definition');
     }
-    Def.findOne({'_id':req.params.def_id}, function (err, defToModify) {
+    Def.findOne({'_id':req.params.defID}, function (err, defToModify) {
       if (err) {
         return res.status(500).json(err);
       }
