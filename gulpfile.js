@@ -97,10 +97,15 @@ gulp.task('nodemon', function () {
     });
 });
 
+gulp.task('test-unit', function () {
+  return gulp.src('test/mocha/unit/test-srvc-def_server.js')
+    .pipe(mocha(mochaOptions));
+});
+
 gulp.task('test-server', function () {
   //wait a touch to give the server time to fully start
   setTimeout(function () {
-    return gulp.src('test/mocha/tests.js')
+    return gulp.src('test/mocha/integration/test-rest_api.js')
       .pipe(mocha(mochaOptions));
   }, 300);
 });

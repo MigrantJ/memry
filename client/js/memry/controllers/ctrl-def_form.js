@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memry')
-  .controller('DefinitionFormController', function ($scope) {
+  .controller('DefinitionFormController', function ($scope, defServer) {
     'use strict';
     $scope.hideDescription = true;
     $scope.titleChange = function() {
@@ -36,7 +36,7 @@ angular.module('memry')
           description: $scope.description
         };
 
-        $scope.serverCreate(definition);
+        defServer.create(definition);
 
         //blank out the form
         $scope.title = '';
