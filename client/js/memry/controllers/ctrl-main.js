@@ -1,9 +1,7 @@
 /*global angular*/
 
 angular.module('memry')
-  .controller('CtrlMain', function ($scope) {
+  .controller('MainController', function () {
     'use strict';
-    $scope.test = 'testing angular';
-    console.log('hello');
   })
 ;

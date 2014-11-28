@@ -1,0 +1,38 @@
+<header>
+    <h1 id="app-title">memry</h1>
+
+    <!-- insert magnifying glass button here, on by default -->
+    <div id="input_form">
+        <form ng-controller="DefinitionFormController" ng-submit="addDefinition()">
+            <input
+                name="title"
+                placeholder="Search or Add New"
+                class="main_input"
+                id="input-title"
+                ng-model="title"
+                ng-focus="titleInputBegin()"
+                ng-change="titleChange()"
+                ng-blur="titleInputEnd()"
+                type="text"
+                />
+            <textarea
+                name="description"
+                placeholder="Describe {{title}} here..."
+                class="main_input"
+                id="input-description"
+                rows="4"
+                cols="40"
+                maxlength="255"
+                required
+                ng-model="description"
+                ng-hide="hideDescription"
+                ></textarea>
+            <input
+                type="submit"
+                id="submit"
+                value="Add"
+                ng-show="title && description"
+                />
+        </form>
+    </div>
+</header>

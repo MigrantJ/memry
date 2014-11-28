@@ -102,7 +102,7 @@ gulp.task('test-server', function () {
   setTimeout(function () {
     return gulp.src('test/mocha/tests.js')
       .pipe(mocha(mochaOptions));
-  }, 100);
+  }, 300);
 });
 
 gulp.task('dev', ['lint','build','watch']);
