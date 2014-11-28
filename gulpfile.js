@@ -4,7 +4,10 @@ var gulp = require('gulp'),
     del = require('del'),
     sass = require('gulp-sass'),
     jshint = require('gulp-jshint'),
-    mocha = require('gulp-mocha');
+    mocha = require('gulp-mocha'),
+    sourcemaps = require('gulp-sourcemaps'),
+    uglify = require('gulp-uglify'),
+    ngAnnotate = require('gulp-ng-annotate');
 
 var clientDir = 'client/';
 var jsDir = clientDir + 'js/**/';
@@ -57,7 +60,11 @@ gulp.task('build', ['clean','build-js','build-html','build-css']);
 
 gulp.task('build-js', function () {
   gulp.src([jsDir + 'module.js',jsDir + '*.js'])
+    .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('build'));
 });
 

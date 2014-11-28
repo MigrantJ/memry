@@ -1,8 +1,2 @@
-/*global angular*/
-'use strict';
-
-var memryApp = angular.module('memryApp', []);
-
-memryApp.controller('MemryController', function ($scope) {
-  $scope.test = 'testing angular';
-});
+"use strict";angular.module("memry",[]),angular.module("memry").controller("CtrlMain",["$scope",function(l){l.test="testing angular",console.log("hello")}]);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1lbXJ5L21vZHVsZS5qcyIsIm1lbXJ5L2NvbnRyb2xsZXJzL2N0cmwtbWFpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQSxZQUVBLFNBQUEsT0FBQSxZQ0RBLFFBQUEsT0FBQSxTQUNBLFdBQUEsWUFBQSxTQUFBLFNBQUEsR0FFQSxFQUFBLEtBQUEsa0JBQ0EsUUFBQSxJQUFBIiwiZmlsZSI6ImJ1bmRsZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qZ2xvYmFsIGFuZ3VsYXIqL1xuJ3VzZSBzdHJpY3QnO1xuXG5hbmd1bGFyLm1vZHVsZSgnbWVtcnknLCBbXSk7XG4iLCIvKmdsb2JhbCBhbmd1bGFyKi9cblxuYW5ndWxhci5tb2R1bGUoJ21lbXJ5JylcbiAgLmNvbnRyb2xsZXIoJ0N0cmxNYWluJywgZnVuY3Rpb24gKCRzY29wZSkge1xuICAgICd1c2Ugc3RyaWN0JztcbiAgICAkc2NvcGUudGVzdCA9ICd0ZXN0aW5nIGFuZ3VsYXInO1xuICAgIGNvbnNvbGUubG9nKCdoZWxsbycpO1xuICB9KVxuOyJdLCJzb3VyY2VSb290IjoiL3NvdXJjZS8ifQ==
