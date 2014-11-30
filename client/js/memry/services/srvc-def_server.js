@@ -5,53 +5,23 @@ angular.module('memry')
     'use strict';
     return {
       getAll: function() {
-        $http.get('/api/defs')
-          .success(function (data) {
-            return data;
-          })
-          .error(function (data) {
-            console.log('Error: ' + data);
-          });
+        return $http.get('/api/defs');
       },
 
       getOne: function (id) {
-        $http.get('/api/defs/' + id)
-          .success(function (data) {
-            return data;
-          })
-          .error(function (data) {
-            console.log('Error: ' + data);
-          });
+        return $http.get('/api/defs/' + id);
       },
 
       create: function (def) {
-        $http.post('/api/defs', def)
-          .success(function (data) {
-            return data;
-          })
-          .error(function (data) {
-            console.log('Error: ' + data);
-          });
+        return $http.post('/api/defs', def);
       },
 
       update: function (def) {
-        $http.put('/api/defs/' + def._id, def)
-          .success(function (data) {
-            return data;
-          })
-          .error(function (data) {
-            console.log('Error: ' + data);
-          });
+        return $http.put('/api/defs/' + def._id, def);
       },
 
       delete: function (id) {
-        $http.delete('/api/defs' + id)
-          .success(function (data) {
-            return data;
-          })
-          .error(function (data) {
-            console.log('Error: ' + data);
-          });
+        return $http.delete('/api/defs/' + id);
       }
     };
   })

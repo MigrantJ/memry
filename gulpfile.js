@@ -7,10 +7,13 @@ var gulp = require('gulp'),
     mocha = require('gulp-mocha'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
-    ngAnnotate = require('gulp-ng-annotate');
+    ngAnnotate = require('gulp-ng-annotate'),
+    karma = require('karma').server;
 
-var clientDir = 'client/';
-var jsDir = clientDir + 'js/**/';
+var clientDir = 'client/',
+    jsDir = clientDir + 'js/**/',
+    testDir = 'test/**/*.js',
+    testClientDir = 'test/mocha/unit/**/*.js';
 
 var jshintOptions = {
   bitwise: true,
@@ -80,10 +83,10 @@ gulp.task('build-css', function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('watch', ['watch-client','nodemon']);
+gulp.task('watch', ['watch-client','nodemon','watch-tests']);
 
 gulp.task('watch-client', function () {
-  gulp.watch(clientDir + '**/*.*', ['lint','build'])
+  gulp.watch(clientDir + '**/*.*', ['lint','build','test-client'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
@@ -91,15 +94,23 @@ gulp.task('watch-client', function () {
 
 gulp.task('nodemon', function () {
   nodemon({ script: 'server.js', watch: ['server.js','server']})
-    .on('start', ['test-server'])
+    //.on('start', ['test-server'])
     .on('change', ['lint'])
     .on('restart', function () {
     });
 });
 
-gulp.task('test-unit', function () {
-  return gulp.src('test/mocha/unit/test-srvc-def_server.js')
-    .pipe(mocha(mochaOptions));
+gulp.task('watch-tests', function () {
+  gulp.watch(testClientDir, ['test-client'])
+    .on('change', function (event) {
+      console.log('File ' + event.path + ' was ' + event.type);
+    });
+});
+
+gulp.task('test-client', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js'
+  }, done);
 });
 
 gulp.task('test-server', function () {
@@ -110,6 +121,6 @@ gulp.task('test-server', function () {
   }, 300);
 });
 
-gulp.task('dev', ['lint','build','watch']);
+gulp.task('dev', ['lint','build','watch','test-client']);
 
 gulp.task('default', ['dev']);
