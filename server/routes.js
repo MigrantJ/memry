@@ -13,6 +13,16 @@ module.exports.initialize = function(app) {
     });
   });
 
+  app.get('/api/defs', function (req, res) {
+    Def.find().sort('title').exec(function (err, defs) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        return res.send(defs);
+      }
+    });
+  });
+
   app.post('/api/defs', function (req, res) {
     var def = new Def(req.body);
     def.save(function (err, newDef) {

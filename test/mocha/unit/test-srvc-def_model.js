@@ -1,31 +1,38 @@
 describe('Service - Def Model', function () {
-  var testDefs = [{
-    _id: 5678,
-    title: "test2",
-    description: "This is another test definition",
-    descriptionURL: "This is another test definition"
-  },{
-    _id: 1234,
-    title: "test",
-    description: "This is a test definition",
-    descriptionURL: "This is a test definition"
-  }];
+  var scope, defModel, defServer = {};
+  beforeEach(function () {
+    var testDefs = [{
+      _id: 5678,
+      title: "test2",
+      description: "This is another test definition",
+      descriptionURL: "This is another test definition"
+    },{
+      _id: 1234,
+      title: "test",
+      description: "This is a test definition",
+      descriptionURL: "This is a test definition"
+    }];
 
-  beforeEach(module('memry'));
+    module('memry', function ($provide) {
+      $provide.value('defServer', defServer);
+    });
 
-  //we can mock up fake services like this, to support the service we're actually testing. used in #greet below
-  //note this had to be called BEFORE the inject command to work
-  beforeEach(module(function ($provide) {
-    var defServer = {
-      getAll: function () {
-        return testDefs;
-      }
-    };
-    $provide.value('defServer', defServer);
-  }));
+    inject(function ($q) {
+      defServer.getAll = function () {
+        var deferred = $q.defer();
+        deferred.resolve({data: testDefs});
+        return deferred.promise;
+      };
+    });
+  });
 
-  beforeEach(inject(function (_defModel_) {
+  beforeEach(inject(function (_defServer_, _defModel_, $rootScope) {
+    //this scope var can be passed to controllers being tested
+    scope = $rootScope.$new();
+    defServer = _defServer_;
     defModel = _defModel_;
+    //causes the promises to resolve. In production code this happens automatically
+    scope.$digest();
   }));
 
   describe('Constructor', function () {

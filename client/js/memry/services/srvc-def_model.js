@@ -8,7 +8,10 @@ angular.module('memry')
     //private data
     var data = {};
 
-    data.defs = defServer.getAll();
+    defServer.getAll()
+      .then(function (response) {
+        data.defs = response.data;
+      });
 
     /*
     # findIDByTitleSubstr
@@ -21,7 +24,6 @@ angular.module('memry')
         throw new Error('findIDByTitleSubstr requires string input');
       }
       var foundTitleID = null;
-
       data.defs.forEach(function (d) {
         var index = d.title.indexOf(titleSubstr);
         //if index is 0, we found a matching title

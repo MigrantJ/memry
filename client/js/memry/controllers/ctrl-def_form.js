@@ -1,24 +1,12 @@
 /*global angular*/
 
 angular.module('memry')
-  .controller('DefinitionFormController', function ($scope, defServer) {
+  .controller('DefinitionFormController', function ($scope, defServer, defModel) {
     'use strict';
     $scope.hideDescription = true;
     $scope.titleChange = function() {
-      /*
-      var foundTitle = $scope.scrollToDefByTitle($scope.title);
-
-      if (foundTitle !== '' || $scope.title === '') {
-        $scope.hideDescription = true;
-      } else {
-        $scope.hideDescription = false;
-      }
-      */
-      if ($scope.title === '') {
-        $scope.hideDescription = true;
-      } else {
-        $scope.hideDescription = false;
-      }
+      var foundTitle = defModel.findIDByTitleSubstr($scope.title);
+      $scope.hideDescription = (foundTitle || $scope.title === '');
     };
 
     $scope.titleInputBegin = function() {
