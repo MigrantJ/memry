@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memry')
-  .controller('DefinitionFormController', function ($scope, defServer, defModel) {
+  .controller('DefinitionFormController', function ($scope, defModel) {
     'use strict';
     $scope.hideDescription = true;
     $scope.titleChange = function() {
@@ -19,12 +19,7 @@ angular.module('memry')
 
     $scope.addDefinition = function(){
       if ($scope.title && $scope.description) {
-        var definition = {
-          title: $scope.title,
-          description: $scope.description
-        };
-
-        defServer.create(definition);
+        defModel.addDefinition($scope.title, $scope.description);
 
         //blank out the form
         $scope.title = '';

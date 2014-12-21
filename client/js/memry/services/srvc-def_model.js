@@ -1,17 +1,67 @@
 /*global angular*/
 
 angular.module('memry')
-  .factory('defModel', function (defServer) {
+  .factory('defModel', function ($q, defServer) {
     'use strict';
     //public methods
     var api = {};
     //private data
     var data = {};
 
-    defServer.getAll()
-      .then(function (response) {
+    //constructor
+    function constructor() {
+      defServer.getAll()
+        .then(function (response) {
+          data.defs = response.data;
+        });
+    }
+
+    api.getDefs = function () {
+      //todo this is doing the same thing as the constructor
+      var promise = defServer.getAll();
+      promise.then(function (response) {
         data.defs = response.data;
       });
+      return promise;
+    };
+
+    /*
+    # addDefinition
+    */
+    api.addDefinition = function (title, description) {
+      defServer.create({
+        title: title,
+        description: description
+      })
+        .then(function (response) {
+          console.log(response.data);
+          api.getDefs();
+        });
+    };
+
+    /*
+    # editDefinition
+    */
+    api.editDefinition = function (definition) {
+      defServer.update(definition)
+        .then(function (response) {
+          //todo: don't require a server get every time we change the data
+          console.log(response.data);
+          api.getDefs();
+        });
+    };
+
+    /*
+     # deleteDefinition
+     */
+    api.deleteDefinition = function (id) {
+      defServer.delete(id)
+        .then(function (response) {
+          //todo: don't require a server get every time we change the data
+          console.log(response.data);
+          api.getDefs();
+        });
+    };
 
     /*
     # findIDByTitleSubstr
@@ -36,6 +86,8 @@ angular.module('memry')
 
       return foundTitleID;
     };
+
+    constructor();
 
     return api;
   })

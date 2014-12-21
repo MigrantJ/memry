@@ -1,8 +1,13 @@
 /*global angular*/
 
 angular.module('memry')
-  .controller('DefinitionListController', function ($scope, defServer) {
+  .controller('DefinitionListController', function ($scope, defModel) {
     'use strict';
+
+    defModel.getDefs().then(function (response) {
+      $scope.definitions = response.data;
+    });
+
     $scope.turnOnEditMode = function(index) {
       $scope.definitions.forEach(function(d) {
         d.editMode = false;
@@ -19,11 +24,11 @@ angular.module('memry')
       $scope.turnOffEditMode(index);
       //temporarily change the visible description so there's immediate update before server responds
       //$scope.definitions[index].descriptionURL = $scope.definitions[index].description;
-      defServer.update(def);
+      defModel.editDefinition(def);
     };
 
     $scope.delDefinition = function(id){
-      defServer.delete(id);
+      defModel.deleteDefinition(id);
     };
   })
 ;
