@@ -4,8 +4,11 @@ angular.module('memry')
   .controller('DefinitionListController', function ($scope, defModel) {
     'use strict';
 
-    defModel.getDefs().then(function (response) {
-      $scope.definitions = response.data;
+    //automatically update the def list when the model changes
+    $scope.$watch(function () { return defModel.data.defs; }, function (newVal) {
+      if (typeof newVal !== 'undefined') {
+        $scope.definitions = defModel.data.defs;
+      }
     });
 
     $scope.turnOnEditMode = function(index) {

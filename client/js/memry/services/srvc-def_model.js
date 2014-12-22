@@ -5,14 +5,16 @@ angular.module('memry')
     'use strict';
     //public methods
     var api = {};
-    //private data
-    var data = {};
+    //public data
+    api.data = {};
+    //private data. None yet
+    //var data = {};
 
     //constructor
     function constructor() {
       defServer.getAll()
         .then(function (response) {
-          data.defs = response.data;
+          api.data.defs = response.data;
         });
     }
 
@@ -20,7 +22,7 @@ angular.module('memry')
       //todo this is doing the same thing as the constructor
       var promise = defServer.getAll();
       promise.then(function (response) {
-        data.defs = response.data;
+        api.data.defs = response.data;
       });
       return promise;
     };
@@ -74,7 +76,7 @@ angular.module('memry')
         throw new Error('findIDByTitleSubstr requires string input');
       }
       var foundTitleID = null;
-      data.defs.forEach(function (d) {
+      api.data.defs.forEach(function (d) {
         var index = d.title.indexOf(titleSubstr);
         //if index is 0, we found a matching title
         if (index === 0) {
