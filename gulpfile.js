@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     ngAnnotate = require('gulp-ng-annotate'),
-    karma = require('karma').server;
+    karma = require('karma').server,
+    mainBowerFiles = require('main-bower-files');
 
 var clientDir = 'client/',
     jsDir = clientDir + 'js/**/',
@@ -62,7 +63,11 @@ gulp.task('clean', function () {
 gulp.task('build', ['clean','build-js','build-html','build-css']);
 
 gulp.task('build-js', function () {
-  gulp.src([jsDir + 'module.js',jsDir + '*.js'])
+  var filePaths = mainBowerFiles();
+  filePaths.push(jsDir + 'module.js');
+  filePaths.push(jsDir + '*.js');
+
+  gulp.src(filePaths)
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(ngAnnotate())

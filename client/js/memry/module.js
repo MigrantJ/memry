@@ -1,4 +1,4 @@
 /*global angular*/
 'use strict';
 
-angular.module('memry', ['ngRoute']);
+angular.module('memry', ['ngRoute', 'duScroll']);
