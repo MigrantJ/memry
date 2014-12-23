@@ -53,7 +53,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('clean', function () {
-  del(['build/**/*.*'], function (err) {
+  del(['build/**/*.*','!build/libs.js'], function (err) {
     if (err) {
       console.log("Error while cleaning: " + err);
     }
@@ -62,12 +62,17 @@ gulp.task('clean', function () {
 
 gulp.task('build', ['clean','build-js','build-html','build-css']);
 
-gulp.task('build-js', function () {
+gulp.task('build-libs', function () {
   var filePaths = mainBowerFiles();
-  filePaths.push(jsDir + 'module.js');
-  filePaths.push(jsDir + '*.js');
 
   gulp.src(filePaths)
+    .pipe(concat('libs.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('build-js', function () {
+  gulp.src([jsDir + 'module.js',jsDir + '*.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(ngAnnotate())
@@ -126,6 +131,6 @@ gulp.task('test-server', function () {
   }, 300);
 });
 
-gulp.task('dev', ['lint','build','watch','test-client']);
+gulp.task('dev', ['lint','build-libs','build','watch','test-client']);
 
 gulp.task('default', ['dev']);
