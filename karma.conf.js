@@ -21,7 +21,7 @@ module.exports = function(config) {
       'bower_components/angular-scroll/angular-scroll.js',
       'client/js/**/module.js',
       'client/js/**/*.js',
-      'test/mocha/unit/**/*.js'
+      'test/client/unit/**/*.js'
     ],
 
 

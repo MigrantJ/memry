@@ -14,7 +14,7 @@ var gulp = require('gulp'),
 var clientDir = 'client/',
     jsDir = clientDir + 'js/**/',
     testDir = 'test/**/*.js',
-    testClientDir = 'test/mocha/unit/**/*.js';
+    testClientDir = 'test/client/unit/**/*.js';
 
 var jshintOptions = {
   bitwise: true,
@@ -126,7 +126,7 @@ gulp.task('test-client', function (done) {
 gulp.task('test-server', function () {
   //wait a touch to give the server time to fully start
   setTimeout(function () {
-    return gulp.src('test/mocha/integration/test-rest_api.js')
+    return gulp.src('test/server/integration/test-rest_api.js')
       .pipe(mocha(mochaOptions));
   }, 300);
 });
