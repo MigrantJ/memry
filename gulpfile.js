@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 
 var clientDir = 'client/',
     jsDir = clientDir + 'js/**/',
-    testDir = 'test/**/*.js',
+    testServerDir = 'test/server/unit/**/*.js',
     testClientDir = 'test/client/unit/**/*.js';
 
 var jshintOptions = {
@@ -93,7 +93,7 @@ gulp.task('build-css', function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('watch', ['watch-client','nodemon','watch-tests']);
+gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);
 
 gulp.task('watch-client', function () {
   gulp.watch(clientDir + '**/*.*', ['lint','build','test-client'])
@@ -102,16 +102,24 @@ gulp.task('watch-client', function () {
     });
 });
 
-gulp.task('nodemon', function () {
+gulp.task('watch-server', function () {
   nodemon({ script: 'server.js', watch: ['server.js','server']})
-    //.on('start', ['test-server'])
+    //.on('start', ['test-integration'])
+    .on('start', ['test-server'])
     .on('change', ['lint'])
     .on('restart', function () {
     });
 });
 
-gulp.task('watch-tests', function () {
+gulp.task('watch-tests-client', function () {
   gulp.watch(testClientDir, ['test-client'])
+    .on('change', function (event) {
+      console.log('File ' + event.path + ' was ' + event.type);
+    });
+});
+
+gulp.task('watch-tests-server', function () {
+  gulp.watch(testServerDir, ['test-server'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
@@ -124,6 +132,11 @@ gulp.task('test-client', function (done) {
 });
 
 gulp.task('test-server', function () {
+  return gulp.src('test/server/unit/**/*.js')
+    .pipe(mocha(mochaOptions));
+});
+
+gulp.task('test-integration', function () {
   //wait a touch to give the server time to fully start
   setTimeout(function () {
     return gulp.src('test/server/integration/test-rest_api.js')
