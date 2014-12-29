@@ -37,12 +37,14 @@ module.exports.initialize = function(app, dbConnection) {
     db.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
+      } else {
+        return res.sendStatus(200);
       }
     });
   });
 
   app.put('/api/defs/:defID', function (req, res) {
-    db.editDef(req.params._id, req.body, function (err, modifiedDef) {
+    db.editDef(req.params.defID, req.body, function (err, modifiedDef) {
       if (err) {
         return res.status(500).json(err);
       } else {

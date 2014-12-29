@@ -59,24 +59,20 @@ module.exports.getAPI = function (Model) {
   };
 
   api.editDef = function (id, newDef, callback) {
-    var defToModify = null;
-
-    api.getDefByID(id, function (err, returnDef) {
+    api.getDefByID(id, function (err, defToModify) {
       if (err) {
         return callback(err);
       } else {
-        defToModify = returnDef;
+        defToModify.title = newDef.title;
+        defToModify.description = newDef.description;
+        defToModify.descriptionURL = newDef.descriptionURL;
+
+        defToModify.save(function (err, def) {
+          return callback(err, def);
+        });
       }
     });
-
-    defToModify.title = newDef.title;
-    defToModify.description = newDef.description;
-    defToModify.descriptionURL = newDef.descriptionURL;
-
-    defToModify.save(function (err, def) {
-      return callback(err, def);
-    });
   };
-
+//
   return api;
 };
