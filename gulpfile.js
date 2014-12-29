@@ -31,7 +31,7 @@ var jshintOptions = {
   noempty: true,
   nonbsp: true,
   nonew: true,
-  plusplus: true,
+  plusplus: false,
   quotmark: 'single',
   undef: true,
   unused: true,
@@ -144,6 +144,6 @@ gulp.task('test-integration', function () {
   }, 300);
 });
 
-gulp.task('dev', ['lint','build-libs','build','watch','test-client']);
+gulp.task('dev', ['lint','build-libs','build','watch']);
 
 gulp.task('default', ['dev']);

@@ -1,10 +1,10 @@
-var Def = require('./database.js');
-
-module.exports.initialize = function(app) {
+module.exports.initialize = function(app, dbConnection) {
   'use strict';
+  var Def = require('./db_model.js').getModel(dbConnection);
+  var db = require('./db_interface.js').getAPI(Def);
 
   app.get('/api/defs/:defID', function (req, res) {
-    Def.findOne({'_id':req.params.defID}, function (err, returnDef) {
+    db.getDefByID(req.params.defID, function (err, returnDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -14,7 +14,7 @@ module.exports.initialize = function(app) {
   });
 
   app.get('/api/defs', function (req, res) {
-    Def.find().sort('title').exec(function (err, defs) {
+    db.getAllDefs(function (err, defs) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -24,8 +24,7 @@ module.exports.initialize = function(app) {
   });
 
   app.post('/api/defs', function (req, res) {
-    var def = new Def(req.body);
-    def.save(function (err, newDef) {
+    db.addNewDef(req.body, function (err, newDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -35,41 +34,20 @@ module.exports.initialize = function(app) {
   });
 
   app.delete('/api/defs/:defID', function (req, res) {
-    Def.findOne({'_id':req.params.defID}, function (err, defToRemove) {
+    db.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
       }
-      Def.remove({'_id': req.params.defID}, function (err) {
-        if (err) {
-          return res.status(500).json(err);
-        } else {
-          return res.send(defToRemove);
-        }
-      });
     });
   });
 
   app.put('/api/defs/:defID', function (req, res) {
-    //check if this is a valid def
-    if (typeof req.body === 'object' && req.body.title) {
-      var newDef = req.body;
-    } else {
-      return res.status(500).send(req.body + ' is not a valid definition');
-    }
-    Def.findOne({'_id':req.params.defID}, function (err, defToModify) {
+    db.editDef(req.params._id, req.body, function (err, modifiedDef) {
       if (err) {
         return res.status(500).json(err);
+      } else {
+        return res.send(modifiedDef);
       }
-      defToModify.title = newDef.title;
-      defToModify.description = newDef.description;
-      defToModify.descriptionURL = newDef.descriptionURL;
-
-      defToModify.save(function (err) {
-        if (err) {
-          return res.status(500).json(err);
-        }
-        return res.send(defToModify);
-      });
     });
   });
 

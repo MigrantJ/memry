@@ -4,6 +4,7 @@ var   express = require('express'),
       //morgan = require('morgan'),
       bodyParser = require('body-parser'),
       http = require('http'),
+      dbConnection = require('./server/db_connection.js'),
       routes = require('./server/routes.js'),
       app = express();
 
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/build/'));
 
 //init route
-routes.initialize(app);
+routes.initialize(app, dbConnection);
 
 var server = http.createServer(app);
 

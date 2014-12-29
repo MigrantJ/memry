@@ -14,12 +14,12 @@ describe('REST API', function() {
   var defsAPIUrl = baseUrl + '/api/defs';
   var id;
   var testDef = {
-    title: "test",
+    title: "test4956730",
     description: "This is a test definition",
     descriptionURL: "This is a test definition"
   };
   var modifiedDef = {
-    title: "testModified",
+    title: "testModified4956730",
     description: "This test definition has been modified",
     descriptionURL: "This test definition has been modified"
   };
