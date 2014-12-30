@@ -2,15 +2,15 @@ describe('Service - Def Model', function () {
   var scope, defModel, defServer = {};
   beforeEach(function () {
     var testDefs = [{
-      _id: 5678,
-      title: "test2",
-      description: "This is another test definition",
-      descriptionURL: "This is another test definition"
-    },{
       _id: 1234,
       title: "test",
       description: "This is a test definition",
       descriptionURL: "This is a test definition"
+    },{
+      _id: 5678,
+      title: "test2",
+      description: "This is another test definition",
+      descriptionURL: "This is another test definition"
     }];
 
     module('memry', function ($provide) {

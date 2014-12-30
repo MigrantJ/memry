@@ -76,14 +76,10 @@ angular.module('memry')
         throw new Error('findIDByTitleSubstr requires string input');
       }
       var foundTitleID = null;
-      api.data.defs.forEach(function (d) {
-        var index = d.title.indexOf(titleSubstr);
-        //if index is 0, we found a matching title
-        if (index === 0) {
-          foundTitleID = d._id;
-          //end the forEach loop
-          return true;
-        }
+
+      api.data.defs.some(function (d) {
+        //if index is 0, we found a matching title, set foundTitleID to its id
+        return d.title.indexOf(titleSubstr) === 0 && (foundTitleID = d._id);
       });
 
       return foundTitleID;
