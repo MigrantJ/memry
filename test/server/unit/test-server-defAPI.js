@@ -31,9 +31,12 @@ describe('Server - Def API', function () {
         api.validateDefToAdd(testDefs, {})
       }).to.throw('Definition is corrupt, missing required parts');
     });
+  });
+
+  describe('# checkIfTitleExists', function () {
     it('throws an error when trying to add a def that already exists', function () {
       expect(function () {
-        api.validateDefToAdd(testDefs, testDefs[0])
+        api.checkIfTitleExists(testDefs, testDefs[0])
       }).to.throw('Title test2 already exists!');
     });
   });

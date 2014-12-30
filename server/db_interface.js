@@ -28,13 +28,10 @@ module.exports.getAPI = function (Model) {
       if (err) {
         return callback(err);
       } else {
-        defAPI.validateDefToAdd(defs, defBody);
-        var formattedDef = defAPI.formatInput(defBody);
+        defAPI.checkIfTitleExists(defs, defBody);
+        var processedDef = defAPI.processInputDef(defs, defBody);
+        var def = new Model(processedDef);
 
-        //create the descriptionURL param by adding links to the input description
-        formattedDef.descriptionURL = defAPI.addLinksToNewDefDesc(defs, formattedDef);
-
-        var def = new Model(formattedDef);
         def.save(function (err, newDef) {
           defs = defAPI.addDeflinksToDescriptions(defs, newDef);
           defs.forEach(function (d) {
@@ -63,16 +60,43 @@ module.exports.getAPI = function (Model) {
       if (err) {
         return callback(err);
       } else {
-        defToModify.title = newDef.title;
-        defToModify.description = newDef.description;
-        defToModify.descriptionURL = newDef.descriptionURL;
+        //get all the other defs so we can validate the new one
+        api.getAllDefs(function (err, defs) {
+          var processedDef = defAPI.processInputDef(defs, newDef);
 
-        defToModify.save(function (err, def) {
-          return callback(err, def);
+          //if the title has been modified, all the links need to be updated
+          if (defToModify.title !== processedDef.title) {
+            defs = defAPI.removeDeflinkFromDescriptions(defs, defToModify);
+            defs = defAPI.addDeflinksToDescriptions(defs, processedDef);
+            api.saveAllDefs(defs, function (err) {
+              if (err) {
+                return callback(err);
+              }
+            });
+          }
+
+          defToModify.title = processedDef.title;
+          defToModify.description = processedDef.description;
+          defToModify.descriptionURL = processedDef.descriptionURL;
+
+          defToModify.save(function (err, def) {
+            return callback(err, def);
+          });
         });
       }
     });
   };
-//
+
+  api.saveAllDefs = function (defs, callback) {
+    defs.forEach(function(d) {
+      d.save(function (err) {
+        if (err) {
+          return callback(err);
+        }
+      });
+    });
+    return callback();
+  };
+
   return api;
 };
