@@ -75,7 +75,7 @@ api.removeDeflinkFromDescriptions = function(defs, defToRemove) {
   return defs;
 };
 
-//when a new def is added, add words in its desc that are the titles of other defs should be links
+//when a new def is added, words in its desc that are the titles of other defs should be links
 //returns the description with links. This should be placed directly into the descriptionURL property
 api.addLinksToNewDefDesc = function (defs, def) {
   var description = def.description;

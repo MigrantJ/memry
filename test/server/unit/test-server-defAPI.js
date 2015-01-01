@@ -19,8 +19,8 @@ beforeEach(function () {
   newDef = {
     _id: 1111,
     title: "html",
-    description: "This tests adding a new definition",
-    descriptionURL: "This tests adding a new definition"
+    description: "This test is for adding a new definition",
+    descriptionURL: "This test is for adding a new definition"
   };
 });
 
@@ -84,7 +84,8 @@ describe('Server - Def API', function () {
 
   describe('# addLinksToNewDefDesc', function () {
     it('formats all words that are titles of other defs into links', function () {
-
+      var descriptionURL = api.addLinksToNewDefDesc(testDefs, newDef);
+      expect(descriptionURL).to.equal('This <deflink d=\'1234\'>test</deflink> is for adding a new definition');
     });
   });
 });
