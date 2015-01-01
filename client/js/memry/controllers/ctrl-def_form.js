@@ -7,7 +7,7 @@ angular.module('memry')
     $scope.titleChange = function() {
       var foundTitleID = defModel.findIDByTitleSubstr($scope.title);
       scrollToDef.byID(foundTitleID);
-      $scope.hideDescription = (foundTitleID || $scope.title === '');
+      $scope.hideDescription = defModel.findDefByTitle($scope.title);
     };
 
     $scope.titleInputBegin = function() {

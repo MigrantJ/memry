@@ -85,6 +85,24 @@ angular.module('memry')
       return foundTitleID;
     };
 
+    /*
+    # findDefByTitle
+    takes a string representing a possible title of a def
+    returns the def, or null if no def is found with that title
+    */
+    api.findDefByTitle = function (title) {
+      if (typeof title !== 'string' || title === '') {
+        return null;
+      }
+
+      //todo: this may not be performant
+      var def = null;
+      api.data.defs.some(function (d) {
+        return d.title === title && (def = d);
+      });
+      return def;
+    };
+
     constructor();
 
     return api;

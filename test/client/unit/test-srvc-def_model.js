@@ -1,7 +1,8 @@
 describe('Service - Def Model', function () {
   var scope, defModel, defServer = {};
+  var testDefs;
   beforeEach(function () {
-    var testDefs = [{
+    testDefs = [{
       _id: 1234,
       title: "test",
       description: "This is a test definition",
@@ -57,5 +58,20 @@ describe('Service - Def Model', function () {
       var id = defModel.findIDByTitleSubstr('ridiculousSubstring');
       expect(id).to.not.exist;
     })
+  });
+
+  describe('# findDefByTitle', function () {
+    it('returns null if given a blank string or non-string input', function () {
+      expect(defModel.findDefByTitle(0)).to.be.null;
+      expect(defModel.findDefByTitle('')).to.be.null;
+    });
+    it('returns a def if one is found with the supplied title', function () {
+      var def = defModel.findDefByTitle(testDefs[0].title);
+      expect(def).to.equal(testDefs[0]);
+    });
+    it('returns null if it cannot find a def with that title', function () {
+      var def = defModel.findDefByTitle('qwef234g134qdvqerbewr');
+      expect(def).to.be.null;
+    });
   });
 });
