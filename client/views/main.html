@@ -17,12 +17,12 @@
                 />
             <textarea
                 name="description"
-                placeholder="Describe {{title}} here..."
+                placeholder="Describe '{{title}}' here..."
                 class="main_input"
                 id="input-description"
-                rows="4"
+                rows="{{getDescRows()}}"
                 cols="40"
-                maxlength="255"
+                maxlength="1024"
                 required
                 ng-model="description"
                 ng-hide="hideDescription"
@@ -64,9 +64,9 @@
             <textarea
                 name="description"
                 id="input-description"
-                rows="4"
+                rows="8"
                 cols="40"
-                maxlength="255"
+                maxlength="1024"
                 required
                 ng-model="def.description"
                 ></textarea>

@@ -2,7 +2,8 @@ $body-bgcolor: #1a366a;
 $body-font: Myriad Pro;
 $body-fontcolor-default: #a2b9cf;
 $body-fontcolor-deflink: #cccccf;
-$title-size: 1.1em;
+$title-size: 1.3em;
+$definition-height: 6em;
 $definition-bgcolor: #142952;
 $definition-bgcolor-even: #102142;
 //you should add a 'debug' style that can be applied to elements quickly for testing borders and padding
@@ -47,7 +48,7 @@ p {
 }
 
 #input_form {
-  border: red 1px solid;
+//  border: red 1px solid;
 }
 
 #definition-list {
@@ -71,6 +72,7 @@ p {
 
 .title {
   font-family: $body-font;
+  font-size: $title-size;
   margin: 0 0 0 0;
 }
 
@@ -83,6 +85,7 @@ p {
 }
 
 .definition {
+  height: $definition-height;
   color: $body-fontcolor-default;
   .title {
     font-size: $title-size;
