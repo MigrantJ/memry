@@ -83,13 +83,13 @@ gulp.task('build-js', function () {
 
 gulp.task('build-html', function () {
   gulp.src([clientDir + '**/*.html'])
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
 gulp.task('build-css', function () {
   gulp.src([clientDir + '**/*.scss'])
-    .pipe(concat('style.scss'))
-    .pipe(sass())
+    .pipe(sass()).on('error', errorHandler)
+    .pipe(concat('style.css'))
     .pipe(gulp.dest('build'));
 });
 
@@ -147,3 +147,8 @@ gulp.task('test-integration', function () {
 gulp.task('dev', ['lint','build-libs','build','watch']);
 
 gulp.task('default', ['dev']);
+
+function errorHandler(error) {
+  console.log(error.toString());
+  this.emit('end');
+}

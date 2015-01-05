@@ -7,8 +7,7 @@
             <input
                 name="title"
                 placeholder="Search or Add New"
-                class="main_input"
-                id="input-title"
+                class="main_input input-title"
                 ng-model="title"
                 ng-focus="titleInputBegin()"
                 ng-change="titleChange()"
@@ -18,8 +17,7 @@
             <textarea
                 name="description"
                 placeholder="Describe '{{title}}' here..."
-                class="main_input"
-                id="input-description"
+                class="main_input input-description"
                 rows="{{getDescRows()}}"
                 cols="40"
                 maxlength="1024"
@@ -47,9 +45,13 @@
             ng-hide="definitions[$index].editMode"
             id={{def._id}}>
             <span class="title">{{def.title}}</span>
-            <div compile="def.descriptionURL"></div>
-            <a class="hover_only" href="" ng-click="turnOnEditMode($index)">Edit</a>
-            <a class="hover_only" href="" ng-click="delDefinition(def._id)">Remove</a>
+            <div class="definition_options">
+                <a class="hover_only" href="" ng-click="turnOnEditMode($index)">Edit</a>
+                <a class="hover_only" href="" ng-click="delDefinition(def._id)">Remove</a>
+            </div>
+            <div class="ellipsis">
+                <div compile="def.descriptionURL"></div>
+            </div>
         </div>
 
         <div
@@ -57,21 +59,23 @@
             ng-show="definitions[$index].editMode">
             <input
                 name="title"
-                id="input-title"
+                class="input-title"
                 ng-model="def.title"
                 type="text"
                 />
+            <div class="definition_options">
+                <a href="" ng-click="turnOffEditMode($index)">Cancel</a>
+                <a href="" ng-click="editDefinition($index, def)">Submit</a>
+            </div>
             <textarea
                 name="description"
-                id="input-description"
+                class="input-description"
                 rows="8"
                 cols="40"
                 maxlength="1024"
                 required
                 ng-model="def.description"
                 ></textarea>
-            <a href="" ng-click="turnOffEditMode($index)">Cancel</a>
-            <a href="" ng-click="editDefinition($index, def)">Submit</a>
         </div>
     </article>
 </section>
