@@ -2,10 +2,14 @@
 
 .ellipsis {
   overflow: hidden;
-  height: $definition-height;
   line-height: 25px;
-//  line-height: 1em;//
   margin: 20px;
+
+  max-height: $definition-height;
+
+  -webkit-transition: max-height 1s ease-in-out;
+  -moz-transition: max-height 1s ease-in-out;
+  transition: max-height 1s ease-in-out;
 }
 
 .ellipsis:before {

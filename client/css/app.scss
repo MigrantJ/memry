@@ -51,10 +51,20 @@ p {
 
 #definition-container {
   background-color: $definition-bgcolor;
+  padding: 1% 1% 10% 1%;
+
   &:nth-child(even) {
     background-color: $definition-bgcolor-even;
   }
-  padding: 1% 1% 10% 1%;
+
+  &:hover {
+    .ellipsis {
+      max-height: 18em;
+    }
+    .ellipsis:after {
+      content: '';
+    }
+  }
 }
 
 .main_input {
@@ -76,7 +86,7 @@ p {
 }
 
 .definition {
-  height: $definition-height;
+//  height: $definition-height;
   color: $body-fontcolor-default;
   .title {
     font-size: $title-size;
