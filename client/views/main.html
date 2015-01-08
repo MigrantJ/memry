@@ -7,7 +7,7 @@
             <input
                 name="title"
                 placeholder="Search or Add New"
-                class="main_input input-title"
+                class="def-form-element def-form-title"
                 ng-model="title"
                 ng-focus="titleInputBegin()"
                 ng-change="titleChange()"
@@ -17,7 +17,7 @@
             <textarea
                 name="description"
                 placeholder="Describe '{{title}}' here..."
-                class="main_input input-description"
+                class="def-form-element def-form-description"
                 rows="{{getDescRows()}}"
                 cols="40"
                 maxlength="1024"
@@ -44,7 +44,7 @@
             ng-mouseleave="hover = false"
             ng-hide="definitions[$index].editMode"
             id={{def._id}}>
-            <span class="title">{{def.title}}</span>
+            <span class="def-list-title">{{def.title}}</span>
             <div class="definition_options">
                 <a class="hover_only" href="" ng-click="turnOnEditMode($index)">Edit</a>
                 <a class="hover_only" href="" ng-click="delDefinition(def._id)">Remove</a>
@@ -59,7 +59,7 @@
             ng-show="definitions[$index].editMode">
             <input
                 name="title"
-                class="input-title"
+                class="def-edit-title"
                 ng-model="def.title"
                 type="text"
                 />
@@ -69,7 +69,7 @@
             </div>
             <textarea
                 name="description"
-                class="input-description"
+                class="def-edit-description"
                 rows="8"
                 cols="40"
                 maxlength="1024"

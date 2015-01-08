@@ -29,6 +29,18 @@ p {
   margin: 0 0 0 0;
 }
 
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  background-color: inherit;
+  resize: none;
+}
+
 #app-title {
   color: $body-fontcolor-default;
   font-size: 3em;
@@ -37,10 +49,6 @@ p {
 
 #app-tagline {
   color: $body-fontcolor-default;
-}
-
-#input_form {
-//  border: red 1px solid;
 }
 
 #definition-list {
@@ -67,26 +75,43 @@ p {
   }
 }
 
-.main_input {
+.def-form-element {
   border-radius: 10px;
 }
 
-.title {
+.def-list-title {
   font-family: $body-font;
   font-size: $title-size;
   margin: 0 0 0 0;
 }
 
-.input-title {
+.def-list-description {
+  font-family: $body-font;
+  font-size: $description-size;
+  margin: 0 0 0 0;
+}
+
+.def-form-title {
   font-size: $title-size;
 }
 
-.input-description {
+.def-form-description {
   display: block;
 }
 
+.def-edit-title {
+  font-family: $body-font;
+  font-size: $title-size;
+  background-color: $def-edit-bgcolor;
+}
+
+.def-edit-description {
+  font-family: $body-font;
+  font-size: $description-size;
+  background-color: $def-edit-bgcolor;
+}
+
 .definition {
-//  height: $definition-height;
   color: $body-fontcolor-default;
   .title {
     font-size: $title-size;

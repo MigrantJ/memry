@@ -2,7 +2,7 @@
 
 .ellipsis {
   overflow: hidden;
-  line-height: 25px;
+  line-height: $description-line-height;
   margin: 20px;
 
   max-height: $definition-height;
