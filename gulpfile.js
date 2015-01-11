@@ -60,7 +60,7 @@ gulp.task('clean', function () {
   });
 });
 
-gulp.task('build', ['clean','build-js','build-html','build-css']);
+gulp.task('build', ['clean','build-js','build-html','build-css','build-img']);
 
 gulp.task('build-libs', function () {
   var filePaths = mainBowerFiles();
@@ -91,6 +91,11 @@ gulp.task('build-css', function () {
     .pipe(sass()).on('error', errorHandler)
     .pipe(concat('style.css'))
     .pipe(gulp.dest('build'));
+});
+
+gulp.task('build-img', function () {
+  gulp.src([clientDir + '**/*.jpg',clientDir + '**/*.png',clientDir + '**/*.gif'])
+    .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
 gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);

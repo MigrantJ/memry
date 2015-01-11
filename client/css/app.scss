@@ -1,8 +1,9 @@
 @import "vars";
 
 body {
-  background-color: $body-bgcolor;
   font-family: $body-font;
+  background: $body-bgcolor url("../img/aurora_low.jpg") no-repeat fixed;
+  background-size: cover;
 }
 
 a {
@@ -14,19 +15,6 @@ a {
     text-decoration: none;
     color: $body-fontcolor-default;
   }
-}
-
-h1 {
-  margin: 0 0 0 0;
-}
-
-header {
-  position: fixed;
-  margin: 20% 0% 0% 3%;
-  width: 20%;
-}
-p {
-  margin: 0 0 0 0;
 }
 
 input {
@@ -41,10 +29,17 @@ textarea {
   resize: none;
 }
 
+#left-bar {
+  position: fixed;
+  margin: 3% 0% 0% 3%;
+  width: 25%;
+}
+
 #app-title {
   color: $body-fontcolor-default;
-  font-size: 3em;
+  font-size: 4em;
   font-variant: small-caps;
+  margin: -1em 0 0;
 }
 
 #app-tagline {
@@ -52,9 +47,8 @@ textarea {
 }
 
 #definition-list {
-  margin-left: 30%;
+  margin-left: 50%;
   width: 50%;
-  padding: 800px 0;
 }
 
 #definition-container {
@@ -82,13 +76,11 @@ textarea {
 .def-list-title {
   font-family: $body-font;
   font-size: $title-size;
-  margin: 0 0 0 0;
 }
 
 .def-list-description {
   font-family: $body-font;
   font-size: $description-size;
-  margin: 0 0 0 0;
 }
 
 .def-form-title {
