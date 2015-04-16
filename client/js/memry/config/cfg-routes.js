@@ -6,6 +6,9 @@ angular.module('memry')
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html'
+      })
+      .otherwise({
+        redirectTo: '/'
       });
   })
 ;

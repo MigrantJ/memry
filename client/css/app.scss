@@ -29,14 +29,18 @@ textarea {
   resize: none;
 }
 
+#view-container {
+
+}
+
 #left-bar {
   position: fixed;
-  margin: 3% 0% 0% 3%;
+  margin: 3% 0% 0% 0%;
   width: 25%;
 }
 
 #app-title {
-  color: $body-fontcolor-default;
+  color: $title-color;
   font-size: 4em;
   font-variant: small-caps;
   margin: -1em 0 0;
@@ -76,19 +80,23 @@ textarea {
 .def-list-title {
   font-family: $body-font;
   font-size: $title-size;
+  color: $def-list-title-color;
 }
 
 .def-list-description {
   font-family: $body-font;
   font-size: $description-size;
+  color: $def-list-desc-color;
+  word-wrap: break-word;
 }
 
-.def-form-title {
+#def-form-title {
   font-size: $title-size;
 }
 
-.def-form-description {
-  display: block;
+#def-form-description {
+  font-size: $description-size;
+  background-color: $def-form-bgcolor;
 }
 
 .def-edit-title {
@@ -118,11 +126,11 @@ textarea {
     opacity: 100;
   }
   .fake-a {
-    color: $body-fontcolor-deflink;
+    color: $deflink-normal-color;
     border-bottom: 1px $body-fontcolor-default dotted;
     cursor: pointer;
     &:hover {
-      color: white;
+      color: $deflink-hover-color;
       border-bottom: 1px solid;
     }
   }

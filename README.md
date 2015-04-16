@@ -1,4 +1,4 @@
-memry-refactor
-==============
+memry
+========
 
-The original memry is actually a mess. But I can fix it!
+A light wiki-like application built using the MEAN stack.
