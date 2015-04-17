@@ -46,7 +46,7 @@ api.checkIfTitleExists = function (defs, inputDef) {
 //converts unsafe characters, removes unwanted ones, and prepares for further processing
 api.formatInput = function (inputDef) {
   //make sure input is safe and doesn't have html or mysql injection or anything else weird
-  var safeDef = inputDef;
+  var safeDef = cloneSingleDef(inputDef);
   //strip out / convert all unsafe characters - ', ", html tags, mysql calls, etc and save back into description
   safeDef.description = _.escape(inputDef.description);
 
@@ -90,12 +90,13 @@ api.addDeflinksToDescriptions = function (defs, defToAdd) {
 //similarly, when a def is removed, the other defs should no longer link to it
 //returns an object containing all defs. This needs to be pushed to the db separately
 api.removeDeflinkFromDescriptions = function(defs, defToRemove) {
+  var modDefs = cloneDefs(defs);
   var regex = new RegExp('(<deflink\\sd=\'' + defToRemove._id + '\'>)([\\s\\S]+)(<\\/deflink>)');
-  _.forEach(defs, function(d) {
+  _.forEach(modDefs, function(d) {
     d.descriptionURL = d.descriptionURL.replace(regex, '$2');
   });
 
-  return defs;
+  return modDefs;
 };
 
 //when a new def is added, words in its desc that are the titles of other defs should be links
