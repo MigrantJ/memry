@@ -166,7 +166,9 @@ gulp.task('watch-tests-server', function () {
     });
 });
 
-gulp.task('test-client', function (done) {
+gulp.task('test-all', ['test-client','test-server','test-integration']);
+
+gulp.task('test-client', ['build-js'], function (done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js'
   }, done);
@@ -182,7 +184,7 @@ gulp.task('test-integration', ['watch-server'], function () {
     .pipe(mocha(mochaOptions));
 });
 
-gulp.task('dev', ['build-libs','build','watch']);
+gulp.task('dev', ['build-libs','build','watch','test-all']);
 
 gulp.task('default', ['dev']);
 
