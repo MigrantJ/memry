@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 var api = require('../../../server/defAPI');
-var testDefs, newDef;
+var testDefs, newDef, shortTitleDef;
 beforeEach(function () {
   testDefs = [{
     _id: 5678,
@@ -20,6 +20,13 @@ beforeEach(function () {
     _id: 1111,
     title: "html",
     description: "This test is for adding a new definition",
+    descriptionURL: "This test is for adding a new definition"
+  };
+
+  shortTitleDef = {
+    _id: 666,
+    title: "t",
+    description: "This tests proper substring regex matching",
     descriptionURL: "This test is for adding a new definition"
   };
 });
@@ -53,7 +60,7 @@ describe('Server - Def API', function () {
   });
 
   describe('# defTitleToRegexStr', function () {
-    var beginning = '(';
+    var beginning = '([\\s,.;\'"!?])(';
     var ending = ')(?=[\\s,.;\'"!?])';
     it('converts spaces', function () {
       var regex = api.defTitleToRegexStr(' ');
@@ -71,6 +78,11 @@ describe('Server - Def API', function () {
       expect(modifiedDefs[0].descriptionURL).to.equal('&lt;b&gt;This description has <deflink d=\'1111\'>html</deflink> tags&lt;/b&gt;');
       expect(modifiedDefs[1].descriptionURL).to.equal(testDefs[1].descriptionURL);
     });
+    it('only adds links to substrings between spaces or punctuation', function () {
+      var modifiedDefs = api.addDeflinksToDescriptions(testDefs, shortTitleDef);
+      expect(modifiedDefs[0].descriptionURL).to.equal(testDefs[0].descriptionURL);
+      expect(modifiedDefs[1].descriptionURL).to.equal(testDefs[1].descriptionURL);
+    })
   });
 
   describe('# removeDeflinkFromDescriptions', function () {

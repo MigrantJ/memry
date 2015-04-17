@@ -2,6 +2,28 @@
 var _ = require('lodash');
 var api = {};
 
+var cloneSingleDef = function (origDef) {
+  return {
+    _id: origDef._id,
+    title: origDef.title,
+    description: origDef.description,
+    descriptionURL: origDef.descriptionURL
+  };
+};
+
+var cloneDefs = function (origDefs) {
+  if (origDefs.constructor === Array) {
+    var newDefs = [];
+    _.forEach(origDefs, function(d, i) {
+      newDefs[i] = cloneSingleDef(d);
+    });
+
+    return newDefs;
+  } else {
+    throw 'cloneDefs() requires an Array!';
+  }
+};
+
 //checks specifically for someone trying to slip in corrupted data
 api.validateDefToAdd = function (defs, inputDef) {
   //input should never, ever not pass these checks
@@ -38,7 +60,7 @@ api.formatInput = function (inputDef) {
 
 //convert a word to a regex so we can search other def descriptions for it
 api.defTitleToRegexStr = function(title) {
-  var regexContents = '(';
+  var regexContents = '([\\s,.;\'"!?])(';
   for (var i = 0; i < title.length; i++) {
     var char = title.charAt(i);
     if (char === ' ') {
@@ -55,13 +77,14 @@ api.defTitleToRegexStr = function(title) {
 //when a definition is added, all other defs that have the new def's title in their descriptions need to link to the new def
 //returns an object containing all defs. This needs to be pushed to the db separately
 api.addDeflinksToDescriptions = function (defs, defToAdd) {
+  var modDefs = cloneDefs(defs);
   var regex = new RegExp(api.defTitleToRegexStr(defToAdd.title), 'g');
 
-  _.forEach(defs, function (d) {
-    d.descriptionURL = d.descriptionURL.replace(regex, '<deflink d=\'' + defToAdd._id + '\'>$1</deflink>');
+  _.forEach(modDefs, function (d) {
+    d.descriptionURL = d.descriptionURL.replace(regex, '$1<deflink d=\'' + defToAdd._id + '\'>$2</deflink>');
   });
 
-  return defs;
+  return modDefs;
 };
 
 //similarly, when a def is removed, the other defs should no longer link to it
@@ -82,7 +105,7 @@ api.addLinksToNewDefDesc = function (defs, def) {
   _.forEach(defs, function(d) {
     if (def.title !== d.title) {
       var regex = new RegExp(api.defTitleToRegexStr(d.title), 'g');
-      description = description.replace(regex, '<deflink d=\'' + d._id + '\'>$1</deflink>');
+      description = description.replace(regex, '$1<deflink d=\'' + d._id + '\'>$2</deflink>');
     }
   });
   return description;
