@@ -91,7 +91,8 @@ gulp.task('clean-img', function (cb) {
 gulp.task('build', ['build-js','build-html','build-css','build-img']);
 
 gulp.task('build-libs', function () {
-  var filePaths = mainBowerFiles();
+  var filePaths = mainBowerFiles({filter: '**/*.js'});
+  console.log(filePaths);
 
   gulp.src(filePaths)
     .pipe(concat('libs.js'))
@@ -115,7 +116,7 @@ gulp.task('build-html', ['clean-html'], function () {
 });
 
 gulp.task('build-css', ['clean-css'], function () {
-  gulp.src([clientDir + '**/*.scss'])
+  gulp.src([clientDir + '**/*.scss','bower_components/bootstrap-sass-official/assets/stylesheets/*.scss','bower_components/bootstrap-sass-official/assets/stylesheets/**/*.scss'])
     .pipe(sass()).on('error', errorHandler)
     .pipe(concat('style.css'))
     .pipe(gulp.dest('build'));
