@@ -45,18 +45,20 @@ var mochaOptions = {
   timeout: 3000
 };
 
-gulp.task('lint', function () {
+gulp.task('lint-js', function (cb) {
   gulp.src([jsDir, 'server.js', 'server/*.js'])
     .pipe(jshint(jshintOptions))
     .pipe(jshint.reporter(jshintReporter))
     .pipe(jshint.reporter('fail')); //causes the task to fail if jshint was not successful
+  cb();
 });
 
-gulp.task('clean', function () {
-  del(['build/**/*.*','!build/libs.js'], function (err) {
+gulp.task('clean', function (cb) {
+  del(['build/**/*.*','build/**','!build','!build/libs.js'], function (err) {
     if (err) {
       console.log("Error while cleaning: " + err);
     }
+    cb(err);
   });
 });
 
@@ -71,7 +73,7 @@ gulp.task('build-libs', function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-js', function () {
+gulp.task('build-js', ['lint-js','clean'], function () {
   gulp.src([jsDir + 'module.js',jsDir + '*.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
@@ -81,19 +83,19 @@ gulp.task('build-js', function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-html', function () {
+gulp.task('build-html', ['clean'], function () {
   gulp.src([clientDir + '**/*.html'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
-gulp.task('build-css', function () {
+gulp.task('build-css', ['clean'], function () {
   gulp.src([clientDir + '**/*.scss'])
     .pipe(sass()).on('error', errorHandler)
     .pipe(concat('style.css'))
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-img', function () {
+gulp.task('build-img', ['clean'], function () {
   gulp.src([clientDir + '**/*.jpg',clientDir + '**/*.png',clientDir + '**/*.gif'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
@@ -101,7 +103,7 @@ gulp.task('build-img', function () {
 gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);
 
 gulp.task('watch-client', function () {
-  gulp.watch(clientDir + '**/*.*', ['lint','build','test-client'])
+  gulp.watch(clientDir + '**/*.*', ['lint-js','build','test-client'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
@@ -111,7 +113,7 @@ gulp.task('watch-server', function () {
   nodemon({ script: 'server.js', watch: ['server.js','server']})
     //.on('start', ['test-integration'])
     .on('start', ['test-server'])
-    .on('change', ['lint'])
+    .on('change', ['lint-js'])
     .on('restart', function () {
     });
 });
@@ -149,7 +151,7 @@ gulp.task('test-integration', function () {
   }, 300);
 });
 
-gulp.task('dev', ['lint','build-libs','build','watch']);
+gulp.task('dev', ['build-libs','build','watch']);
 
 gulp.task('default', ['dev']);
 
