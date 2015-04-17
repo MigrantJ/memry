@@ -53,7 +53,9 @@ gulp.task('lint-js', function (cb) {
   cb();
 });
 
-gulp.task('clean', function (cb) {
+gulp.task('clean', ['clean-js','clean-html','clean-css','clean-img']);
+
+gulp.task('clean-all', function (cb) {
   del(['build/**/*.*','build/**','!build','!build/libs.js'], function (err) {
     if (err) {
       console.log("Error while cleaning: " + err);
@@ -62,7 +64,31 @@ gulp.task('clean', function (cb) {
   });
 });
 
-gulp.task('build', ['clean','build-js','build-html','build-css','build-img']);
+gulp.task('clean-js', function (cb) {
+  del(['build/bundle.js'], function (err) {
+    cb(err);
+  });
+});
+
+gulp.task('clean-html', function (cb) {
+  del(['build/views','build/*.html'], function (err) {
+    cb(err);
+  });
+});
+
+gulp.task('clean-css', function (cb) {
+  del(['build/*.css'], function (err) {
+    cb(err);
+  });
+});
+
+gulp.task('clean-img', function (cb) {
+  del(['build/img'], function (err) {
+    cb(err);
+  });
+});
+
+gulp.task('build', ['build-js','build-html','build-css','build-img']);
 
 gulp.task('build-libs', function () {
   var filePaths = mainBowerFiles();
@@ -73,7 +99,7 @@ gulp.task('build-libs', function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-js', ['lint-js','clean'], function () {
+gulp.task('build-js', ['lint-js','clean-js'], function () {
   gulp.src([jsDir + 'module.js',jsDir + '*.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
@@ -83,19 +109,19 @@ gulp.task('build-js', ['lint-js','clean'], function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-html', ['clean'], function () {
+gulp.task('build-html', ['clean-html'], function () {
   gulp.src([clientDir + '**/*.html'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
-gulp.task('build-css', ['clean'], function () {
+gulp.task('build-css', ['clean-css'], function () {
   gulp.src([clientDir + '**/*.scss'])
     .pipe(sass()).on('error', errorHandler)
     .pipe(concat('style.css'))
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-img', ['clean'], function () {
+gulp.task('build-img', ['clean-img'], function () {
   gulp.src([clientDir + '**/*.jpg',clientDir + '**/*.png',clientDir + '**/*.gif'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
@@ -103,16 +129,24 @@ gulp.task('build-img', ['clean'], function () {
 gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);
 
 gulp.task('watch-client', function () {
-  gulp.watch(clientDir + '**/*.*', ['lint-js','build','test-client'])
+  gulp.watch(clientDir + '**/*.*', ['build','test-client'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
 });
 
-gulp.task('watch-server', function () {
-  nodemon({ script: 'server.js', watch: ['server.js','server']})
-    //.on('start', ['test-integration'])
-    .on('start', ['test-server'])
+gulp.task('watch-server', function (cb) {
+  nodemon({
+    script: 'server.js',
+    watch: ['server.js','server'],
+    stdout: false})
+    .on('readable', function (data) {
+      this.stdout.on('data', function (chunk) {
+        if (/Server Ready/.test(chunk)) {
+          cb();
+        }
+      });
+    })
     .on('change', ['lint-js'])
     .on('restart', function () {
     });
@@ -143,12 +177,9 @@ gulp.task('test-server', function () {
     .pipe(mocha(mochaOptions));
 });
 
-gulp.task('test-integration', function () {
-  //wait a touch to give the server time to fully start
-  setTimeout(function () {
-    return gulp.src('test/server/integration/test-rest_api.js')
-      .pipe(mocha(mochaOptions));
-  }, 300);
+gulp.task('test-integration', ['watch-server'], function () {
+  return gulp.src('test/server/integration/test-rest_api.js')
+    .pipe(mocha(mochaOptions));
 });
 
 gulp.task('dev', ['build-libs','build','watch']);

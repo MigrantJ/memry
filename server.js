@@ -22,5 +22,5 @@ routes.initialize(app, dbConnection);
 var server = http.createServer(app);
 
 server.listen(app.get('port'), function() {
-  console.log('Express GO! Listening on port:' + app.get('port'));
+  console.log('Server Ready');
 });

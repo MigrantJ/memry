@@ -76,12 +76,12 @@ describe('Server - Def API', function () {
     it('adds a link to all definition descriptions based on passed def', function () {
       var modifiedDefs = api.addDeflinksToDescriptions(testDefs, newDef);
       expect(modifiedDefs[0].descriptionURL).to.equal('&lt;b&gt;This description has <deflink d=\'1111\'>html</deflink> tags&lt;/b&gt;');
-      expect(modifiedDefs[1].descriptionURL).to.equal(testDefs[1].descriptionURL);
+      expect(modifiedDefs[1].descriptionURL).to.equal("This is a test definition");
     });
     it('only adds links to substrings between spaces or punctuation', function () {
       var modifiedDefs = api.addDeflinksToDescriptions(testDefs, shortTitleDef);
-      expect(modifiedDefs[0].descriptionURL).to.equal(testDefs[0].descriptionURL);
-      expect(modifiedDefs[1].descriptionURL).to.equal(testDefs[1].descriptionURL);
+      expect(modifiedDefs[0].descriptionURL).to.equal("&lt;b&gt;This description has html tags&lt;/b&gt;");
+      expect(modifiedDefs[1].descriptionURL).to.equal("This is a test definition");
     })
   });
 
