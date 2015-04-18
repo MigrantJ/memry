@@ -11,10 +11,13 @@ var gulp = require('gulp'),
     karma = require('karma').server,
     mainBowerFiles = require('main-bower-files');
 
-var clientDir = 'client/',
-    jsDir = clientDir + 'js/**/',
-    testServerDir = 'test/server/unit/**/*.js',
-    testClientDir = 'test/client/unit/**/*.js';
+var conf = {
+  clientDir: 'client/',
+  jsDir: 'client/js/**/',
+  testServerDir: 'test/server/unit/**/*.js',
+  testClientDir: 'test/client/unit/**/*.js',
+  bootstrapDir: 'bower_components/bootstrap-sass/'
+};
 
 var jshintOptions = {
   bitwise: true,
@@ -46,7 +49,7 @@ var mochaOptions = {
 };
 
 gulp.task('lint-js', function (cb) {
-  gulp.src([jsDir, 'server.js', 'server/*.js'])
+  gulp.src([conf.jsDir, 'server.js', 'server/*.js'])
     .pipe(jshint(jshintOptions))
     .pipe(jshint.reporter(jshintReporter))
     .pipe(jshint.reporter('fail')); //causes the task to fail if jshint was not successful
@@ -88,7 +91,7 @@ gulp.task('clean-img', function (cb) {
   });
 });
 
-gulp.task('build', ['build-js','build-html','build-css','build-img']);
+gulp.task('build', ['build-js','build-html','build-css','build-fonts','build-img']);
 
 gulp.task('build-libs', function () {
   var filePaths = mainBowerFiles({filter: '**/*.js'});
@@ -101,7 +104,7 @@ gulp.task('build-libs', function () {
 });
 
 gulp.task('build-js', ['lint-js','clean-js'], function () {
-  gulp.src([jsDir + 'module.js',jsDir + '*.js'])
+  gulp.src([conf.jsDir + 'module.js',conf.jsDir + '*.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(ngAnnotate())
@@ -111,26 +114,32 @@ gulp.task('build-js', ['lint-js','clean-js'], function () {
 });
 
 gulp.task('build-html', ['clean-html'], function () {
-  gulp.src([clientDir + '**/*.html'])
+  gulp.src([conf.clientDir + '**/*.html'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
 gulp.task('build-css', ['clean-css'], function () {
-  gulp.src([clientDir + '**/*.scss','bower_components/bootstrap-sass-official/assets/stylesheets/*.scss','bower_components/bootstrap-sass-official/assets/stylesheets/**/*.scss'])
-    .pipe(sass()).on('error', errorHandler)
-    .pipe(concat('style.css'))
-    .pipe(gulp.dest('build'));
+  return gulp.src(conf.clientDir + 'css/app.scss')
+    .pipe(sass({
+      includePaths: [conf.bootstrapDir + 'assets/stylesheets'],
+    }))
+    .pipe(gulp.dest('build'))
+});
+
+gulp.task('build-fonts', function() {
+  return gulp.src(conf.bootstrapDir + '/assets/fonts/**/*')
+    .pipe(gulp.dest('build/fonts'))
 });
 
 gulp.task('build-img', ['clean-img'], function () {
-  gulp.src([clientDir + '**/*.jpg',clientDir + '**/*.png',clientDir + '**/*.gif'])
+  gulp.src([conf.clientDir + '**/*.jpg',conf.clientDir + '**/*.png',conf.clientDir + '**/*.gif'])
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
 gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);
 
 gulp.task('watch-client', function () {
-  gulp.watch(clientDir + '**/*.*', ['build','test-client'])
+  gulp.watch(conf.clientDir + '**/*.*', ['build','test-client'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
@@ -154,14 +163,14 @@ gulp.task('watch-server', function (cb) {
 });
 
 gulp.task('watch-tests-client', function () {
-  gulp.watch(testClientDir, ['test-client'])
+  gulp.watch(conf.testClientDir, ['test-client'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
 });
 
 gulp.task('watch-tests-server', function () {
-  gulp.watch(testServerDir, ['test-server'])
+  gulp.watch(conf.testServerDir, ['test-server'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
