@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     ngAnnotate = require('gulp-ng-annotate'),
     karma = require('karma').server,
-    mainBowerFiles = require('main-bower-files');
+    mainBowerFiles = require('main-bower-files'),
+    runSequence = require('run-sequence');
 
 var conf = {
   clientDir: 'client/',
@@ -91,16 +92,19 @@ gulp.task('clean-img', function (cb) {
   });
 });
 
-gulp.task('build', ['build-js','build-html','build-css','build-fonts','build-img']);
+gulp.task('build', ['build-js','build-html','build-css','build-fonts','build-img'], function (done) {
+  done();
+});
 
-gulp.task('build-libs', function () {
+gulp.task('build-libs', function (done) {
   var filePaths = mainBowerFiles({filter: '**/*.js'});
-  console.log(filePaths);
 
   gulp.src(filePaths)
     .pipe(concat('libs.js'))
     .pipe(uglify())
     .pipe(gulp.dest('build'));
+
+  done();
 });
 
 gulp.task('build-js', ['lint-js','clean-js'], function () {
@@ -122,6 +126,7 @@ gulp.task('build-css', ['clean-css'], function () {
   return gulp.src(conf.clientDir + 'css/app.scss')
     .pipe(sass({
       includePaths: [conf.bootstrapDir + 'assets/stylesheets'],
+      errLogToConsole: true
     }))
     .pipe(gulp.dest('build'))
 });
@@ -136,14 +141,32 @@ gulp.task('build-img', ['clean-img'], function () {
     .pipe(gulp.dest('build')).on('error', errorHandler);
 });
 
-gulp.task('watch', ['watch-client','watch-server','watch-tests-client', 'watch-tests-server']);
+gulp.task('watch', ['watch-html','watch-client-js','watch-client-css','watch-server','watch-tests-client', 'watch-tests-server'], function (done) {
+  done();
+});
 
-gulp.task('watch-client', function () {
-  gulp.watch(conf.clientDir + '**/*.*', ['build','test-client'])
+gulp.task('watch-html', function () {
+  gulp.watch(conf.clientDir + '**/*.html', ['build-html'])
     .on('change', function (event) {
       console.log('File ' + event.path + ' was ' + event.type);
     });
 });
+
+
+gulp.task('watch-client-js', function () {
+  gulp.watch(conf.clientDir + '**/*.js', ['build-js','test-client'])
+    .on('change', function (event) {
+      console.log('File ' + event.path + ' was ' + event.type);
+    });
+});
+
+gulp.task('watch-client-css', function () {
+  gulp.watch(conf.clientDir + '**/*.scss', ['build-css'])
+    .on('change', function (event) {
+      console.log('File ' + event.path + ' was ' + event.type);
+    });
+});
+
 
 gulp.task('watch-server', function (cb) {
   nodemon({
@@ -176,9 +199,14 @@ gulp.task('watch-tests-server', function () {
     });
 });
 
-gulp.task('test-all', ['test-client','test-server','test-integration']);
+gulp.task('test-all', ['test-client','test-server','test-integration'], function (done) {
+  runSequence('test-client',
+    'test-server',
+    'test-integration',
+    done);
+});
 
-gulp.task('test-client', ['build-js'], function (done) {
+gulp.task('test-client', function (done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js'
   }, done);
@@ -189,12 +217,17 @@ gulp.task('test-server', function () {
     .pipe(mocha(mochaOptions));
 });
 
-gulp.task('test-integration', ['watch-server'], function () {
+gulp.task('test-integration', function () {
   return gulp.src('test/server/integration/test-rest_api.js')
     .pipe(mocha(mochaOptions));
 });
 
-gulp.task('dev', ['build-libs','build','watch','test-all']);
+gulp.task('dev', function () {
+  runSequence('build-libs',
+    'build',
+    'watch',
+    'test-all');
+});
 
 gulp.task('default', ['dev']);
 
