@@ -19,6 +19,7 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scroll/angular-scroll.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/js/**/module.js',
       'client/js/**/*.js',
       'test/client/unit/**/*.js'
