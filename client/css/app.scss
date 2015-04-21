@@ -3,6 +3,8 @@
 @import "bootstrap/theme";
 @import "mixins";
 
+$search-height: 50px;
+
 #memry-brand {
   @extend .navbar-brand;
   position: absolute;
@@ -19,6 +21,23 @@
   @include make-row();
   @include make-md-column(6);
   @include make-md-column-offset(3);
+
+  .search-icon {
+    @extend .glyphicon;
+    position: absolute;
+    right: 0;
+    padding-top: $search-height / 4;
+    padding-right: $search-height / 2;
+    font-size: x-large;
+  }
+
+  .search-icon-found {
+    @extend .glyphicon-search;
+  }
+
+  .search-icon-makeNew {
+    @extend .glyphicon-plus;
+  }
 }
 
 #search {

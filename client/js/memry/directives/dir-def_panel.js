@@ -7,8 +7,7 @@ angular.module('memry')
       replace: true,
       restrict: 'E',
       templateUrl: 'views/def-panel.html',
-      link: function (scope) {
-        console.log(scope);
+      link: function () {
       }
     };
   });

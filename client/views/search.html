@@ -1,13 +1,16 @@
 <div id="search-container">
     <form>
+        <div
+             ng-class="{'search-icon': searchInFocus, 'search-icon-makeNew': searchInFocus && !titleFound(), 'search-icon-found': searchInFocus && titleFound()}">
+        </div>
         <input
             name="title"
             placeholder="Search or Add New"
             id="search"
             ng-model="title"
-            ng-focus="resetScrollID()"
-            ng-change="searchForTitle()"
-            ng-blur="resetScrollID()"
+            ng-focus="onSearchFocus()"
+            ng-change="onSearchChange()"
+            ng-blur="onSearchBlur()"
             type="text"
         />
     </form>

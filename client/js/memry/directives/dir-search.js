@@ -1,19 +1,30 @@
 /*global angular*/
 
 angular.module('memry')
-  .directive('mmSearch', function(scrollToDef, defModel) {
+  .directive('mmSearch', function(scrollToDef) {
     'use strict';
     return {
       replace: true,
       restrict: 'E',
       templateUrl: 'views/search.html',
       link: function (scope) {
-        scope.resetScrollID = function () {
-          scrollToDef.resetID();
+        scope.searchInFocus = false;
+
+        scope.titleFound = function () {
+          console.log(scrollToDef.isDefFound());
+          return !scope.title || scrollToDef.isDefFound();
         };
-        scope.searchForTitle = function () {
-          var foundTitleID = defModel.findIDByTitleSubstr(scope.title);
-          scrollToDef.byID(foundTitleID);
+
+        scope.onSearchFocus = function () {
+          scope.searchInFocus = true;
+        };
+
+        scope.onSearchBlur = function () {
+          scope.searchInFocus = false;
+        };
+
+        scope.onSearchChange = function () {
+          scrollToDef.byTitle(scope.title);
         };
       }
     };

@@ -9,6 +9,7 @@ angular.module('memry')
     var data = {};
 
     data.currentScrollDefID = null;
+    data.titleFound = null;
 
     api.byID = function (id) {
       if (id) {
@@ -31,13 +32,20 @@ angular.module('memry')
       if (title !== '') {
         var id = defModel.findIDByTitleSubstr(title);
         if (id) {
+          data.titleFound = true;
           api.byID(id);
+        } else {
+          data.titleFound = false;
         }
       }
     };
 
     api.resetID = function () {
       data.currentScrollDefID = null;
+    };
+
+    api.isDefFound = function () {
+      return data.titleFound;
     };
 
     return api;
