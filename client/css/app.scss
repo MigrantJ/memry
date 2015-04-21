@@ -11,15 +11,24 @@
 #mm-top-bar {
   @extend .navbar;
   @extend .navbar-default;
-  @extend .navbar-static-top;
+  @extend .navbar-fixed-top;
+}
+
+#search-container {
+  @include container-fixed();
+  @include make-row();
+  @include make-md-column(6);
+  @include make-md-column-offset(3);
 }
 
 #search {
-  @include center-block();
   border: 1px solid $input-border;
   border-radius: $input-border-radius;
-  height: $input-height-base;
+  height: 50px;
+  width: 100%;
   padding: $padding-base-vertical $padding-base-horizontal;
+  text-align: center;
+  font-size: $font-size-h2;
 }
 
 #def-list-container {
@@ -27,6 +36,8 @@
   @include make-row();
   @include make-md-column(6);
   @include make-md-column-offset(3);
+  margin-top: 800px;
+  margin-bottom: 800px;
 }
 
 .definition {

@@ -12,10 +12,12 @@ angular.module('memry')
 
     api.byID = function (id) {
       if (id) {
+        var defElement = angular.element(document.getElementById(id));
         if (data.currentScrollDefID !== id) {
           data.currentScrollDefID = id;
-          var defElement = angular.element(document.getElementById(id));
-          $document.scrollTo(defElement, 0, 1000);
+          $document.duScrollTo(defElement, 50, 1000);
+        } else {
+          $document.duScrollTo(defElement, 50, 1000, function (t) { return t; });
         }
       }
     };
