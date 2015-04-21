@@ -3,6 +3,11 @@ describe('Service - Def Model', function () {
   var testDefs;
   beforeEach(function () {
     testDefs = [{
+      _id: 1111,
+      title: "example",
+      description: "This is an example definition",
+      descriptionURL: "This is an example definition"
+    },{
       _id: 1234,
       title: "test",
       description: "This is a test definition",
@@ -12,6 +17,11 @@ describe('Service - Def Model', function () {
       title: "test2",
       description: "This is another test definition",
       descriptionURL: "This is another test definition"
+    },{
+      _id: 9999,
+      title: "very last def",
+      description: "This is the last definition",
+      descriptionURL: "This is the last definition"
     }];
 
     module('memry', function ($provide) {
@@ -57,7 +67,25 @@ describe('Service - Def Model', function () {
     it('returns null if it cannot find a def', function () {
       var id = defModel.findIDByTitleSubstr('ridiculousSubstring');
       expect(id).to.not.exist;
-    })
+    });
+  });
+
+  describe('# findIDByClosestTitle', function () {
+    it('throws an error with non-string input', function () {
+      expect(function(){defModel.findIDByTitleSubstr(0)}).to.throw('findIDByTitleSubstr requires string input');
+      expect(function(){defModel.findIDByTitleSubstr()}).to.throw('findIDByTitleSubstr requires string input');
+    });
+    it('finds the def after the substring and returns its id', function () {
+      var id = defModel.findIDByClosestTitle('f');
+      expect(id).to.equal(1234);
+
+      id = defModel.findIDByClosestTitle('test2a');
+      expect(id).to.equal(9999);
+    });
+    it('returns null if the substring would occur after the last def', function () {
+      var id = defModel.findIDByTitleSubstr('z');
+      expect(id).to.not.exist;
+    });
   });
 
   describe('# findDefByTitle', function () {

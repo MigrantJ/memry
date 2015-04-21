@@ -11,7 +11,6 @@ angular.module('memry')
         scope.searchInFocus = false;
 
         scope.titleFound = function () {
-          console.log(scrollToDef.isDefFound());
           return !scope.title || scrollToDef.isDefFound();
         };
 

@@ -86,6 +86,26 @@ angular.module('memry')
     };
 
     /*
+    # findIDByClosestTitle
+    returns the id of the definition whose title is the next closest match to the substring.
+    ex: with defs of [Jane, Jim], titleSubstr "Jerry" would return Jim's id
+    relies on the server returning the defs sorted alphabetically by title
+     */
+    api.findIDByClosestTitle = function (titleSubstr) {
+      //input validation
+      if (typeof titleSubstr !== 'string') {
+        throw new Error('findIDByClosestTitle requires string input');
+      }
+      var foundTitleID = null;
+
+      api.data.defs.some(function (d) {
+        return d.title > titleSubstr && (foundTitleID = d._id);
+      });
+
+      return foundTitleID;
+    };
+
+    /*
     # findDefByTitle
     takes a string representing a possible title of a def
     returns the def, or null if no def is found with that title

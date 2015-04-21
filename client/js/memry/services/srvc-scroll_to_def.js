@@ -11,15 +11,17 @@ angular.module('memry')
     data.currentScrollDefID = null;
     data.titleFound = null;
 
+    var getDefElementByID = function (id) {
+      return angular.element(document.getElementById(id));
+    };
+
     api.byID = function (id) {
       if (id) {
-        var defElement = angular.element(document.getElementById(id));
+        var defElement = getDefElementByID(id);
         if (data.currentScrollDefID !== id) {
           data.currentScrollDefID = id;
-          $document.duScrollTo(defElement, 50, 1000);
-        } else {
-          $document.duScrollTo(defElement, 50, 1000, function (t) { return t; });
         }
+        api.byElement(defElement);
       }
     };
 
@@ -33,11 +35,16 @@ angular.module('memry')
         var id = defModel.findIDByTitleSubstr(title);
         if (id) {
           data.titleFound = true;
-          api.byID(id);
         } else {
           data.titleFound = false;
+          id = defModel.findIDByClosestTitle(title);
         }
+        api.byID(id);
       }
+    };
+
+    api.byElement = function (e) {
+      $document.duScrollTo(e, 50, 1000, function (t) { return t; });
     };
 
     api.resetID = function () {
