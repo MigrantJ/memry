@@ -2,3 +2,59 @@
 @import "bootstrap";
 @import "bootstrap/theme";
 @import "mixins";
+
+#memry-brand {
+  @extend .navbar-brand;
+  position: absolute;
+}
+
+#mm-top-bar {
+  @extend .navbar;
+  @extend .navbar-default;
+  @extend .navbar-static-top;
+}
+
+#search {
+  @include center-block();
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  height: $input-height-base;
+  padding: $padding-base-vertical $padding-base-horizontal;
+}
+
+#def-list-container {
+  @include container-fixed();
+  @include make-row();
+  @include make-md-column(6);
+  @include make-md-column-offset(3);
+}
+
+.definition {
+  @extend .panel;
+  @extend .panel-default;
+  padding: 20px 30px 30px 30px;
+
+  .def-title {
+    text-align: center;
+    font-size: $font-size-h2;
+    display: block;
+  }
+  .hover_only {
+    opacity: 0;
+  }
+}
+
+.definition_hover {
+  .hover_only {
+    opacity: 100;
+  }
+  .fake-a {
+    color: $deflink-normal-color;
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    &:hover {
+      color: $deflink-hover-color;
+      border-bottom: 1px solid;
+    }
+  }
+}

@@ -1,20 +1,16 @@
-<header id="left-bar">
-    <h1 id="app-title">memry</h1>
+<header id="mm-top-bar">
+    <strong id="memry-brand">memry</strong>
+    <mm-search></mm-search>
+</header>
 
+<section id="def-list-container" ng-controller="DefinitionListController">
+    <def-panel ng-repeat="def in definitions"></def-panel>
+</section>
+
+<header id="left-bar">
     <!-- insert magnifying glass button here, on by default -->
     <div id="input_form">
         <form ng-controller="DefinitionFormController" ng-submit="addDefinition()">
-            <input
-                name="title"
-                placeholder="Search or Add New"
-                class="def-form-element"
-                id="def-form-title"
-                ng-model="title"
-                ng-focus="titleInputBegin()"
-                ng-change="titleChange()"
-                ng-blur="titleInputEnd()"
-                type="text"
-                />
             <textarea
                 name="description"
                 placeholder="Describe '{{title}}' here..."
