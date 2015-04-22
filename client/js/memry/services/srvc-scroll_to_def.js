@@ -7,12 +7,19 @@ angular.module('memry')
     var api = {};
     //private data
     var data = {};
+    var observerCallbacks = [];
 
     data.currentScrollDefID = null;
     data.titleFound = null;
 
     var getDefElementByID = function (id) {
       return angular.element(document.getElementById(id));
+    };
+
+    var notifyObservers = function () {
+      angular.forEach(observerCallbacks, function (cb) {
+        cb();
+      });
     };
 
     api.byID = function (id) {
@@ -39,6 +46,7 @@ angular.module('memry')
           data.titleFound = false;
           id = defModel.findIDByClosestTitle(title);
         }
+        notifyObservers();
         api.byID(id);
       }
     };
@@ -53,6 +61,10 @@ angular.module('memry')
 
     api.isDefFound = function () {
       return data.titleFound;
+    };
+
+    api.registerObserver = function (cb) {
+      observerCallbacks.push(cb);
     };
 
     return api;

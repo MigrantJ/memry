@@ -31,10 +31,6 @@ angular.module('memry')
       }
     };
 
-    $scope.getDescRows = function () {
-      return Math.max(6, ($scope.description.length / 40) + 2);
-    };
-
     resetForm();
   })
 ;

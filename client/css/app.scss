@@ -5,6 +5,10 @@
 
 $search-height: 50px;
 
+textarea {
+  resize: none;
+}
+
 #memry-brand {
   @extend .navbar-brand;
   position: absolute;
@@ -50,6 +54,20 @@ $search-height: 50px;
   font-size: $font-size-h2;
 }
 
+#description-input-container {
+  @include container-fixed();
+  @include make-row();
+  @include make-md-column(6);
+  @include make-md-column-offset(3);
+}
+
+#description-input {
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  width: 100%;
+  padding: $padding-base-vertical $padding-base-horizontal;
+}
+
 #def-list-container {
   @include container-fixed();
   @include make-row();
@@ -62,7 +80,10 @@ $search-height: 50px;
 .definition {
   @extend .panel;
   @extend .panel-default;
-  padding: 20px 30px 30px 30px;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
 
   .def-title {
     text-align: center;
