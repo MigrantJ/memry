@@ -4,6 +4,7 @@
         ng-class='{definition_hover: hover}'
         ng-mouseenter="hover = true"
         ng-mouseleave="hover = false"
+        ng-dblclick="toggleEditMode()"
         >
     <div ng-hide="editMode">
         <span class="def-title">{{def.title}}</span>
