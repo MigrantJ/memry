@@ -1,11 +1,12 @@
 <header id="mm-top-bar">
     <strong id="memry-brand">memry</strong>
-    <mm-search></mm-search>
-    <input-description></input-description>
+    <mm-search title="title"></mm-search>
+    <input-description title="title"></input-description>
+    <input-submit></input-submit>
 </header>
 
 <section id="def-list-container" ng-controller="DefinitionListController">
-    <def-panel ng-repeat="def in definitions"></def-panel>
+    <def-panel ng-repeat="def in definitions" def="def"></def-panel>
 </section>
 
 <header id="left-bar">

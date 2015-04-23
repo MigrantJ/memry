@@ -1,8 +1,5 @@
 <div id="search-container">
-    <form>
-        <div
-             ng-class="{'search-icon': searchInFocus, 'search-icon-makeNew': searchInFocus && !titleFound(), 'search-icon-found': searchInFocus && titleFound()}">
-        </div>
+        <div class="input-group">
         <input
             name="title"
             placeholder="Search or Add New"
@@ -13,5 +10,8 @@
             ng-blur="onSearchBlur()"
             type="text"
         />
-    </form>
+        <div class="input-group-addon">
+            <button class="btn btn-default" type="button">Add</button>
+        </div>
+    </div>
 </div>

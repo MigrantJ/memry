@@ -44,14 +44,20 @@ textarea {
   }
 }
 
+//todo: probably should be a class, defPanel uses this too
 #search {
-  border: 1px solid $input-border;
-  border-radius: $input-border-radius;
-  height: 50px;
-  width: 100%;
-  padding: $padding-base-vertical $padding-base-horizontal;
+  @extend .form-control;
   text-align: center;
   font-size: $font-size-h2;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  height: 50px;
+  //border: 1px solid $input-border;
+  //border-radius: $input-border-radius;
+  //height: 50px;
+  width: 100%;
+  //padding: $padding-base-vertical $padding-base-horizontal;
+  //text-align: center;
+  //font-size: $font-size-h2;
 }
 
 #description-input-container {
@@ -60,12 +66,19 @@ textarea {
   @include make-md-column(6);
   @include make-md-column-offset(3);
 }
-
+//todo: probably should be a class, defPanel uses this too
 #description-input {
   border: 1px solid $input-border;
   border-radius: $input-border-radius;
   width: 100%;
   padding: $padding-base-vertical $padding-base-horizontal;
+}
+
+#submit-input-container {
+  @include container-fixed();
+  @include make-row();
+  @include make-md-column(6);
+  @include make-md-column-offset(3);
 }
 
 #def-list-container {
@@ -80,16 +93,18 @@ textarea {
 .definition {
   @extend .panel;
   @extend .panel-default;
-  padding-top: 10px;
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-bottom: 20px;
 
   .def-title {
     text-align: center;
     font-size: $font-size-h2;
     display: block;
+    padding: $padding-base-vertical $padding-base-horizontal;
   }
+
+  .def-description {
+    padding: $padding-base-vertical $padding-base-horizontal;
+  }
+
   .hover_only {
     opacity: 0;
   }

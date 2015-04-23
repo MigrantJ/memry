@@ -5,8 +5,33 @@
         ng-mouseenter="hover = true"
         ng-mouseleave="hover = false"
         >
-    <span class="def-title">{{def.title}}</span>
-    <div class="def-description ellipsis">
-        <span compile="def.descriptionURL"></span>
+    <div ng-hide="editMode">
+        <span class="def-title">{{def.title}}</span>
+        <div class="def-description ellipsis">
+            <span compile="def.descriptionURL"></span>
+        </div>
+        <div class="def_options">
+            <a class="hover_only" href="" ng-click="toggleEditMode()">Edit</a>
+            <a class="hover_only" href="" ng-click="removeDef()">Remove</a>
+        </div>
+    </div>
+    <div ng-show="editMode">
+        <input
+            name="title"
+            id="search"
+            ng-model="editTitle"
+            type="text"
+        />
+        <textarea
+            name="description"
+            id="description-input"
+            maxlength="1024"
+            required
+            data-ng-model="editDescription"
+        ></textarea>
+        <div class="def_options">
+            <a href="" ng-click="toggleEditMode()">Cancel</a>
+            <a href="" ng-click="submitDef()">Submit</a>
+        </div>
     </div>
 </article>

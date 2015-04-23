@@ -7,6 +7,9 @@ angular.module('memry')
       replace: true,
       restrict: 'E',
       templateUrl: 'views/search.html',
+      scope: {
+        title: '='
+      },
       link: function (scope) {
         scope.searchInFocus = false;
 

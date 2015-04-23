@@ -7,6 +7,9 @@ angular.module('memry')
       replace: true,
       restrict: 'E',
       templateUrl: 'views/input-description.html',
+      scope: {
+        title: '='
+      },
       link: function (scope) {
         scope.isCollapsed = true;
 
@@ -16,7 +19,9 @@ angular.module('memry')
 
         scope.getDescRows = function () {
           if(scope.description) {
-            return Math.max(2, (scope.description.length / 35));
+            return Math.max(4, (scope.description.length / 35));
+          } else {
+            return 4;
           }
         };
       }

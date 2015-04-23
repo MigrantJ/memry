@@ -100,8 +100,10 @@ gulp.task('build-libs', function (done) {
   var filePaths = mainBowerFiles({filter: '**/*.js'});
 
   gulp.src(filePaths)
+    //.pipe(sourcemaps.init())
     .pipe(concat('libs.js'))
-    .pipe(uglify())
+    //.pipe(uglify())
+    //.pipe(sourcemaps.write())
     .pipe(gulp.dest('build'));
 
   done();
@@ -109,11 +111,11 @@ gulp.task('build-libs', function (done) {
 
 gulp.task('build-js', ['lint-js','clean-js'], function () {
   gulp.src([conf.jsDir + 'module.js',conf.jsDir + '*.js'])
-    .pipe(sourcemaps.init())
+    //.pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
+    //.pipe(uglify())
+    //.pipe(sourcemaps.write({debug: true}))
     .pipe(gulp.dest('build'));
 });
 
