@@ -7,29 +7,30 @@ angular.module('memry')
       replace: true,
       restrict: 'E',
       templateUrl: 'views/def-panel.html',
-      scope: {
-        def: '='
-      },
+      scope: true,
       link: function (scope) {
-        scope.editMode = false;
+        scope.def.editMode = false;
         var resetForm = function () {
           scope.editTitle = scope.def.title;
           scope.editDescription = scope.def.description;
         };
         resetForm();
 
-        scope.toggleEditMode = function () {
-          if (scope.editMode) {
-            resetForm();
-          }
-          scope.editMode = !scope.editMode;
+        scope.turnOnEditMode = function () {
+          scope.turnOffEditModeAll();
+          scope.def.editMode = true;
+        };
+
+        scope.turnOffEditMode = function () {
+          scope.def.editMode = false;
+          resetForm();
         };
 
         scope.submitDef = function () {
           scope.def.title = scope.editTitle;
           scope.def.description = scope.editDescription;
           defModel.editDefinition(scope.def);
-          scope.toggleEditMode();
+          scope.turnOffEditMode();
         };
 
         scope.removeDef = function () {

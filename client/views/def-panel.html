@@ -4,19 +4,18 @@
         ng-class='{definition_hover: hover}'
         ng-mouseenter="hover = true"
         ng-mouseleave="hover = false"
-        ng-dblclick="toggleEditMode()"
         >
-    <div ng-hide="editMode">
+    <div ng-hide="def.editMode" ng-dblclick="turnOnEditMode()">
         <span class="def-title">{{def.title}}</span>
         <div class="def-description ellipsis">
             <span compile="def.descriptionURL"></span>
         </div>
         <div class="def_options">
-            <a class="hover_only" href="" ng-click="toggleEditMode()">Edit</a>
+            <a class="hover_only" href="" ng-click="turnOnEditMode()">Edit</a>
             <a class="hover_only" href="" ng-click="removeDef()">Remove</a>
         </div>
     </div>
-    <div ng-show="editMode">
+    <div ng-show="def.editMode" ng-dblclick="turnOffEditMode()">
         <input
             name="title"
             id="search"
@@ -31,7 +30,7 @@
             data-ng-model="editDescription"
         ></textarea>
         <div class="def_options">
-            <a href="" ng-click="toggleEditMode()">Cancel</a>
+            <a href="" ng-click="turnOffEditMode()">Cancel</a>
             <a href="" ng-click="submitDef()">Submit</a>
         </div>
     </div>
