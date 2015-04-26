@@ -49,22 +49,24 @@ textarea {
   @extend .form-control;
   text-align: center;
   font-size: $font-size-h2;
-  padding: $padding-base-vertical $padding-base-horizontal;
   height: 50px;
-  //border: 1px solid $input-border;
-  //border-radius: $input-border-radius;
-  //height: 50px;
-  width: 100%;
-  //padding: $padding-base-vertical $padding-base-horizontal;
-  //text-align: center;
-  //font-size: $font-size-h2;
+}
+
+#search-btn-container {
+  @include make-md-column(1);
+}
+
+#description-container {
+  @include container-fixed();
+  @include make-row();
+  @include make-md-column(8);
+  @include make-md-column-offset(3);
 }
 
 #description-input-container {
-  @include container-fixed();
-  @include make-row();
-  @include make-md-column(6);
-  @include make-md-column-offset(3);
+  @include make-md-column(9);
+  padding-left: 0;
+  padding-right: 7px;
 }
 //todo: probably should be a class, defPanel uses this too
 #description-input {
@@ -72,6 +74,10 @@ textarea {
   border-radius: $input-border-radius;
   width: 100%;
   padding: $padding-base-vertical $padding-base-horizontal;
+}
+
+#description-btn-container {
+  @include make-md-column(3);
 }
 
 #submit-input-container {
