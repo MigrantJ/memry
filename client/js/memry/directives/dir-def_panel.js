@@ -1,14 +1,14 @@
 /*global angular*/
 
 angular.module('memry')
-  .directive('defPanel', function(defModel) {
+  .directive('defPanel', function(defModel, $timeout) {
     'use strict';
     return {
       replace: true,
       restrict: 'E',
       templateUrl: 'views/def-panel.html',
       scope: true,
-      link: function (scope) {
+      link: function (scope, element) {
         scope.def.editMode = false;
         var resetForm = function () {
           scope.editTitle = scope.def.title;
@@ -19,7 +19,10 @@ angular.module('memry')
         scope.$on('defAdded', function (event, title) {
           if (scope.def.title === title) {
             scope.turnOnEditMode();
-            //todo: magic that makes description input focused here
+            //todo: really wish I didn't need the timeout hack here
+            $timeout(function () {
+              element[0].querySelector('.description-input').focus();
+            });
           }
         });
 

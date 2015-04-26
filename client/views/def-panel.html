@@ -18,14 +18,14 @@
     <div ng-show="def.editMode" ng-dblclick="turnOffEditMode()">
         <input
             name="title"
-            id="search"
+            class="search"
             ng-model="editTitle"
             type="text"
         />
         <textarea
             name="description"
             placeholder="Describe '{{def.title}}' here..."
-            id="description-input"
+            class="description-input"
             maxlength="1024"
             required
             data-ng-model="editDescription"
