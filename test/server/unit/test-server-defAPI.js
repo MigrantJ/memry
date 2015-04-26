@@ -35,7 +35,7 @@ describe('Server - Def API', function () {
   describe('# validateDefToAdd', function () {
     it('throws an error when definition parts are missing', function () {
       expect(function () {
-        api.validateDefToAdd(testDefs, {})
+        api.validateDefToAdd(testDefs, {});
       }).to.throw('Definition is corrupt, missing required parts');
     });
   });
@@ -43,7 +43,7 @@ describe('Server - Def API', function () {
   describe('# checkIfTitleExists', function () {
     it('throws an error when trying to add a def that already exists', function () {
       expect(function () {
-        api.checkIfTitleExists(testDefs, testDefs[0])
+        api.checkIfTitleExists(testDefs, testDefs[0]);
       }).to.throw('Title test2 already exists!');
     });
   });
@@ -51,12 +51,8 @@ describe('Server - Def API', function () {
   describe('# formatInput', function () {
     it('strips out unsafe chars', function () {
       var safeDef = api.formatInput(testDefs[0]);
-      expect(safeDef.description).to.equal('&lt;b&gt;This description has html tags&lt;/b&gt; ');
+      expect(safeDef.description).to.equal('&lt;b&gt;This description has html tags&lt;/b&gt;');
     });
-    it('adds a space to the end', function () {
-      var safeDef = api.formatInput(testDefs[1]);
-      expect(safeDef.description).to.equal('This is a test definition ');
-    })
   });
 
   describe('# defTitleToRegexStr', function () {
@@ -82,7 +78,7 @@ describe('Server - Def API', function () {
       var modifiedDefs = api.addDeflinksToDescriptions(testDefs, shortTitleDef);
       expect(modifiedDefs[0].descriptionURL).to.equal("&lt;b&gt;This description has html tags&lt;/b&gt;");
       expect(modifiedDefs[1].descriptionURL).to.equal("This is a test definition");
-    })
+    });
   });
 
   describe('# removeDeflinkFromDescriptions', function () {
@@ -98,6 +94,10 @@ describe('Server - Def API', function () {
     it('formats all words that are titles of other defs into links', function () {
       var descriptionURL = api.addLinksToNewDefDesc(testDefs, newDef);
       expect(descriptionURL).to.equal('This <deflink d=\'1234\'>test</deflink> is for adding a new definition');
+    });
+    it('leaves original description unchanged', function () {
+      var descriptionURL = api.addLinksToNewDefDesc(testDefs, newDef);
+      expect(newDef.description).to.equal('This test is for adding a new definition');
     });
   });
 });

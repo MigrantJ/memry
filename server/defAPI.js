@@ -15,9 +15,8 @@ api.validateDefToAdd = function (defs, inputDef) {
 api.checkIfTitleExists = function (defs, inputDef) {
   //confirm once again that this title doesn't already exist
   if (_.find(defs, function(def) { return inputDef.title === def.title; })) {
-    var assertString = 'Title ' + inputDef.title + ' already exists!';
     //todo: assertions are too extreme, makes the whole thing crash
-    throw assertString;
+    throw 'Title ' + inputDef.title + ' already exists!';
   }
 };
 
@@ -26,11 +25,6 @@ api.formatInput = function (inputDef) {
   //make sure input is safe and doesn't have html or mysql injection or anything else weird
   //strip out / convert all unsafe characters - ', ", html tags, mysql calls, etc and save back into description
   inputDef.description = _.escape(inputDef.description);
-
-  //add a space to the end of the description if there isn't one already, for regex purposes
-  if (inputDef.description[inputDef.description.length - 1] !== ' ') {
-    inputDef.description += ' ';
-  }
 
   return inputDef;
 };
@@ -78,12 +72,22 @@ api.removeDeflinkFromDescriptions = function(defs, defToRemove) {
 //returns the description with links. This should be placed directly into the descriptionURL property
 api.addLinksToNewDefDesc = function (defs, def) {
   var description = def.description;
+
+  //add a space to the end of the description if there isn't one already, for regex purposes
+  if (description[description.length - 1] !== ' ') {
+    description += ' ';
+  }
+
   _.forEach(defs, function(d) {
     if (def.title !== d.title) {
       var regex = new RegExp(api.defTitleToRegexStr(d.title), 'g');
       description = description.replace(regex, '$1<deflink d=\'' + d._id + '\'>$2</deflink>');
     }
   });
+
+  //remove leading and trailing whitespace
+  description = _.trim(description);
+
   return description;
 };
 
