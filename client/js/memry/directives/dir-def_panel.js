@@ -16,6 +16,13 @@ angular.module('memry')
         };
         resetForm();
 
+        scope.$on('defAdded', function (event, title) {
+          if (scope.def.title === title) {
+            scope.turnOnEditMode();
+            //todo: magic that makes description input focused here
+          }
+        });
+
         scope.turnOnEditMode = function () {
           scope.turnOffEditModeAll();
           scope.def.editMode = true;

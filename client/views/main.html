@@ -1,10 +1,12 @@
+<div ng-controller="MainController">
 <header id="mm-top-bar">
     <strong id="memry-brand">memry</strong>
-    <mm-search title="title"></mm-search>
-    <input-description title="title"></input-description>
+    <mm-search title="title" def-added="events.defAdded(title)"></mm-search>
+    <!--<input-description title="title"></input-description>-->
     <!--<input-submit></input-submit>-->
 </header>
 
 <section id="def-list-container" ng-controller="DefListController">
     <def-panel ng-repeat="def in definitions"></def-panel>
 </section>
+</div>

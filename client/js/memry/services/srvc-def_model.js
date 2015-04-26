@@ -31,14 +31,16 @@ angular.module('memry')
     # addDefinition
     */
     api.addDefinition = function (title, description) {
+      var deferred = $q.defer();
       defServer.create({
         title: title,
         description: description
       })
         .then(function (response) {
-          console.log(response.data);
           api.getDefs();
+          deferred.resolve(response.data);
         });
+      return deferred.promise;
     };
 
     /*

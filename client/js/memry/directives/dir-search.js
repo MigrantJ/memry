@@ -1,17 +1,24 @@
 /*global angular*/
 
 angular.module('memry')
-  .directive('mmSearch', function(scrollToDef) {
+  .directive('mmSearch', function(scrollToDef, defModel) {
     'use strict';
     return {
       replace: true,
       restrict: 'E',
       templateUrl: 'views/search.html',
       scope: {
-        title: '='
+        title: '=',
+        defAdded: '&'
       },
       link: function (scope) {
         scope.searchInFocus = false;
+
+        scope.$on('defAdded', function (event, title) {
+          //wipe the form
+          scope.title = '';
+          scrollToDef.byTitle(title);
+        });
 
         scope.titleFound = function () {
           return !scope.title || scrollToDef.isDefFound();
@@ -27,6 +34,14 @@ angular.module('memry')
 
         scope.onSearchChange = function () {
           scrollToDef.byTitle(scope.title);
+        };
+
+        scope.addButton = function () {
+          defModel.addDefinition(scope.title, '')
+            .then(function () {
+              scope.defAdded();
+            }
+          );
         };
       }
     };
