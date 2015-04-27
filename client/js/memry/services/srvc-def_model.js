@@ -104,6 +104,12 @@ angular.module('memry')
         return d.title > titleSubstr && (foundTitleID = d._id);
       });
 
+      //if we reached the end of the array without finding anything,
+      //return the last def id in the array
+      if (!foundTitleID) {
+        foundTitleID = api.data.defs[api.data.defs.length - 1]._id;
+      }
+
       return foundTitleID;
     };
 

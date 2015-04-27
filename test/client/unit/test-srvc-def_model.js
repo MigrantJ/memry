@@ -82,9 +82,9 @@ describe('Service - Def Model', function () {
       id = defModel.findIDByClosestTitle('test2a');
       expect(id).to.equal(9999);
     });
-    it('returns null if the substring would occur after the last def', function () {
-      var id = defModel.findIDByTitleSubstr('z');
-      expect(id).to.not.exist;
+    it('returns last def if the substring would occur after the last def', function () {
+      var id = defModel.findIDByClosestTitle('z');
+      expect(id).to.equal(9999);
     });
   });
 
