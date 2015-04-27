@@ -6,7 +6,7 @@ angular.module('memry')
     return {
       replace: true,
       restrict: 'E',
-      templateUrl: 'views/search.html',
+      templateUrl: 'views/input-search.html',
       scope: {
         title: '=',
         defAdded: '&'
