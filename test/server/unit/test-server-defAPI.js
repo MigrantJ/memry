@@ -32,19 +32,21 @@ beforeEach(function () {
 });
 
 describe('Server - Def API', function () {
-  describe('# validateDefToAdd', function () {
-    it('throws an error when definition parts are missing', function () {
-      expect(function () {
-        api.validateDefToAdd(testDefs, {});
-      }).to.throw('Definition is corrupt, missing required parts');
+  describe('# defIsValid', function () {
+    it('returns true when def has title and description', function () {
+      expect(api.defIsValid(testDefs, newDef)).to.equal(true);
+    });
+    it('returns false if def has no title or description', function () {
+      expect(api.defIsValid(testDefs, {})).to.equal(false);
     });
   });
 
-  describe('# checkIfTitleExists', function () {
-    it('throws an error when trying to add a def that already exists', function () {
-      expect(function () {
-        api.checkIfTitleExists(testDefs, testDefs[0]);
-      }).to.throw('Title test2 already exists!');
+  describe('# titleExists', function () {
+    it('returns true when trying to add a def that already exists', function () {
+      expect(api.titleExists(testDefs, testDefs[0])).to.equal(true);
+    });
+    it('returns false if the def does not exist', function () {
+      expect(api.titleExists(testDefs, newDef)).to.equal(false);
     });
   });
 

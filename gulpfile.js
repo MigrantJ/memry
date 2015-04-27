@@ -49,6 +49,9 @@ var mochaOptions = {
   timeout: 3000
 };
 
+//this is used to keep nodemon from triggering callback more than once
+var serverStarted = false;
+
 gulp.task('lint-js', function (cb) {
   gulp.src([conf.jsDir, 'server.js', 'server/*.js'])
     .pipe(jshint(jshintOptions))
@@ -177,9 +180,11 @@ gulp.task('watch-server', function (cb) {
     stdout: false})
     .on('readable', function (data) {
       this.stdout.on('data', function (chunk) {
-        if (/Server Ready/.test(chunk)) {
+        if (!serverStarted && /Server Ready/.test(chunk)) {
+          serverStarted = true;
           cb();
         }
+        console.log(chunk);
       });
     })
     .on('change', ['lint-js'])

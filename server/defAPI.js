@@ -3,21 +3,15 @@ var _ = require('lodash');
 var api = {};
 
 //checks specifically for someone trying to slip in corrupted data
-api.validateDefToAdd = function (defs, inputDef) {
+api.defIsValid = function (defs, inputDef) {
   //input should never, ever not pass these checks
   //confirm definition is formatted properly
-  if (inputDef.title === undefined || inputDef.description === undefined) {
-    //todo: assertions are too extreme, makes the whole thing crash
-    throw 'Definition is corrupt, missing required parts';
-  }
+  return inputDef.title !== undefined && inputDef.description !== undefined;
 };
 
-api.checkIfTitleExists = function (defs, inputDef) {
+api.titleExists = function (defs, inputDef) {
   //confirm once again that this title doesn't already exist
-  if (_.find(defs, function(def) { return inputDef.title === def.title; })) {
-    //todo: assertions are too extreme, makes the whole thing crash
-    throw 'Title ' + inputDef.title + ' already exists!';
-  }
+  return _.find(defs, function(def) { return inputDef.title === def.title; }) !== undefined;
 };
 
 //converts unsafe characters, removes unwanted ones, and prepares for further processing
@@ -94,7 +88,6 @@ api.addLinksToNewDefDesc = function (defs, def) {
 //takes a raw inputted definition from the client
 //returns a processed definition ready to be saved to the database
 api.processInputDef = function (defs, newDef) {
-  api.validateDefToAdd(defs, newDef);
   var formattedDef = api.formatInput(newDef);
   //create the descriptionURL param by adding links to the input description
   formattedDef.descriptionURL = api.addLinksToNewDefDesc(defs, formattedDef);

@@ -28,21 +28,32 @@ module.exports.getAPI = function (Model) {
       if (err) {
         return callback(err);
       } else {
-        defAPI.checkIfTitleExists(defs, defBody);
-        var processedDef = defAPI.processInputDef(defs, defBody);
-        var def = new Model(processedDef);
+        if (defAPI.titleExists(defs, defBody)) {
+          return callback({error: 'Title ' + defBody.title + ' already exists!'});
+        } else {
+          if (!defAPI.defIsValid(defs, defBody)) {
+            return callback({error: 'Definition is corrupt, missing required parts'});
+          } else {
+            var processedDef = defAPI.processInputDef(defs, defBody);
+            var def = new Model(processedDef);
 
-        def.save(function (err, newDef) {
-          defs = defAPI.addDeflinksToDescriptions(defs, newDef);
-          defs.forEach(function (d) {
-            Model.update({_id: d._id}, {title: d.title, description: d.description, descriptionURL: d.descriptionURL}, function (err) {
-              if (err) {
-                return callback(err);
-              }
+            def.save(function (err, newDef) {
+              defs = defAPI.addDeflinksToDescriptions(defs, newDef);
+              defs.forEach(function (d) {
+                Model.update({_id: d._id}, {
+                  title: d.title,
+                  description: d.description,
+                  descriptionURL: d.descriptionURL
+                }, function (err) {
+                  if (err) {
+                    return callback(err);
+                  }
+                });
+              });
+              return callback(err, newDef);
             });
-          });
-          return callback(err, newDef);
-        });
+          }
+        }
       }
     });
   };
