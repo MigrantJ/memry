@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memry')
-  .directive('mmSearch', function(scrollToDef, defModel) {
+  .directive('inputSearch', function(scrollToDef, defModel) {
     'use strict';
     return {
       replace: true,

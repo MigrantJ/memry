@@ -9,12 +9,12 @@ textarea {
   resize: none;
 }
 
-#memry-brand {
+#brand {
   @extend .navbar-brand;
   position: absolute;
 }
 
-#mm-top-bar {
+#top-bar {
   @extend .navbar;
   @extend .navbar-default;
   @extend .navbar-fixed-top;

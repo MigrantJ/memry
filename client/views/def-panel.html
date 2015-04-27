@@ -26,6 +26,7 @@
             name="description"
             placeholder="Describe '{{def.title}}' here..."
             class="description-input"
+            rows="{{getDescRows()}}"
             maxlength="1024"
             required
             data-ng-model="editDescription"

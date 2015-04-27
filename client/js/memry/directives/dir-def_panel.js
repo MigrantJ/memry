@@ -19,16 +19,16 @@ angular.module('memry')
         scope.$on('defAdded', function (event, title) {
           if (scope.def.title === title) {
             scope.turnOnEditMode();
-            //todo: really wish I didn't need the timeout hack here
-            $timeout(function () {
-              element[0].querySelector('.description-input').focus();
-            });
           }
         });
 
         scope.turnOnEditMode = function () {
           scope.turnOffEditModeAll();
           scope.def.editMode = true;
+          //todo: really wish I didn't need the timeout hack here
+          $timeout(function () {
+            element[0].querySelector('.description-input').focus();
+          });
         };
 
         scope.turnOffEditMode = function () {
@@ -45,6 +45,14 @@ angular.module('memry')
 
         scope.removeDef = function () {
           defModel.deleteDefinition(scope.def._id);
+        };
+
+        scope.getDescRows = function () {
+          if(scope.editDescription) {
+            return Math.max(4, (scope.editDescription.length / 35));
+          } else {
+            return 4;
+          }
         };
       }
     };
