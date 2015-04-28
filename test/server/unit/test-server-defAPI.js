@@ -39,6 +39,9 @@ describe('Server - Def API', function () {
     it('returns false if def has no title or description', function () {
       expect(api.defIsValid(testDefs, {})).to.equal(false);
     });
+    it('returns false if def has empty string title', function () {
+      expect(api.defIsValid(testDefs, {title: '', description: ''})).to.equal(false);
+    });
   });
 
   describe('# titleExists', function () {

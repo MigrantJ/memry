@@ -43,6 +43,10 @@ angular.module('memry')
             }
           );
         };
+
+        scope.isInvalid = function () {
+          return scope.title === '' || defModel.findDefByTitle(scope.title);
+        };
       }
     };
   });

@@ -6,7 +6,9 @@ var api = {};
 api.defIsValid = function (defs, inputDef) {
   //input should never, ever not pass these checks
   //confirm definition is formatted properly
-  return inputDef.title !== undefined && inputDef.description !== undefined;
+  return inputDef.title !== undefined &&
+    inputDef.description !== undefined &&
+    inputDef.title !== '';
 };
 
 api.titleExists = function (defs, inputDef) {
