@@ -22,6 +22,12 @@ angular.module('memry')
           }
         });
 
+        scope.$on('defEdit', function (event, title) {
+          if (scope.def.title === title) {
+            scope.turnOnEditMode();
+          }
+        });
+
         scope.turnOnEditMode = function () {
           scope.turnOffEditModeAll();
           scope.def.editMode = true;

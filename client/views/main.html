@@ -1,10 +1,10 @@
 <div ng-controller="MainController">
     <header id="top-bar">
         <strong id="brand">memry</strong>
-        <input-search title="title" def-added="events.defAdded(title)"></input-search>
+        <input-search title="title" def-added="events.defAdded(title)" def-edit="events.defEdit(title)"></input-search>
     </header>
 
-    <section id="def-list-container" ng-controller="DefListController">
+    <section class="center-column" id="def-list-container" ng-controller="DefListController">
         <def-panel ng-repeat="def in definitions"></def-panel>
     </section>
 </div>

@@ -9,9 +9,10 @@ angular.module('memry')
       templateUrl: 'views/input-search.html',
       scope: {
         title: '=',
-        defAdded: '&'
+        defAdded: '&',
+        defEdit: '&'
       },
-      link: function (scope) {
+      link: function (scope, element) {
         scope.searchInFocus = false;
 
         scope.$on('defAdded', function (event, title) {
@@ -21,7 +22,7 @@ angular.module('memry')
         });
 
         scope.titleFound = function () {
-          return !scope.title || scrollToDef.isDefFound();
+          return defModel.findDefByTitle(scope.title);
         };
 
         scope.onSearchFocus = function () {
@@ -37,15 +38,22 @@ angular.module('memry')
         };
 
         scope.addButton = function () {
-          defModel.addDefinition(scope.title, '')
-            .then(function () {
-              scope.defAdded();
-            }
-          );
-        };
-
-        scope.isInvalid = function () {
-          return scope.title === '' || defModel.findDefByTitle(scope.title);
+          if (!scope.title) {
+            //focus on search input
+            element[0].querySelector('.title-input').focus();
+          }
+          else if (scope.titleFound()) {
+            //edit description of found def. broadcasts event from main controller
+            scope.defEdit();
+          }
+          else {
+            //add a new def to the list. broadcasts event from main controller
+            defModel.addDefinition(scope.title, '')
+              .then(function () {
+                scope.defAdded();
+              }
+            );
+          }
         };
       }
     };

@@ -9,6 +9,11 @@ angular.module('memry')
         $timeout(function () {
           $scope.$broadcast('defAdded', title);
         }, 100);
+      },
+      defEdit: function (title) {
+        $timeout(function () {
+          $scope.$broadcast('defEdit', title);
+        }, 100);
       }
     };
   })

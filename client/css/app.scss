@@ -18,14 +18,18 @@ textarea {
   @extend .navbar-fixed-top;
 }
 
-#search-container {
+.center-column {
   @include container-fixed();
   @include make-row();
   @include make-md-column(6);
   @include make-md-column-offset(3);
 }
 
-.search {
+#search-container {
+
+}
+
+.title-input {
   @extend .form-control;
   text-align: center;
   font-size: $font-size-h2;
@@ -47,8 +51,12 @@ textarea {
     font-size: x-large;
   }
 
-  .search-icon-found {
+  .search-icon-default {
     @extend .glyphicon-search;
+  }
+
+  .search-icon-found {
+    @extend .glyphicon-pencil;
   }
 
   .search-icon-makeNew {
@@ -64,10 +72,6 @@ textarea {
 }
 
 #def-list-container {
-  @include container-fixed();
-  @include make-row();
-  @include make-md-column(6);
-  @include make-md-column-offset(3);
   margin-top: $navbar-height;
   margin-bottom: 800px;
 }

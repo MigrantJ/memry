@@ -1,10 +1,10 @@
 <div>
     <form ng-submit="addButton()">
-    <div id="search-container">
+    <div class="center-column" id="search-container">
         <input
             name="title"
             placeholder="Search or Add New"
-            class="search"
+            class="title-input"
             ng-model="title"
             ng-focus="onSearchFocus()"
             ng-change="onSearchChange()"
@@ -16,9 +16,11 @@
         <button
             id="search-btn"
             ng-click="addButton()"
-            data-ng-disabled="isInvalid()"
             >
-            <span class="search-icon search-icon-found"></span>
+            <span
+                class="search-icon"
+                ng-class="{'search-icon-default': !title, 'search-icon-found': titleFound(), 'search-icon-makeNew': !titleFound()}"
+            ></span>
         </button>
     </div>
     </form>
