@@ -1,4 +1,5 @@
 <div>
+    <form ng-submit="addButton()">
     <div id="search-container">
         <input
             name="title"
@@ -13,11 +14,12 @@
     </div>
     <div class="" id="search-btn-container">
         <button
-            class="btn btn-default"
-            type="button"
+            id="search-btn"
             ng-click="addButton()"
             data-ng-disabled="isInvalid()"
-            >Add
+            >
+            <span class="search-icon search-icon-found"></span>
         </button>
     </div>
+    </form>
 </div>

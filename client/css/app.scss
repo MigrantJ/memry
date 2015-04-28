@@ -3,8 +3,6 @@
 @import "bootstrap/theme";
 @import "mixins";
 
-$search-height: 50px;
-
 textarea {
   resize: none;
 }
@@ -25,13 +23,27 @@ textarea {
   @include make-row();
   @include make-md-column(6);
   @include make-md-column-offset(3);
+}
+
+.search {
+  @extend .form-control;
+  text-align: center;
+  font-size: $font-size-h2;
+  height: $navbar-height;
+}
+
+#search-btn-container {
+  @include make-md-column(1);
+  padding: 0;
+
+  #search-btn {
+    @extend .btn;
+    height: $navbar-height;
+    width: $navbar-height;
+  }
 
   .search-icon {
     @extend .glyphicon;
-    position: absolute;
-    right: 0;
-    padding-top: $search-height / 4;
-    padding-right: $search-height / 2;
     font-size: x-large;
   }
 
@@ -44,30 +56,6 @@ textarea {
   }
 }
 
-.search {
-  @extend .form-control;
-  text-align: center;
-  font-size: $font-size-h2;
-  height: 50px;
-}
-
-#search-btn-container {
-  @include make-md-column(1);
-}
-
-#description-container {
-  @include container-fixed();
-  @include make-row();
-  @include make-md-column(8);
-  @include make-md-column-offset(3);
-}
-
-#description-input-container {
-  @include make-md-column(9);
-  padding-left: 0;
-  padding-right: 7px;
-}
-
 .description-input {
   border: 1px solid $input-border;
   border-radius: $input-border-radius;
@@ -75,23 +63,12 @@ textarea {
   padding: $padding-base-vertical $padding-base-horizontal;
 }
 
-#description-btn-container {
-  @include make-md-column(3);
-}
-
-#submit-input-container {
-  @include container-fixed();
-  @include make-row();
-  @include make-md-column(6);
-  @include make-md-column-offset(3);
-}
-
 #def-list-container {
   @include container-fixed();
   @include make-row();
   @include make-md-column(6);
   @include make-md-column-offset(3);
-  margin-top: 100px;
+  margin-top: $navbar-height;
   margin-bottom: 800px;
 }
 
