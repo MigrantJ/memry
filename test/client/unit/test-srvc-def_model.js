@@ -18,6 +18,11 @@ describe('Service - Def Model', function () {
       description: "This is another test definition",
       descriptionURL: "This is another test definition"
     },{
+      _id: 6789,
+      title: "Test3",
+      description: "Testing case sensitivity",
+      descriptionURL: "Testing case sensitivity"
+    },{
       _id: 9999,
       title: "very last def",
       description: "This is the last definition",
@@ -68,6 +73,10 @@ describe('Service - Def Model', function () {
       var id = defModel.findIDByTitleSubstr('ridiculousSubstring');
       expect(id).to.not.exist;
     });
+    it('is case insensitive', function () {
+      var id = defModel.findIDByTitleSubstr('test3');
+      expect(id).to.equal(6789);
+    });
   });
 
   describe('# findIDByClosestTitle', function () {
@@ -80,11 +89,15 @@ describe('Service - Def Model', function () {
       expect(id).to.equal(1234);
 
       id = defModel.findIDByClosestTitle('test2a');
-      expect(id).to.equal(9999);
+      expect(id).to.equal(6789);
     });
     it('returns last def if the substring would occur after the last def', function () {
       var id = defModel.findIDByClosestTitle('z');
       expect(id).to.equal(9999);
+    });
+    it('is case insensitive', function () {
+      var id = defModel.findIDByClosestTitle('test3');
+      expect(id).to.equal(6789);
     });
   });
 
@@ -99,6 +112,10 @@ describe('Service - Def Model', function () {
     });
     it('returns null if it cannot find a def with that title', function () {
       var def = defModel.findDefByTitle('qwef234g134qdvqerbewr');
+      expect(def).to.be.null;
+    });
+    it('is case sensitive', function () {
+      var def = defModel.findDefByTitle('test3');
       expect(def).to.be.null;
     });
   });

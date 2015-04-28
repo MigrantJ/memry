@@ -78,10 +78,11 @@ angular.module('memry')
         throw new Error('findIDByTitleSubstr requires string input');
       }
       var foundTitleID = null;
+      titleSubstr = titleSubstr.toLowerCase();
 
       api.data.defs.some(function (d) {
         //if index is 0, we found a matching title, set foundTitleID to its id
-        return d.title.indexOf(titleSubstr) === 0 && (foundTitleID = d._id);
+        return d.title.toLowerCase().indexOf(titleSubstr) === 0 && (foundTitleID = d._id);
       });
 
       return foundTitleID;
@@ -99,9 +100,10 @@ angular.module('memry')
         throw new Error('findIDByClosestTitle requires string input');
       }
       var foundTitleID = null;
+      titleSubstr = titleSubstr.toLowerCase();
 
       api.data.defs.some(function (d) {
-        return d.title > titleSubstr && (foundTitleID = d._id);
+        return d.title.toLowerCase() >= titleSubstr && (foundTitleID = d._id);
       });
 
       //if we reached the end of the array without finding anything,
@@ -117,6 +119,7 @@ angular.module('memry')
     # findDefByTitle
     takes a string representing a possible title of a def
     returns the def, or null if no def is found with that title
+    NOTE: CASE SENSITIVE
     */
     api.findDefByTitle = function (title) {
       if (typeof title !== 'string' || title === '') {

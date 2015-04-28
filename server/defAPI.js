@@ -93,6 +93,7 @@ api.processInputDef = function (defs, newDef) {
   var formattedDef = api.formatInput(newDef);
   //create the descriptionURL param by adding links to the input description
   formattedDef.descriptionURL = api.addLinksToNewDefDesc(defs, formattedDef);
+  formattedDef.lowercaseTitle = formattedDef.title.toLowerCase();
 
   return formattedDef;
 };

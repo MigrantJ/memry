@@ -16,7 +16,7 @@ module.exports.getAPI = function (Model) {
   //finds all defs from the db and sorts them alphabetically by title
   //returns json obj of all defs
   api.getAllDefs = function (callback) {
-    Model.find().sort('title').exec(function (err, defs) {
+    Model.find().sort('lowercaseTitle').exec(function (err, defs) {
       return callback(err, defs);
     });
   };
@@ -42,6 +42,7 @@ module.exports.getAPI = function (Model) {
               defs.forEach(function (d) {
                 Model.update({_id: d._id}, {
                   title: d.title,
+                  lowercaseTitle: d.lowercaseTitle,
                   description: d.description,
                   descriptionURL: d.descriptionURL
                 }, function (err) {
@@ -87,6 +88,7 @@ module.exports.getAPI = function (Model) {
           }
 
           defToModify.title = processedDef.title;
+          defToModify.lowercaseTitle = processedDef.title.toLowerCase();
           defToModify.description = processedDef.description;
           defToModify.descriptionURL = processedDef.descriptionURL;
 
