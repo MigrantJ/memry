@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .controller('PopupCtrl', function ($scope, $modalInstance) {
     'use strict';
     $scope.dismiss = function () {

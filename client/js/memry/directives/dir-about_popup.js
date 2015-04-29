@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .directive('aboutPopup', function() {
     'use strict';
     return {

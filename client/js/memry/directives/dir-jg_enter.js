@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .directive('jgEnter', function () {
     'use strict';
     return function (scope, element, attrs) {

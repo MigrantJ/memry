@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .factory('defModel', function ($q, defServer) {
     'use strict';
     //public methods

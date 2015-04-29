@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .factory('defServer', function ($http) {
     'use strict';
     return {

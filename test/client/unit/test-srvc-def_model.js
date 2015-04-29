@@ -29,7 +29,7 @@ describe('Service - Def Model', function () {
       descriptionURL: "This is the last definition"
     }];
 
-    module('memry', function ($provide) {
+    module('memryMain', function ($provide) {
       $provide.value('defServer', defServer);
     });
 

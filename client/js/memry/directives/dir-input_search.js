@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .directive('inputSearch', function(scrollToDef, defModel) {
     'use strict';
     return {

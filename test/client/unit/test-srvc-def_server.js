@@ -6,7 +6,7 @@ describe('Service - Def Server', function () {
     descriptionURL: "This is a test definition"
   };
 
-  beforeEach(module('memry'));
+  beforeEach(module('memryMain'));
 
   //we can mock up fake services like this, to support the service we're actually testing. used in #greet below
   //note this had to be called BEFORE the inject command to work

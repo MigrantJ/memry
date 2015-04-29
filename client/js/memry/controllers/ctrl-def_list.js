@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .controller('DefListController', function ($scope, defModel) {
     'use strict';
 

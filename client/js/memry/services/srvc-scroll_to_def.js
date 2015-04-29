@@ -1,6 +1,6 @@
 /*global angular,document*/
 
-angular.module('memry')
+angular.module('memryMain')
   .factory('scrollToDef', function ($document, defModel) {
     'use strict';
     //public methods

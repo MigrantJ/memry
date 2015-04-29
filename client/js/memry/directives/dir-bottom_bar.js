@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .directive('bottomBar', function($modal) {
     'use strict';
     return {

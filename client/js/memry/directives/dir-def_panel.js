@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .directive('defPanel', function(defModel, $timeout) {
     'use strict';
     return {

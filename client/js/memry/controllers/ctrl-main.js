@@ -1,6 +1,6 @@
 /*global angular*/
 
-angular.module('memry')
+angular.module('memryMain')
   .controller('MainController', function ($scope, $timeout) {
     'use strict';
     $scope.events = {
