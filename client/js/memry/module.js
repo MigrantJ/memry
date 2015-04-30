@@ -1,6 +1,6 @@
 /*global angular*/
 'use strict';
 
-angular.module('memry', ['memryMain','jgAccount'], function () {
+angular.module('memry', ['ngRoute','memryMain','jgAccount'], function () {
 
 });

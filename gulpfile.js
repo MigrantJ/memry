@@ -55,8 +55,7 @@ var serverStarted = false;
 gulp.task('lint-js', function (cb) {
   gulp.src([conf.jsDir, 'server.js', 'server/*.js'])
     .pipe(jshint(jshintOptions))
-    .pipe(jshint.reporter(jshintReporter))
-    .pipe(jshint.reporter('fail')); //causes the task to fail if jshint was not successful
+    .pipe(jshint.reporter(jshintReporter));
   cb();
 });
 

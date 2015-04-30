@@ -1,7 +1,7 @@
 /*global angular*/
 'use strict';
 
-angular.module('memryMain', ['ngRoute', 'duScroll', 'ui.bootstrap'], function ($compileProvider) {
+angular.module('memryMain', ['duScroll', 'ui.bootstrap'], function ($compileProvider) {
   //https://docs.angularjs.org/api/ng/service/$compile
   // configure new 'compile' directive by passing a directive
   // factory function. The factory function injects the '$compile'
