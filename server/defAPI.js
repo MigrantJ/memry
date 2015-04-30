@@ -69,7 +69,10 @@ api.removeDeflinkFromDescriptions = function(defs, defToRemove) {
 api.addLinksToNewDefDesc = function (defs, def) {
   var description = def.description;
 
-  //add a space to the end of the description if there isn't one already, for regex purposes
+  //add spaces to either end of the description if there aren't ones already, for regex purposes
+  if (description[0] !== ' ') {
+    description = ' ' + description;
+  }
   if (description[description.length - 1] !== ' ') {
     description += ' ';
   }

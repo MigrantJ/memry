@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 var api = require('../../../server/defAPI');
-var testDefs, newDef, shortTitleDef;
+var testDefs, newDef, shortTitleDef, beginAndEndDef;
 beforeEach(function () {
   testDefs = [{
     _id: 5678,
@@ -28,6 +28,13 @@ beforeEach(function () {
     title: "t",
     description: "This tests proper substring regex matching",
     descriptionURL: "This test is for adding a new definition"
+  };
+
+  beginAndEndDef = {
+    _id: 842,
+    title: "Test At Begin And End",
+    description: "test whether regex properly replaces words at the begin and end test",
+    descriptionURL: "test whether regex properly replaces words at the begin and end test"
   };
 });
 
@@ -103,6 +110,10 @@ describe('Server - Def API', function () {
     it('leaves original description unchanged', function () {
       var descriptionURL = api.addLinksToNewDefDesc(testDefs, newDef);
       expect(newDef.description).to.equal('This test is for adding a new definition');
+    });
+    it('replaces words at the beginning and ending of descriptions', function () {
+      var descriptionURL = api.addLinksToNewDefDesc(testDefs, beginAndEndDef);
+      expect(descriptionURL).to.equal('<deflink d=\'1234\'>test</deflink> whether regex properly replaces words at the begin and end <deflink d=\'1234\'>test</deflink>');
     });
   });
 });
