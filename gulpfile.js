@@ -183,7 +183,6 @@ gulp.task('watch-server', function (cb) {
           serverStarted = true;
           cb();
         }
-        console.log(chunk);
       });
     })
     .on('change', ['lint-js'])

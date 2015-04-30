@@ -1,8 +1,18 @@
 <div>
+    <h1>Login</h1>
     <form ng-submit="loginSubmit()">
-    Username: <input type="text" name="username">
-    Password: <input type="text" name="password">
-    <input type="submit">
+        Email: <input type="text" name="email">
+        Password: <input type="text" name="password">
+        <input type="submit">
     </form>
+
+    <h1>Create Account</h1>
+    <form ng-submit="createAccountSubmit()">
+        Email: <input type="text" ng-model="email">
+        Password: <input type="text" ng-model="password">
+        <input type="submit">
+    </form>
+
+    <h1>OAuth</h1>
     <a href="" ng-click="loginFacebook()">Login With Facebook</a>
 </div>
