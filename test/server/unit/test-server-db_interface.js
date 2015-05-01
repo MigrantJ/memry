@@ -1,7 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-var api = require('../../../server/db_interface');
+var api = require('../../../server/defs/def_interface');
 
 describe('Server - DB Interface', function () {
   describe('# getDefByID', function () {

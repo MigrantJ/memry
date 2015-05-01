@@ -1,21 +1,23 @@
 /*global angular*/
 
 angular.module('jgAccount')
-  .controller('jgAccount-MainController', function ($scope, $location, jgAccountOauth, jgAccountAccount) {
+  .controller('jgAccount-MainController', function ($scope, $location, jgAccountAccount) {
     'use strict';
 
-    console.log(jgAccountOauth);
-
     $scope.loginSubmit = function () {
-      $location.path('/main');
+      jgAccountAccount.login();
     };
 
     $scope.loginFacebook = function () {
-      jgAccountOauth.loginFacebook();
+      //jgAccountOauth.loginFacebook();
     };
 
     $scope.createAccountSubmit = function () {
       jgAccountAccount.createAccount($scope.email, $scope.password);
+    };
+
+    $scope.getAll = function () {
+      jgAccountAccount.getAll();
     };
   })
 ;

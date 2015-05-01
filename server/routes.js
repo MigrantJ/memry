@@ -3,14 +3,15 @@ module.exports.initialize = function(app, dbConnection) {
   var Def = require('./defs/def_model.js').getModel(dbConnection);
   var Deflist = require('./deflists/deflist_model.js').getModel(dbConnection, Def);
   var User = require('./users/user_model.js').getModel(dbConnection, Deflist);
-  var db = require('./db_interface.js').getAPI(Def);
+  var defDB = require('./defs/def_interface.js').getAPI(Def);
+  var userDB = require('./users/user_interface.js').getAPI(User);
 
   /***************
    * Definition Routes
    */
 
   app.get('/api/defs/:defID', function (req, res) {
-    db.getDefByID(req.params.defID, function (err, returnDef) {
+    defDB.getDefByID(req.params.defID, function (err, returnDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -20,7 +21,7 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.get('/api/defs', function (req, res) {
-    db.getAllDefs(function (err, defs) {
+    defDB.getAllDefs(function (err, defs) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -30,7 +31,7 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.post('/api/defs', function (req, res) {
-    db.addNewDef(req.body, function (err, newDef) {
+    defDB.addNewDef(req.body, function (err, newDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -40,7 +41,7 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.delete('/api/defs/:defID', function (req, res) {
-    db.removeDef(req.params.defID, function (err) {
+    defDB.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -50,7 +51,7 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.put('/api/defs/:defID', function (req, res) {
-    db.editDef(req.params.defID, req.body, function (err, modifiedDef) {
+    defDB.editDef(req.params.defID, req.body, function (err, modifiedDef) {
       if (err) {
         return res.status(500).json(err);
       } else {
@@ -68,9 +69,25 @@ module.exports.initialize = function(app, dbConnection) {
     res.sendStatus(200);
   });
 
+  app.get('/api/users', function (req, res) {
+    userDB.getAllUsers(function (err, users) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        console.log(JSON.stringify(users));
+        return res.send(users);
+      }
+    });
+  });
+
   app.post('/api/users', function (req, res) {
-    console.dir(req.body);
-    res.sendStatus(200);
+    userDB.addNewUser(req.body, function (err, user) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        return res.send(user);
+      }
+    });
   });
 
   /***************

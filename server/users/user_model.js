@@ -2,7 +2,7 @@
 
 module.exports.getModel = function (mongoose, Deflist) {
   var schema = mongoose.Schema({
-    username: String,
+    email: String,
     password: String,
     deflists: [Deflist]
   });

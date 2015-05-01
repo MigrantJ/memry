@@ -1,7 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-var api = require('../../../server/defAPI');
+var api = require('../../../server/defs/def_API');
 var testDefs, newDef, shortTitleDef, beginAndEndDef;
 beforeEach(function () {
   testDefs = [{

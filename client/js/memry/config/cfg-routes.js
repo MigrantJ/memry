@@ -4,7 +4,7 @@ angular.module('memry')
   .config(function ($routeProvider) {
     'use strict';
     $routeProvider
-      .when('/', {
+      .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'jgAccount-MainController'
       })
@@ -13,7 +13,7 @@ angular.module('memry')
         controller: 'MainController'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/login'
       });
   })
 ;

@@ -1,5 +1,5 @@
 'use strict';
-var defAPI = require('./defAPI.js');
+var defAPI = require('./def_API.js');
 
 module.exports.getAPI = function (Model) {
   var api = {};
