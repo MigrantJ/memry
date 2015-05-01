@@ -19,6 +19,11 @@ routes.initialize(app, dbConnection);
 
 var server = http.createServer(app);
 
+//todo: trying this out to prevent server crashes. should remove before prod
+process.on('uncaughtException', function (err) {
+   console.log(err);
+});
+
 server.listen(app.get('port'), function() {
   console.log('Server Ready');
 });

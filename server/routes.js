@@ -6,6 +6,8 @@ module.exports.initialize = function(app, dbConnection) {
   var defDB = require('./defs/def_interface.js').getAPI(Def);
   var userDB = require('./users/user_interface.js').getAPI(User);
 
+  var auth = require('./auth.js');
+
   /***************
    * Definition Routes
    */
@@ -85,6 +87,31 @@ module.exports.initialize = function(app, dbConnection) {
       if (err) {
         return res.status(500).json(err);
       } else {
+        return res.send(user);
+      }
+    });
+  });
+
+  /***************
+   * Login Routes
+   */
+
+  app.post('/api/login', function (req, res) {
+    userDB.getUser(req.body.email, req.body.password, function (err, user) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        return res.send(user);
+      }
+    });
+  });
+
+  app.get('/secret', auth.checkReq, function (req, res) {
+    userDB.checkUserToken(req.token, function (err, user) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        console.log('auth passed!');
         return res.send(user);
       }
     });
