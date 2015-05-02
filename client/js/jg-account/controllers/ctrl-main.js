@@ -5,7 +5,7 @@ angular.module('jgAccount')
     'use strict';
 
     $scope.loginSubmit = function () {
-      jgAccountAccount.login();
+      jgAccountAccount.login($scope.email, $scope.password);
     };
 
     $scope.loginFacebook = function () {
@@ -13,7 +13,7 @@ angular.module('jgAccount')
     };
 
     $scope.createAccountSubmit = function () {
-      jgAccountAccount.createAccount($scope.email, $scope.password);
+      jgAccountAccount.createAccount($scope.createEmail, $scope.createPassword);
     };
 
     $scope.getAll = function () {

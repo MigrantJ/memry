@@ -97,15 +97,18 @@ module.exports.initialize = function(app, dbConnection) {
    */
 
   app.post('/api/login', function (req, res) {
-    userDB.getUser(req.body.email, req.body.password, function (err, user) {
+    userDB.loginUser(req.body.email, req.body.password, function (err, token) {
       if (err) {
+        console.log(err);
         return res.status(500).json(err);
       } else {
-        return res.send(user);
+        console.log(token);
+        return res.status(200).json(token);
       }
     });
   });
 
+  //todo: this is just to test server-side auth
   app.get('/secret', auth.checkReq, function (req, res) {
     userDB.checkUserToken(req.token, function (err, user) {
       if (err) {

@@ -1,14 +1,18 @@
 'use strict';
 
 var jwt = require('jsonwebtoken');
-
 //this can literally be any string you want. except 'secret' or 'pass' ;)
 var secret = 'funeolv739t62/3uipblak';
-
 var api = {};
+//in minutes
+var expiryTime = 1;
+
+function getExpiryDate() {
+  return (new Date()).getMinutes() + expiryTime;
+}
 
 api.getToken = function (user) {
-  return jwt.sign(user, secret);
+  return jwt.sign({exp: getExpiryDate()}, secret);
 };
 
 api.checkReq = function (req, res, next) {

@@ -176,7 +176,7 @@ gulp.task('watch-server', function (cb) {
   nodemon({
     script: 'server.js',
     watch: ['server.js','server'],
-    stdout: false})
+    stdout: true})
     .on('readable', function (data) {
       this.stdout.on('data', function (chunk) {
         if (!serverStarted && /Server Ready/.test(chunk)) {
