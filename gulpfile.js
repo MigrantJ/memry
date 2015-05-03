@@ -40,6 +40,7 @@ var jshintOptions = {
   undef: true,
   unused: true,
   strict: true,
+  sub: true,
   trailing: true,
   node: true
 };

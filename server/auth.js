@@ -23,17 +23,17 @@ api.checkReq = function (req, res, next) {
     var token = bearer[1];
     jwt.verify(token, secret, function (err, decoded) {
       if (err) {
-        res.status(403).json(err);
+        res.status(401).json(err);
       } else {
         if (isExpired(decoded.iat)) {
-          res.status(403).json({err: 'Your token expired'});
+          res.status(401).json({err: 'Your token expired'});
         } else {
           next();
         }
       }
     });
   } else {
-    res.status(403).json({err: 'No auth found'});
+    res.status(401).json({err: 'No auth found'});
   }
 };
 

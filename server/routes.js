@@ -99,9 +99,9 @@ module.exports.initialize = function(app, dbConnection) {
   app.post('/api/login', function (req, res) {
     userDB.loginUser(req.body.email, req.body.password, function (err, token) {
       if (err) {
-        return res.status(500).json(err);
+        return res.status(401).json(err);
       } else {
-        return res.status(200).json(token);
+        return res.status(200).json({token: token});
       }
     });
   });

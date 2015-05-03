@@ -1,8 +1,11 @@
 /*global angular*/
 
 angular.module('memry')
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
     'use strict';
+    //ensures all http requests have auth headers, ties into service
+    $httpProvider.interceptors.push('jgAccountTokenInterceptor');
+
     $routeProvider
       .when('/login', {
         templateUrl: 'views/login.html',
