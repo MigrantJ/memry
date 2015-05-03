@@ -99,10 +99,8 @@ module.exports.initialize = function(app, dbConnection) {
   app.post('/api/login', function (req, res) {
     userDB.loginUser(req.body.email, req.body.password, function (err, token) {
       if (err) {
-        console.log(err);
         return res.status(500).json(err);
       } else {
-        console.log(token);
         return res.status(200).json(token);
       }
     });
@@ -110,14 +108,7 @@ module.exports.initialize = function(app, dbConnection) {
 
   //todo: this is just to test server-side auth
   app.get('/secret', auth.checkReq, function (req, res) {
-    userDB.checkUserToken(req.token, function (err, user) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        console.log('auth passed!');
-        return res.send(user);
-      }
-    });
+    return res.status(200).send('auth passed!');
   });
 
   /***************

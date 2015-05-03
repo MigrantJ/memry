@@ -19,16 +19,6 @@ module.exports.getAPI = function (Model) {
     });
   };
 
-  api.checkUserToken = function (token, callback) {
-    Model.findOne({token: token}, function (err, user) {
-      if (err) {
-        callback('Error: ' + err);
-      } else {
-        callback(null, user);
-      }
-    });
-  };
-
   api.getAllUsers = function (callback) {
     Model.find().sort('email').exec(function (err, users) {
       return callback(err, users);

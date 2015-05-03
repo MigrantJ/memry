@@ -4,15 +4,16 @@ var jwt = require('jsonwebtoken');
 //this can literally be any string you want. except 'secret' or 'pass' ;)
 var secret = 'funeolv739t62/3uipblak';
 var api = {};
-//in minutes
-var expiryTime = 1;
+//in hours
+var expiryTime = 2;
 
-function getExpiryDate() {
-  return (new Date()).getMinutes() + expiryTime;
+//time is the creation timestamp of the token, in seconds
+function isExpired(time) {
+  return time + (expiryTime * 60 * 60) < Date.now() / 1000;
 }
 
-api.getToken = function (user) {
-  return jwt.sign({exp: getExpiryDate()}, secret);
+api.getToken = function () {
+  return jwt.sign({poop: 'asdf'}, secret);
 };
 
 api.checkReq = function (req, res, next) {
@@ -21,12 +22,18 @@ api.checkReq = function (req, res, next) {
     var bearer = bearerHeader.split(' ');
     var token = bearer[1];
     jwt.verify(token, secret, function (err, decoded) {
-      console.log(decoded);
-      res.status(403).json(decoded);
+      if (err) {
+        res.status(403).json(err);
+      } else {
+        if (isExpired(decoded.iat)) {
+          res.status(403).json({err: 'Your token expired'});
+        } else {
+          next();
+        }
+      }
     });
-    next();
   } else {
-    res.sendStatus(403);
+    res.status(403).json({err: 'No auth found'});
   }
 };
 
