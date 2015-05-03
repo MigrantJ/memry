@@ -11,6 +11,10 @@ angular.module('jgAccount')
       $http.post('/api/login', {email: email, password: password});
     };
 
+    api.isLoggedIn = function () {
+      return false;
+    };
+
     api.getAll = function () {
       var users = User.query(function () {
         console.log('Users');
