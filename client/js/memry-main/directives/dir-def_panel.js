@@ -9,12 +9,15 @@ angular.module('memryMain')
       templateUrl: 'views/def-panel.html',
       scope: true,
       link: function (scope, element) {
-        scope.def.editMode = false;
         var resetForm = function () {
           scope.editTitle = scope.def.title;
           scope.editDescription = scope.def.description;
         };
-        resetForm();
+
+        if (scope.def) {
+          scope.def.editMode = false;
+          resetForm();
+        }
 
         scope.$on('defAdded', function (event, title) {
           if (scope.def.title === title) {

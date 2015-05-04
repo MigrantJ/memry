@@ -13,6 +13,10 @@ angular.module('jgAccount')
       $window.localStorage.token = token;
     };
 
+    api.destroyToken = function () {
+      delete $window.localStorage.token;
+    };
+
     return api;
   })
 ;

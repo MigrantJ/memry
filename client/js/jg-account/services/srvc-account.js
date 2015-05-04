@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('jgAccount')
-  .factory('jgAccountAccount', function ($http, $resource, jgAccountToken) {
+  .factory('jgAccountAccount', function ($http, $resource, $location, jgAccountToken) {
     'use strict';
     var api = {};
 
@@ -16,6 +16,11 @@ angular.module('jgAccount')
     //used in main module's route interceptor, in the .run block
     api.isLoggedIn = function () {
       return jgAccountToken.getToken();
+    };
+
+    api.logoff = function () {
+      jgAccountToken.destroyToken();
+      $location.path('/login');
     };
 
     api.getAll = function () {

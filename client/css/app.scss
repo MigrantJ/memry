@@ -64,6 +64,12 @@ textarea {
   }
 }
 
+#username-dropdown {
+  @extend .dropdown;
+  @extend .navbar-right;
+  padding: $navbar-padding-vertical $navbar-padding-horizontal $navbar-padding-vertical 0;
+}
+
 .description-input {
   border: 1px solid $input-border;
   border-radius: $input-border-radius;
