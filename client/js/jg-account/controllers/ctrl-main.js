@@ -5,7 +5,10 @@ angular.module('jgAccount')
     'use strict';
 
     $scope.loginSubmit = function () {
-      jgAccountAccount.login($scope.email, $scope.password);
+      jgAccountAccount.login($scope.email, $scope.password)
+        .then(function () {
+          $location.path('/main');
+        });
     };
 
     $scope.loginFacebook = function () {

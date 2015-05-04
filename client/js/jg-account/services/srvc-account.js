@@ -8,7 +8,7 @@ angular.module('jgAccount')
     var User = $resource('/api/users/:userID');
 
     api.login = function (email, password) {
-      $http.post('/api/login', {email: email, password: password}).success(function (data) {
+      return $http.post('/api/login', {email: email, password: password}).success(function (data) {
         jgAccountToken.setToken(data.token);
       });
     };

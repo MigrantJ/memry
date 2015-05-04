@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var secret = 'funeolv739t62/3uipblak';
 var api = {};
 //in hours
-var expiryTime = 2;
+var expiryTime = 1;
 
 //time is the creation timestamp of the token, in seconds
 function isExpired(time) {
@@ -25,8 +25,9 @@ api.checkReq = function (req, res, next) {
       if (err) {
         res.status(401).json(err);
       } else {
+        //.iat is a timestamp added automatically to object payloads by jwt
         if (isExpired(decoded.iat)) {
-          res.status(401).json({err: 'Your token expired'});
+          res.status(401).json({err: 'Token expired'});
         } else {
           next();
         }

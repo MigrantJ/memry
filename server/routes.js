@@ -12,7 +12,7 @@ module.exports.initialize = function(app, dbConnection) {
    * Definition Routes
    */
 
-  app.get('/api/defs/:defID', function (req, res) {
+  app.get('/api/defs/:defID', auth.checkReq, function (req, res) {
     defDB.getDefByID(req.params.defID, function (err, returnDef) {
       if (err) {
         return res.status(500).json(err);
@@ -22,7 +22,7 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
-  app.get('/api/defs', function (req, res) {
+  app.get('/api/defs', auth.checkReq, function (req, res) {
     defDB.getAllDefs(function (err, defs) {
       if (err) {
         return res.status(500).json(err);
@@ -32,7 +32,7 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
-  app.post('/api/defs', function (req, res) {
+  app.post('/api/defs', auth.checkReq, function (req, res) {
     defDB.addNewDef(req.body, function (err, newDef) {
       if (err) {
         return res.status(500).json(err);
@@ -42,7 +42,7 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
-  app.delete('/api/defs/:defID', function (req, res) {
+  app.delete('/api/defs/:defID', auth.checkReq, function (req, res) {
     defDB.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
@@ -52,7 +52,7 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
-  app.put('/api/defs/:defID', function (req, res) {
+  app.put('/api/defs/:defID', auth.checkReq, function (req, res) {
     defDB.editDef(req.params.defID, req.body, function (err, modifiedDef) {
       if (err) {
         return res.status(500).json(err);
@@ -104,11 +104,6 @@ module.exports.initialize = function(app, dbConnection) {
         return res.status(200).json({token: token});
       }
     });
-  });
-
-  //todo: this is just to test server-side auth
-  app.get('/secret', auth.checkReq, function (req, res) {
-    return res.status(200).send('auth passed!');
   });
 
   /***************

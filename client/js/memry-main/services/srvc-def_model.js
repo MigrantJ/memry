@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .factory('defModel', function ($q, defServer) {
+  .factory('defModel', function ($q, $location, defServer) {
     'use strict';
     //public methods
     var api = {};
@@ -12,19 +12,15 @@ angular.module('memryMain')
 
     //constructor
     function constructor() {
-      defServer.getAll()
-        .then(function (response) {
-          api.data.defs = response.data;
-        });
+      api.getDefs();
     }
 
     api.getDefs = function () {
-      //todo this is doing the same thing as the constructor
-      var promise = defServer.getAll();
-      promise.then(function (response) {
-        api.data.defs = response.data;
-      });
-      return promise;
+      return defServer.getAll().then(
+        function (success) {
+          api.data.defs = success.data;
+        }
+      );
     };
 
     /*
@@ -48,9 +44,8 @@ angular.module('memryMain')
     */
     api.editDefinition = function (definition) {
       defServer.update(definition)
-        .then(function (response) {
+        .then(function () {
           //todo: don't require a server get every time we change the data
-          console.log(response.data);
           api.getDefs();
         });
     };
@@ -60,9 +55,8 @@ angular.module('memryMain')
      */
     api.deleteDefinition = function (id) {
       defServer.delete(id)
-        .then(function (response) {
+        .then(function () {
           //todo: don't require a server get every time we change the data
-          console.log(response.data);
           api.getDefs();
         });
     };
