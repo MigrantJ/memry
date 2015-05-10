@@ -106,6 +106,23 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
+  app.post('/api/oauth', function (req, res) {
+    auth.getGoogleToken(req.body.code);
+    return res.status(200).json({message: 'yup'});
+  });
+
+  app.get('/oauth2callback', function (req, res) {
+    console.log('callback');
+    console.log(req.body);
+    return res.status(200).json({message: 'received'});
+  });
+
+  app.post('/oauth2callback', function (req, res) {
+    console.log('callback');
+    console.log(req.body);
+    return res.status(200).json({message: 'received'});
+  });
+
   /***************
    * Default Routes
    */

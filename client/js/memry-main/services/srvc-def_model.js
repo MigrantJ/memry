@@ -19,6 +19,10 @@ angular.module('memryMain')
       return defServer.getAll().then(
         function (success) {
           api.data.defs = success.data;
+        },
+        function (error) {
+          console.log(error);
+          api.data.defs = {};
         }
       );
     };

@@ -19,8 +19,7 @@ angular.module('memry')
         controller: 'MainController',
         access: {
           requiresLogin: true
-        },
-        nocache: true
+        }
       })
       .otherwise({
         redirectTo: '/login'
@@ -33,10 +32,6 @@ angular.module('memry')
     $rootScope.$on('$routeChangeStart', function (event, nextRoute) {
       if (nextRoute.access && nextRoute.access.requiresLogin && !user.isLoggedIn()) {
         $location.path('/login');
-      }
-      //todo: not sure if this is doing anything, supposed to fix main not refreshing after token expired
-      if (nextRoute.nocache) {
-        $templateCache.remove(nextRoute.templateUrl);
       }
     });
   })
