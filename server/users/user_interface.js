@@ -25,6 +25,7 @@ module.exports.getAPI = function (Model) {
     });
   };
 
+  //todo: don't store these passwords in plaintext
   api.addNewUser = function (reqBody, callback) {
     var user = new Model({email: reqBody.email, password: reqBody.password});
 

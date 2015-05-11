@@ -107,8 +107,16 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.post('/api/oauth', function (req, res) {
-    auth.getGoogleToken(req.body.code);
-    return res.status(200).json({message: 'yup'});
+    var method = req.body.method || '';
+    if (method === 'Google') {
+      auth.getGoogleToken(req.body.code);
+      return res.status(200).json({message: 'yup'});
+    } else if (method === 'Facebook') {
+      auth.verifyFBToken(req.body.token);
+      return res.status(200).json({message: 'yup'});
+    } else {
+      return res.status(400).json({message: 'Bad Request'});
+    }
   });
 
   app.get('/oauth2callback', function (req, res) {

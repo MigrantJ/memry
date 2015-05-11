@@ -22,7 +22,7 @@ var conf = {
 
 var jshintOptions = {
   bitwise: true,
-  camelcase: true,
+  camelcase: false,
   curly: true,
   eqeqeq: true,
   forin: true,

@@ -1,4 +1,4 @@
-/*global angular*/
+/*global angular,FB,auth2*/
 
 angular.module('jgAccount')
   .controller('jgAccount-MainController', function ($scope, $location, $http, jgAccountAccount) {
@@ -12,7 +12,27 @@ angular.module('jgAccount')
     };
 
     $scope.loginFacebook = function () {
-      //jgAccountOauth.loginFacebook();
+      var login = function (res) {
+        $http.post('/api/oauth', {method: 'Facebook', token: res.authResponse.accessToken})
+          .then(function (success) {
+            console.log(success);
+            //todo: $location.path('/main');
+          },
+          function (error) {
+            console.log(error);
+          });
+      };
+      FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          login(res);
+        } else {
+          FB.login(function (res) {
+            if (res.status === 'connected') {
+              login(res);
+            }
+          }, {scope: 'email', return_scopes: true});
+        }
+      });
     };
 
     $scope.loginGoogle = function () {
@@ -21,9 +41,10 @@ angular.module('jgAccount')
           // todo: Hide the sign-in button now that the user is authorized:
 
           // Send the code to the server
-          $http.post('/api/oauth', {code: res['code']});
+          $http.post('/api/oauth', {method: 'Google', code: res['code']});
         } else {
           // There was an error.
+          console.log('error');
         }
       });
     };
