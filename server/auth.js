@@ -14,7 +14,7 @@ var expiryTime = 1;
 var gTokenReq = {
   client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com',
   client_secret: 'Q94mrjjYhOrtVT5jEc_qzHh0',
-  redirect_uri: 'http://localhost:8000/oauth2callback',
+  redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
   grant_type: 'authorization_code'
 };
 
@@ -22,7 +22,7 @@ var gTokenReq = {
 var fbTokenReq = {
   client_id: '1674549109435449',
   client_secret: '0d72319aeb2c1d235a620f8d0ae23c0f',
-  redirect_uri: 'http://localhost:8000/oauth2callback',
+  redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
   grant_type: 'client_credentials'
 };
 
@@ -86,7 +86,7 @@ api.verifyFBToken = function (token) {
   var qString = querystring.stringify(fbTokenReq);
   https.get('https://graph.facebook.com/oauth/access_token' + qString, function (res) {
     res.on('data', function (chunk) {
-      console.log(qString);
+      console.log('qString: ' + qString);
       console.log('body: ' + chunk);
     });
   });

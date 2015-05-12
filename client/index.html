@@ -6,17 +6,17 @@
   <link rel="stylesheet" href="app.css"/>
   <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
   </script>
-  <script>
-    function start() {
-      gapi.load('auth2', function() {
-        auth2 = gapi.auth2.init({
-          client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com'
-        });
-      });
-    }
-  </script>
 </head>
 <body>
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+        client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com'
+      });
+    });
+  }
+</script>
 <script>
   window.fbAsyncInit = function() {
     FB.init({
