@@ -15,6 +15,7 @@ var gTokenReq = {
   client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com',
   client_secret: 'Q94mrjjYhOrtVT5jEc_qzHh0',
   redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
+  //redirect_uri: 'http://localhost/oauth2callback',
   grant_type: 'authorization_code'
 };
 
@@ -22,7 +23,8 @@ var gTokenReq = {
 var fbTokenReq = {
   client_id: '1674549109435449',
   client_secret: '0d72319aeb2c1d235a620f8d0ae23c0f',
-  redirect_uri: 'http://localhost:8000/oauth2callback',
+  redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
+  //redirect_uri: 'http://localhost:8000/oauth2callback',
   grant_type: 'client_credentials'
 };
 
@@ -58,8 +60,9 @@ api.checkReq = function (req, res, next) {
 };
 
 api.getGoogleToken = function (code) {
-  gTokenReq.code = code;
-  var qString = querystring.stringify(gTokenReq);
+  //gTokenReq.code = code;
+  //var qString = querystring.stringify(gTokenReq);
+  var qString = 'client_id=' + gTokenReq.client_id + '&client_secret=' + gTokenReq.client_secret + '&redirect_uri=' + gTokenReq.redirect_uri + '&grant_type=' + gTokenReq.grant_type + '&code=' + code;
   var req = https.request({
     hostname: 'www.googleapis.com',
     path: '/oauth2/v3/token',
