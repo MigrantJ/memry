@@ -22,7 +22,7 @@ var gTokenReq = {
 var fbTokenReq = {
   client_id: '1674549109435449',
   client_secret: '0d72319aeb2c1d235a620f8d0ae23c0f',
-  redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
+  redirect_uri: 'http://localhost:8000/oauth2callback',
   grant_type: 'client_credentials'
 };
 
@@ -59,32 +59,33 @@ api.checkReq = function (req, res, next) {
 
 api.getGoogleToken = function (code) {
   gTokenReq.code = code;
-  var postData = querystring.stringify(gTokenReq);
+  var qString = querystring.stringify(gTokenReq);
   var req = https.request({
     hostname: 'www.googleapis.com',
     path: '/oauth2/v3/token',
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(postData)
+      'Content-Length': Buffer.byteLength(qString)
     }
   }, function (res) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
+      console.log('qString: ' + qString);
       console.log('body: ' + chunk);
     });
   });
   //  .on('error', function (e) {
   //  console.error(e);
   //});
-  req.write(postData);
+  req.write(qString);
   req.end();
 };
 
 api.verifyFBToken = function (token) {
   //get app token
   var qString = querystring.stringify(fbTokenReq);
-  https.get('https://graph.facebook.com/oauth/access_token' + qString, function (res) {
+  https.get('https://graph.facebook.com/oauth/access_token?' + qString, function (res) {
     res.on('data', function (chunk) {
       console.log('qString: ' + qString);
       console.log('body: ' + chunk);
