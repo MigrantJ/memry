@@ -90,8 +90,23 @@ api.verifyFBToken = function (token) {
   var qString = querystring.stringify(fbTokenReq);
   https.get('https://graph.facebook.com/oauth/access_token?' + qString, function (res) {
     res.on('data', function (chunk) {
-      console.log('qString: ' + qString);
-      console.log('body: ' + chunk);
+      var chunkArray = chunk.toString().split('=');
+      if (chunkArray[0] === 'access_token') {
+        //now use it to verify the user's token
+        qString = querystring.stringify({ access_token: chunkArray[1], input_token: token});
+        https.get('https://graph.facebook.com/debug_token?' + qString, function (res) {
+          res.on('data', function (chunk) {
+            var tokenData = JSON.parse(chunk).data;
+            if (tokenData.is_valid) {
+              console.log('success!');
+              //at this point we should store the user_id and user token in database
+              //on the client side, store the facebook token. actually do we need that?
+              //we could just hand them a memry token
+              //in either case we need to store something in session then forward them to the db select flow
+            }
+          });
+        });
+      }
     });
   });
 

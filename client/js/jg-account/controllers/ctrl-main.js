@@ -22,6 +22,8 @@ angular.module('jgAccount')
             console.log(error);
           });
       };
+
+      //second param forces FB actually check status, not use cached response
       FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           login(res);
@@ -32,7 +34,7 @@ angular.module('jgAccount')
             }
           }, {scope: 'email', return_scopes: true});
         }
-      });
+      }, true);
     };
 
     $scope.loginGoogle = function () {
