@@ -98,7 +98,7 @@ api.verifyFBToken = function (token) {
           res.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              console.log('success!');
+              console.log(tokenData);
               //at this point we should store the user_id and user token in database
               //on the client side, store the facebook token. actually do we need that?
               //we could just hand them a memry token
