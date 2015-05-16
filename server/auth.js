@@ -85,7 +85,7 @@ api.getGoogleToken = function (code) {
   req.end();
 };
 
-api.verifyFBToken = function (token) {
+api.verifyFBToken = function (token, callback) {
   //get app token
   var qString = querystring.stringify(fbTokenReq);
   https.get('https://graph.facebook.com/oauth/access_token?' + qString, function (res) {
@@ -99,10 +99,13 @@ api.verifyFBToken = function (token) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
               console.log(tokenData);
+              callback(null, api.getToken());
               //at this point we should store the user_id and user token in database
               //on the client side, store the facebook token. actually do we need that?
               //we could just hand them a memry token
               //in either case we need to store something in session then forward them to the db select flow
+            } else {
+              callback({message: 'Facebook auth failed'});
             }
           });
         });

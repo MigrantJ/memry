@@ -112,8 +112,13 @@ module.exports.initialize = function(app, dbConnection) {
       auth.getGoogleToken(req.body.code);
       return res.status(200).json({message: 'yup'});
     } else if (method === 'Facebook') {
-      auth.verifyFBToken(req.body.token);
-      return res.status(200).json({message: 'yup'});
+      auth.verifyFBToken(req.body.token, function (err, token) {
+        if (err) {
+          return res.status(401).json(err);
+        } else {
+          return res.status(200).json({token: token});
+        }
+      });
     } else {
       return res.status(400).json({message: 'Bad Request'});
     }
