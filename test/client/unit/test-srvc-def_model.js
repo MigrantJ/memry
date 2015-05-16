@@ -36,7 +36,7 @@ describe('Service - Def Model', function () {
     inject(function ($q) {
       defServer.getAll = function () {
         var deferred = $q.defer();
-        deferred.resolve({data: testDefs});
+        deferred.resolve({data: {defs: testDefs}});
         return deferred.promise;
       };
     });

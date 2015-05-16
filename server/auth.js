@@ -48,14 +48,14 @@ api.checkReq = function (req, res, next) {
       } else {
         //.iat is a timestamp added automatically to object payloads by jwt
         if (isExpired(decoded.iat)) {
-          res.status(401).json({err: 'Token expired'});
+          res.status(401).json({error: 'Token expired'});
         } else {
           next();
         }
       }
     });
   } else {
-    res.status(401).json({err: 'No auth found'});
+    res.status(401).json({error: 'No auth found'});
   }
 };
 

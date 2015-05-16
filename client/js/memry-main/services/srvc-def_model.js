@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .factory('defModel', function ($q, $location, defServer) {
+  .factory('defModel', function ($q, defServer) {
     'use strict';
     //public methods
     var api = {};
@@ -17,12 +17,8 @@ angular.module('memryMain')
 
     api.getDefs = function () {
       return defServer.getAll().then(
-        function (success) {
-          api.data.defs = success.data;
-        },
-        function (error) {
-          console.log(error);
-          api.data.defs = {};
+        function (res) {
+          api.data.defs = res.data.defs;
         }
       );
     };

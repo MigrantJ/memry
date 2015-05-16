@@ -27,7 +27,7 @@ module.exports.initialize = function(app, dbConnection) {
       if (err) {
         return res.status(500).json(err);
       } else {
-        return res.send(defs);
+        return res.send({ defs: defs });
       }
     });
   });
