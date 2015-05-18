@@ -1,5 +1,6 @@
 describe('Service - Def Model', function () {
   var scope, defModel, defServer = {};
+  var jgAccountAccount = {};
   var testDefs;
   beforeEach(function () {
     testDefs = [{
@@ -31,6 +32,7 @@ describe('Service - Def Model', function () {
 
     module('memryMain', function ($provide) {
       $provide.value('defServer', defServer);
+      $provide.value('jgAccountAccount', jgAccountAccount);
     });
 
     inject(function ($q) {
@@ -39,13 +41,18 @@ describe('Service - Def Model', function () {
         deferred.resolve({data: {defs: testDefs}});
         return deferred.promise;
       };
+
+      jgAccountAccount.getUserName = function () {
+        return 'jimgrant@gmail.com';
+      };
     });
   });
 
-  beforeEach(inject(function (_defServer_, _defModel_, $rootScope) {
+  beforeEach(inject(function (_defServer_, _defModel_, _jgAccountAccount_, $rootScope) {
     //this scope var can be passed to controllers being tested
     scope = $rootScope.$new();
     defServer = _defServer_;
+    jgAccountAccount = _jgAccountAccount_;
     defModel = _defModel_;
     //causes the promises to resolve. In production code this happens automatically
     scope.$digest();

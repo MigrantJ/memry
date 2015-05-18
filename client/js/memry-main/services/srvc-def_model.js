@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .factory('defModel', function ($q, defServer) {
+  .factory('defModel', function ($q, defServer, jgAccountAccount) {
     'use strict';
     //public methods
     var api = {};
@@ -13,6 +13,8 @@ angular.module('memryMain')
     //constructor
     function constructor() {
       api.getDefs();
+      api.data.username = jgAccountAccount.getUserName();
+      api.data.deflist = 'default';
     }
 
     api.getDefs = function () {

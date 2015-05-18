@@ -7,6 +7,7 @@ var querystring = require('querystring');
 //this can literally be any string you want. except 'secret' or 'pass' ;)
 var secret = 'funeolv739t62/3uipblak';
 var api = {};
+//var data = {};
 //in hours
 var expiryTime = 1;
 
@@ -34,7 +35,7 @@ function isExpired(time) {
 }
 
 api.getToken = function (username) {
-  return jwt.sign({user: username}, secret);
+  return jwt.sign({username: username}, secret);
 };
 
 api.checkReq = function (req, res, next) {
@@ -50,6 +51,8 @@ api.checkReq = function (req, res, next) {
         if (isExpired(decoded.iat)) {
           res.status(401).json({error: 'Token expired'});
         } else {
+          req.memry = {};
+          req.memry.username = decoded.username;
           next();
         }
       }
@@ -98,7 +101,7 @@ api.verifyFBToken = function (token, callback) {
           res.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              callback(null, api.getToken());
+              callback(null, api.getToken(tokenData.user_id));
               //at this point we should store the user_id and user token in database
               //on the client side, store the facebook token. actually do we need that?
               //we could just hand them a memry token

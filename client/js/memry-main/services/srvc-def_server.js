@@ -4,8 +4,8 @@ angular.module('memryMain')
   .factory('defServer', function ($http) {
     'use strict';
     return {
-      getAll: function() {
-        return $http.get('/api/defs');
+      getAll: function(username, deflist) {
+        return $http.get('/api/defs/' + username + '/' + deflist);
       },
 
       getOne: function (id) {

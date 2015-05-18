@@ -1,4 +1,5 @@
 describe('Service - Def Server', function () {
+  /*
   var testDef = {
     _id: 1234,
     title: "test",
@@ -126,4 +127,5 @@ describe('Service - Def Server', function () {
       expect(succeeded).to.be.true;
     });
   });
+  */
 });

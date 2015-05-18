@@ -4,13 +4,12 @@ angular.module('jgAccount')
   .factory('jgAccountAccount', function ($http, $resource, $location, jgAccountToken) {
     'use strict';
     var api = {};
-    var data = {};
+    //var data = {};
 
     var User = $resource('/api/users/:userID');
 
     api.login = function (username, password) {
       return $http.post('/api/login', {username: username, password: password}).success(function (res) {
-        data.username = username;
         jgAccountToken.setToken(res.token);
       });
     };
@@ -40,7 +39,8 @@ angular.module('jgAccount')
     };
 
     api.getUserName = function () {
-      return data.username;
+      //result in the form of data.username
+      return $http.get('/api/users');
     };
 
     return api;

@@ -1,8 +1,7 @@
 module.exports.initialize = function(app, dbConnection) {
   'use strict';
   var Def = require('./defs/def_model.js').getModel(dbConnection);
-  var Deflist = require('./deflists/deflist_model.js').getModel(dbConnection, Def);
-  var User = require('./users/user_model.js').getModel(dbConnection, Deflist);
+  var User = require('./users/user_model.js').getModel(dbConnection, Def);
   var defDB = require('./defs/def_interface.js').getAPI(Def);
   var userDB = require('./users/user_interface.js').getAPI(User);
 
@@ -12,7 +11,7 @@ module.exports.initialize = function(app, dbConnection) {
    * Definition Routes
    */
 
-  app.get('/api/defs/:defID', auth.checkReq, function (req, res) {
+/*  app.get('/api/defs/:defID', auth.checkReq, function (req, res) {
     defDB.getDefByID(req.params.defID, function (err, returnDef) {
       if (err) {
         return res.status(500).json(err);
@@ -20,9 +19,11 @@ module.exports.initialize = function(app, dbConnection) {
         return res.send(returnDef);
       }
     });
-  });
+  });*/
 
-  app.get('/api/defs', auth.checkReq, function (req, res) {
+  app.get('/api/defs/:username/:deflist', auth.checkReq, function (req, res) {
+    console.log(req.params.username);
+    console.log(req.params.deflist);
     defDB.getAllDefs(function (err, defs) {
       if (err) {
         return res.status(500).json(err);
@@ -66,12 +67,12 @@ module.exports.initialize = function(app, dbConnection) {
    * User Routes
    */
 
-  app.get('/api/users/:userID', function (req, res) {
-    console.log('Tried to get user' + req.params.userID);
-    res.sendStatus(200);
+  app.get('/api/users', auth.checkReq, function (req, res) {
+    res.send({username: req.memry.username});
   });
 
-  app.get('/api/users', function (req, res) {
+  //todo: DELETE THIS ROUTE IN PROD
+  app.get('/api/users/all', function (req, res) {
     userDB.getAllUsers(function (err, users) {
       if (err) {
         return res.status(500).json(err);

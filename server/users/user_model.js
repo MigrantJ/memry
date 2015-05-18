@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.getModel = function (mongoose, Deflist) {
+module.exports.getModel = function (mongoose, Def) {
   /*
   var schema = mongoose.Schema({
     email: String,
@@ -14,12 +14,7 @@ module.exports.getModel = function (mongoose, Deflist) {
     password: String,
     deflists: [{
       name: String,
-      defs: [{
-        title: String,
-        lowercaseTitle: String,
-        description: String,
-        descriptionURL: String
-      }]
+      defs: [Def]
     }]
   });
 
