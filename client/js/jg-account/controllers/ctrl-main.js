@@ -13,8 +13,7 @@ angular.module('jgAccount')
 
     $scope.loginFacebook = function () {
       jgAccountOauth.loginFacebook()
-        .then(function (success) {
-          console.log(success);
+        .then(function () {
           $location.path('/main');
         },
         function (error) {

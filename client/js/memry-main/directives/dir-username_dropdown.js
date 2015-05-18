@@ -11,6 +11,8 @@ angular.module('memryMain')
 
       },
       link: function (scope) {
+        scope.username = jgAccountAccount.getUserName();
+
         scope.logoff = function () {
           jgAccountAccount.logoff();
         };

@@ -33,8 +33,8 @@ function isExpired(time) {
   return time + (expiryTime * 60 * 60) < Date.now() / 1000;
 }
 
-api.getToken = function () {
-  return jwt.sign({poop: 'asdf'}, secret);
+api.getToken = function (username) {
+  return jwt.sign({user: username}, secret);
 };
 
 api.checkReq = function (req, res, next) {
@@ -98,7 +98,6 @@ api.verifyFBToken = function (token, callback) {
           res.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              console.log(tokenData);
               callback(null, api.getToken());
               //at this point we should store the user_id and user token in database
               //on the client side, store the facebook token. actually do we need that?

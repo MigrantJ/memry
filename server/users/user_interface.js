@@ -1,17 +1,16 @@
 'use strict';
-//var userAPI = require('./defAPI.js');
 var auth = require('../auth.js');
 
 module.exports.getAPI = function (Model) {
   var api = {};
 
-  api.loginUser = function (email, password, callback) {
-    Model.findOne({email: email, password: password}, function (err, user) {
+  api.loginUser = function (username, password, callback) {
+    Model.findOne({username: username, password: password}, function (err, user) {
       if (err) {
         callback("Error occurred: " + err);
       } else {
         if (user) {
-          callback(null, auth.getToken());
+          callback(null, auth.getToken(username));
         } else {
           callback("Incorrect login");
         }
@@ -27,7 +26,7 @@ module.exports.getAPI = function (Model) {
 
   //todo: don't store these passwords in plaintext
   api.addNewUser = function (reqBody, callback) {
-    var user = new Model({email: reqBody.email, password: reqBody.password});
+    var user = new Model({username: reqBody.username, password: reqBody.password});
 
     user.save(function (err) {
       callback(err, user);

@@ -4,12 +4,14 @@ angular.module('jgAccount')
   .factory('jgAccountAccount', function ($http, $resource, $location, jgAccountToken) {
     'use strict';
     var api = {};
+    var data = {};
 
     var User = $resource('/api/users/:userID');
 
-    api.login = function (email, password) {
-      return $http.post('/api/login', {email: email, password: password}).success(function (data) {
-        jgAccountToken.setToken(data.token);
+    api.login = function (username, password) {
+      return $http.post('/api/login', {username: username, password: password}).success(function (res) {
+        data.username = username;
+        jgAccountToken.setToken(res.token);
       });
     };
 
@@ -30,11 +32,15 @@ angular.module('jgAccount')
       });
     };
 
-    api.createAccount = function (email, password) {
+    api.createAccount = function (username, password) {
       var user = new User();
-      user.email = email;
+      user.username = username;
       user.password = password;
       user.$save();
+    };
+
+    api.getUserName = function () {
+      return data.username;
     };
 
     return api;
