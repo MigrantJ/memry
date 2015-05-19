@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .factory('defModel', function ($q, defServer, jgAccountAccount) {
+  .factory('defModel', function ($q, defServer) {
     'use strict';
     //public methods
     var api = {};
@@ -13,13 +13,13 @@ angular.module('memryMain')
     //constructor
     function constructor() {
       api.getDefs();
-      api.data.username = jgAccountAccount.getUserName();
-      api.data.deflist = 'default';
     }
 
     api.getDefs = function () {
-      return defServer.getAll().then(
+      defServer.getAll().then(
         function (res) {
+          api.data.username = res.data.username;
+          api.data.deflist = res.data.deflist;
           api.data.defs = res.data.defs;
         }
       );
@@ -96,16 +96,19 @@ angular.module('memryMain')
         throw new Error('findIDByClosestTitle requires string input');
       }
       var foundTitleID = null;
-      titleSubstr = titleSubstr.toLowerCase();
 
-      api.data.defs.some(function (d) {
-        return d.title.toLowerCase() >= titleSubstr && (foundTitleID = d._id);
-      });
+      if (api.data.defs.length) {
+        titleSubstr = titleSubstr.toLowerCase();
 
-      //if we reached the end of the array without finding anything,
-      //return the last def id in the array
-      if (!foundTitleID) {
-        foundTitleID = api.data.defs[api.data.defs.length - 1]._id;
+        api.data.defs.some(function (d) {
+          return d.title.toLowerCase() >= titleSubstr && (foundTitleID = d._id);
+        });
+
+        //if we reached the end of the array without finding anything,
+        //return the last def id in the array
+        if (!foundTitleID) {
+          foundTitleID = api.data.defs[api.data.defs.length - 1]._id;
+        }
       }
 
       return foundTitleID;

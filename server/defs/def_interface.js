@@ -21,10 +21,17 @@ module.exports.getAPI = function (Model) {
     });
   };
 
+  api.getDefsByIDs = function (ids, callback) {
+    Model.find({ '_id': { $in: ids } }).sort('lowercaseTitle').exec(function (err, defs) {
+      return callback(err, defs);
+    });
+  };
+
   //adds a new def to the database
   //returns the newly added def
-  api.addNewDef = function (defBody, callback) {
-    api.getAllDefs(function (err, defs) {
+  //api.addNewDef = function (defBody, callback) {
+  api.addNewDef = function (deflist, defBody, callback) {
+    api.getDefsByIDs(deflist, function (err, defs) {
       if (err) {
         return callback(err);
       } else {

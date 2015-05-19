@@ -25,7 +25,7 @@ angular.module('jgAccount')
     };
 
     api.getAll = function () {
-      var users = User.query(function () {
+      var users = User.query({userID: 'all'}, function () {
         console.log('Users');
         console.log(users);
       });
@@ -36,11 +36,6 @@ angular.module('jgAccount')
       user.username = username;
       user.password = password;
       user.$save();
-    };
-
-    api.getUserName = function () {
-      //result in the form of data.username
-      return $http.get('/api/users');
     };
 
     return api;

@@ -11,43 +11,60 @@ module.exports.initialize = function(app, dbConnection) {
    * Definition Routes
    */
 
-/*  app.get('/api/defs/:defID', auth.checkReq, function (req, res) {
-    defDB.getDefByID(req.params.defID, function (err, returnDef) {
+  app.get('/api/defs', auth.checkReq, function (req, res) {
+    userDB.getUser(req.memry.user_id, function (err, user) {
       if (err) {
-        return res.status(500).json(err);
+        console.log('Error: ' + err);
+        return res.status(500).json({error: err});
       } else {
-        return res.send(returnDef);
-      }
-    });
-  });*/
-
-  app.get('/api/defs/:username/:deflist', auth.checkReq, function (req, res) {
-    console.log(req.params.username);
-    console.log(req.params.deflist);
-    defDB.getAllDefs(function (err, defs) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        return res.send({ defs: defs });
+        var list = user.deflists[req.memry.deflist_id].defs || [];
+        defDB.getDefsByIDs(list, function (err, defs) {
+          if (err) {
+            console.log('MongoDB Error: ' + err);
+            return res.status(500).json({error: err});
+          } else {
+            return res.send({
+              username: user.username,
+              deflist: user.deflists[req.memry.deflist_id].name,
+              defs: defs
+            });
+          }
+        });
       }
     });
   });
 
   app.post('/api/defs', auth.checkReq, function (req, res) {
-    defDB.addNewDef(req.body, function (err, newDef) {
+    var user_id = req.memry.user_id;
+    var deflist_id = req.memry.deflist_id;
+
+    userDB.getUserDeflist(user_id, deflist_id, function (err, list) {
       if (err) {
-        return res.status(500).json(err);
+        console.log(err);
+        return res.status(500).json({error: err});
       } else {
-        return res.send(newDef);
+        defDB.addNewDef(list, req.body, function (err, newDef) {
+          if (err) {
+            console.log(err);
+            return res.status(500).json(err);
+          } else {
+            userDB.addDefIDToDeflist(user_id, deflist_id, newDef._id);
+            return res.send(newDef);
+          }
+        });
       }
     });
   });
 
   app.delete('/api/defs/:defID', auth.checkReq, function (req, res) {
+    var user_id = req.memry.user_id;
+    var deflist_id = req.memry.deflist_id;
+
     defDB.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
       } else {
+        userDB.removeDefIDFromDeflist(user_id, deflist_id, req.params.defID);
         return res.sendStatus(200);
       }
     });
@@ -66,10 +83,6 @@ module.exports.initialize = function(app, dbConnection) {
   /***************
    * User Routes
    */
-
-  app.get('/api/users', auth.checkReq, function (req, res) {
-    res.send({username: req.memry.username});
-  });
 
   //todo: DELETE THIS ROUTE IN PROD
   app.get('/api/users/all', function (req, res) {

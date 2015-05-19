@@ -16,7 +16,6 @@ var gTokenReq = {
   client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com',
   client_secret: 'Q94mrjjYhOrtVT5jEc_qzHh0',
   redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
-  //redirect_uri: 'http://localhost/oauth2callback',
   grant_type: 'authorization_code'
 };
 
@@ -25,7 +24,6 @@ var fbTokenReq = {
   client_id: '1674549109435449',
   client_secret: '0d72319aeb2c1d235a620f8d0ae23c0f',
   redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
-  //redirect_uri: 'http://localhost:8000/oauth2callback',
   grant_type: 'client_credentials'
 };
 
@@ -34,8 +32,8 @@ function isExpired(time) {
   return time + (expiryTime * 60 * 60) < Date.now() / 1000;
 }
 
-api.getToken = function (username) {
-  return jwt.sign({username: username}, secret);
+api.getToken = function (user_id, deflist_id) {
+  return jwt.sign({user_id: user_id, deflist_id: deflist_id}, secret);
 };
 
 api.checkReq = function (req, res, next) {
@@ -52,7 +50,8 @@ api.checkReq = function (req, res, next) {
           res.status(401).json({error: 'Token expired'});
         } else {
           req.memry = {};
-          req.memry.username = decoded.username;
+          req.memry.user_id = decoded.user_id;
+          req.memry.deflist_id = decoded.deflist_id;
           next();
         }
       }
@@ -101,11 +100,7 @@ api.verifyFBToken = function (token, callback) {
           res.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              callback(null, api.getToken(tokenData.user_id));
-              //at this point we should store the user_id and user token in database
-              //on the client side, store the facebook token. actually do we need that?
-              //we could just hand them a memry token
-              //in either case we need to store something in session then forward them to the db select flow
+              callback(null, api.getToken(tokenData.user_id, 0));
             } else {
               callback({message: 'Facebook auth failed'});
             }
