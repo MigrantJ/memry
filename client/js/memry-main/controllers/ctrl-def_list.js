@@ -16,5 +16,8 @@ angular.module('memryMain')
         d.editMode = false;
       });
     };
+
+    //this makes sure that logging in as a different user refreshes the deflist
+    defModel.getDefs();
   })
 ;
