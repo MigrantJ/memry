@@ -23,8 +23,8 @@ angular.module('jgAccount')
       responseError: function (err) {
         if (err.status === 401) {
           $location.path('/login');
-          return err;
         }
+        return $q.reject(err);
       }
     };
   })

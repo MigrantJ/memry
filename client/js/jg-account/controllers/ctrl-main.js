@@ -8,6 +8,9 @@ angular.module('jgAccount')
       jgAccountAccount.login($scope.email, $scope.password)
         .then(function () {
           $location.path('/main');
+        },
+        function (err) {
+          console.log(err);
         });
     };
 

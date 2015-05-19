@@ -9,9 +9,10 @@ angular.module('jgAccount')
     var User = $resource('/api/users/:userID');
 
     api.login = function (username, password) {
-      return $http.post('/api/login', {username: username, password: password}).success(function (res) {
-        jgAccountToken.setToken(res.token);
-      });
+      return $http.post('/api/login', {username: username, password: password})
+        .success(function (res) {
+          jgAccountToken.setToken(res.token);
+        });
     };
 
     //used in main module's route interceptor, in the .run block
