@@ -133,12 +133,12 @@ gulp.task('build-css', ['clean-css'], function () {
       includePaths: [conf.bootstrapDir + 'assets/stylesheets'],
       errLogToConsole: true
     }))
-    .pipe(gulp.dest('build'))
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('build-fonts', function() {
   return gulp.src(conf.bootstrapDir + '/assets/fonts/**/*')
-    .pipe(gulp.dest('build/fonts'))
+    .pipe(gulp.dest('build/fonts'));
 });
 
 gulp.task('build-img', ['clean-img'], function () {

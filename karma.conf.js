@@ -20,6 +20,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-scroll/angular-scroll.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/angular-animate/angular-animate.js',
       'client/js/**/module.js',
       'client/js/**/*.js',
       'test/client/unit/**/*.js'

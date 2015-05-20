@@ -7,6 +7,7 @@ angular.module('jgAccount')
     //tabs create an isolate scope, need these for forms to work properly
     $scope.login = {};
     $scope.signup = {};
+    $scope.showLogin = true;
 
     $scope.loginSubmit = function () {
       jgAccountAccount.login($scope.login.email, $scope.login.password)
@@ -28,20 +29,6 @@ angular.module('jgAccount')
         });
     };
 
-    $scope.loginGoogle = function () {
-      auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(function (res) {
-        if (res['code']) {
-          // todo: Hide the sign-in button now that the user is authorized:
-
-          // Send the code to the server
-          $http.post('/api/oauth', {method: 'Google', code: res['code']});
-        } else {
-          // There was an error.
-          console.log('error');
-        }
-      });
-    };
-
     $scope.createAccountSubmit = function () {
       //todo: check confirm password
       jgAccountAccount.createAccount($scope.signup.email, $scope.signup.password);
@@ -49,6 +36,10 @@ angular.module('jgAccount')
 
     $scope.getAll = function () {
       jgAccountAccount.getAll();
+    };
+
+    $scope.test = function () {
+      $scope.showLogin = !$scope.showLogin;
     };
   })
 ;
