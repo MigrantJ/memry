@@ -7,11 +7,11 @@
         <tabset>
             <tab heading="Log In">
                 <h1>Log In</h1>
-                <form ng-submit="loginSubmit()">
+                <form ng-submit="getDeflists()">
                     <label>Email:</label>
-                    <input type="text" class="form-control" ng-model="login.email">
+                    <input type="email" class="form-control" ng-model="login.email">
                     <label>Password:</label>
-                    <input type="text" class="form-control" ng-model="login.password">
+                    <input type="password" class="form-control" ng-model="login.password">
                     <button type="submit" class="btn btn-default">Log In</button>
                 </form>
             </tab>
@@ -36,10 +36,9 @@
     </div>
     <div class="animate animate-right" ng-hide="showLogin">
         <div class="center-column">
-        <p>Welcome to the list selection page.</p>
+            <h1>Select a List</h1>
+            <button ng-repeat="deflist in deflists" ng-click="loginSubmit($index)">{{deflist}}</button>
+            <button ng-click="test()">Go Back</button>
         </div>
-    </div>
-    <div>
-        <button ng-click="test()">Test</button>
     </div>
 </div>

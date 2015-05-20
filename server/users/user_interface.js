@@ -4,6 +4,23 @@ var auth = require('../auth.js');
 module.exports.getAPI = function (Model) {
   var api = {};
 
+  api.checkLogin = function (req, res, next) {
+    Model.findOne({username: req.body.username, password: req.body.password},
+      function (err, user) {
+        if (err) {
+          res.status(500).send({error: 'Error: ' + err});
+        } else {
+          if (user) {
+            req.user = user;
+            next();
+          } else {
+            res.status(401).send({error: 'Incorrect credentials'});
+          }
+        }
+      }
+    );
+  };
+
   api.loginUser = function (username, password, callback) {
     Model.findOne({username: username, password: password}, function (err, user) {
       if (err) {

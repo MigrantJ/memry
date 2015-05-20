@@ -110,14 +110,17 @@ module.exports.initialize = function(app, dbConnection) {
    * Login Routes
    */
 
-  app.post('/api/login', function (req, res) {
-    userDB.loginUser(req.body.username, req.body.password, function (err, token) {
-      if (err) {
-        return res.status(401).json(err);
-      } else {
-        return res.status(200).json({token: token});
-      }
+  app.post('/api/deflists', userDB.checkLogin, function (req, res) {
+    var deflists = [];
+    req.user.deflists.forEach(function (e) {
+      deflists.push(e.name);
     });
+    res.status(200).json({deflists: deflists});
+  });
+
+  app.post('/api/login', userDB.checkLogin, function (req, res) {
+    var token = auth.getToken(req.user._id, req.body.deflist);
+    return res.status(200).json({token: token});
   });
 
   app.post('/api/oauth', function (req, res) {
