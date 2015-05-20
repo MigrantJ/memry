@@ -4,8 +4,12 @@ angular.module('jgAccount')
   .controller('jgAccount-MainController', function ($scope, $location, $http, jgAccountAccount, jgAccountOauth) {
     'use strict';
 
+    //tabs create an isolate scope, need these for forms to work properly
+    $scope.login = {};
+    $scope.signup = {};
+
     $scope.loginSubmit = function () {
-      jgAccountAccount.login($scope.email, $scope.password)
+      jgAccountAccount.login($scope.login.email, $scope.login.password)
         .then(function () {
           $location.path('/main');
         },
@@ -39,7 +43,8 @@ angular.module('jgAccount')
     };
 
     $scope.createAccountSubmit = function () {
-      jgAccountAccount.createAccount($scope.createEmail, $scope.createPassword);
+      //todo: check confirm password
+      jgAccountAccount.createAccount($scope.signup.email, $scope.signup.password);
     };
 
     $scope.getAll = function () {
