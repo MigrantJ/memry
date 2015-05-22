@@ -11,6 +11,14 @@ module.exports.initialize = function(app, dbConnection) {
    * Definition Routes
    */
 
+  //todo: remove for prod
+  app.get('/api/defs/all', function () {
+    defDB.getAllDefs(function (err, defs) {
+      console.log('ALL DEFS:');
+      console.log(JSON.stringify(defs, null, ' '));
+    });
+  });
+
   app.get('/api/defs', auth.checkReq, function (req, res) {
     userDB.getUser(req.memry.user_id, function (err, user) {
       if (err) {
@@ -90,7 +98,8 @@ module.exports.initialize = function(app, dbConnection) {
       if (err) {
         return res.status(500).json(err);
       } else {
-        console.log(JSON.stringify(users));
+        console.log('ALL USERS:');
+        console.log(JSON.stringify(users, null, ' '));
         return res.send(users);
       }
     });
@@ -101,7 +110,8 @@ module.exports.initialize = function(app, dbConnection) {
       if (err) {
         return res.status(500).json(err);
       } else {
-        return res.send(user);
+        var token = auth.getToken(user._id, 0);
+        return res.status(200).json({token: token});
       }
     });
   });
@@ -119,7 +129,13 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.post('/api/login', userDB.checkLogin, function (req, res) {
-    var token = auth.getToken(req.user._id, req.body.deflist);
+    var deflistID;
+    if (req.body.deflist !== null) {
+      deflistID = req.body.deflist;
+    } else {
+      deflistID = userDB.addDeflist(req.user, req.body.deflistName);
+    }
+    var token = auth.getToken(req.user._id, deflistID);
     return res.status(200).json({token: token});
   });
 

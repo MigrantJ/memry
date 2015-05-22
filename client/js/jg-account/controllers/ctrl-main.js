@@ -8,26 +8,58 @@ angular.module('jgAccount')
     $scope.login = {};
     $scope.signup = {};
     $scope.showLogin = true;
-    $scope.deflists = ['No deflists found'];
+    $scope.deflists = [];
+    $scope.creatingNewList = false;
+    $scope.createListName = '';
+    $scope.isLoggingIn = false;
+    $scope.isSigningUp = false;
 
-    $scope.getDeflists = function () {
+    $scope.loggingIn = function () {
       return $http.post('/api/deflists', {username: $scope.login.email, password: $scope.login.password})
         .then(function (res) {
           $scope.deflists = res.data.deflists;
           //todo: revenge of the timeout hack, this allows dynamic content to animate properly
           $timeout(function () {
-            $scope.test();
+            $scope.isLoggingIn = true;
+            $scope.isSigningUp = false;
+            $scope.switchViews();
           }, 1);
         });
     };
 
-    $scope.loginSubmit = function (deflistIndex) {
-      var credentials = {
-        username: $scope.login.email,
-        password: $scope.login.password,
-        deflist: deflistIndex
-      };
-      jgAccountAccount.login(credentials)
+    $scope.signingUp = function () {
+      $scope.isLoggingIn = false;
+      $scope.isSigningUp = true;
+      $scope.switchViews();
+    };
+
+    $scope.formSubmit = function (deflistIndex) {
+      var credentials;
+      var accountFunc;
+      if ($scope.isLoggingIn) {
+        credentials = {
+          username: $scope.login.email,
+          password: $scope.login.password,
+          deflist: deflistIndex,
+          deflistName: $scope.createListName
+        };
+        accountFunc = jgAccountAccount.login;
+      } else if ($scope.isSigningUp) {
+        if ($scope.signup.password === $scope.signup.passwordconf) {
+          credentials = {
+            username: $scope.signup.email,
+            password: $scope.signup.password,
+            deflist: deflistIndex,
+            deflistName: $scope.createListName
+          };
+          accountFunc = jgAccountAccount.createAccount;
+        } else {
+          //todo: an actual error system
+          console.log('passwords don\'t match');
+          return;
+        }
+      }
+      accountFunc(credentials)
         .then(function () {
           $location.path('/main');
         },
@@ -46,17 +78,16 @@ angular.module('jgAccount')
         });
     };
 
-    $scope.createAccountSubmit = function () {
-      //todo: check confirm password
-      jgAccountAccount.createAccount($scope.signup.email, $scope.signup.password);
-    };
-
     $scope.getAll = function () {
       jgAccountAccount.getAll();
     };
 
-    $scope.test = function () {
+    $scope.switchViews = function () {
       $scope.showLogin = !$scope.showLogin;
+    };
+
+    $scope.showCreateList = function () {
+      $scope.creatingNewList = !$scope.creatingNewList;
     };
   })
 ;

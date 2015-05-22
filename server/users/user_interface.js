@@ -43,7 +43,14 @@ module.exports.getAPI = function (Model) {
 
   //todo: don't store these passwords in plaintext
   api.addNewUser = function (reqBody, callback) {
-    var user = new Model({username: reqBody.username, password: reqBody.password});
+    var user = new Model({
+      username: reqBody.username,
+      password: reqBody.password,
+      deflists: [{
+        name: reqBody.deflistName,
+        defs: []
+      }]
+    });
 
     user.save(function (err) {
       callback(err, user);
@@ -77,6 +84,13 @@ module.exports.getAPI = function (Model) {
         }
       }
     });
+  };
+
+  api.addDeflist = function (user, name) {
+    var newID = user.deflists.length;
+    user.deflists.push({name: name, defs: []});
+    user.save();
+    return newID;
   };
 
   api.addDefIDToDeflist = function (user_id, deflist_id, def_id) {

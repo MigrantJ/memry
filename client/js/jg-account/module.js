@@ -1,6 +1,6 @@
 /*global angular*/
 'use strict';
 
-angular.module('jgAccount', ['ngResource'], function () {
+angular.module('jgAccount', [], function () {
 
 });
