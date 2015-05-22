@@ -104,6 +104,7 @@ module.exports.getAPI = function (Model) {
     api.getUser(user_id, function (err, user) {
       var index = user.deflists[deflist_id].defs.indexOf(def_id);
       user.deflists[deflist_id].defs.splice(index, 1);
+      user.save();
     });
   };
 

@@ -65,14 +65,11 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.delete('/api/defs/:defID', auth.checkReq, function (req, res) {
-    var user_id = req.memry.user_id;
-    var deflist_id = req.memry.deflist_id;
-
     defDB.removeDef(req.params.defID, function (err) {
       if (err) {
         return res.status(500).json(err);
       } else {
-        userDB.removeDefIDFromDeflist(user_id, deflist_id, req.params.defID);
+        userDB.removeDefIDFromDeflist(req.memry.user_id, req.memry.deflist_id, req.params.defID);
         return res.sendStatus(200);
       }
     });
