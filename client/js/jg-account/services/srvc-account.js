@@ -25,7 +25,7 @@ angular.module('jgAccount')
 
     api.createAccount = function (credentials) {
       return $http.post('api/users', credentials)
-        .then(function (res) {
+        .success(function (res) {
           jgAccountToken.setToken(res.token);
         });
     };
