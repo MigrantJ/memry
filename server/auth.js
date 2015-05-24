@@ -4,10 +4,9 @@ var jwt = require('jsonwebtoken');
 var https = require('https');
 var querystring = require('querystring');
 
-//this can literally be any string you want. except 'secret' or 'pass' ;)
+//this can be any string you want. except 'secret' or 'pass' ;)
 var secret = 'funeolv739t62/3uipblak';
 var api = {};
-//var data = {};
 //in hours
 var expiryTime = 1;
 
@@ -87,30 +86,30 @@ api.getGoogleToken = function (code) {
   req.end();
 };
 
-api.verifyFBToken = function (token, callback) {
+api.checkOauth = function (req, res, next) {
   //get app token
   var qString = querystring.stringify(fbTokenReq);
-  https.get('https://graph.facebook.com/oauth/access_token?' + qString, function (res) {
-    res.on('data', function (chunk) {
+  https.get('https://graph.facebook.com/oauth/access_token?' + qString, function (fbres) {
+    fbres.on('data', function (chunk) {
       var chunkArray = chunk.toString().split('=');
       if (chunkArray[0] === 'access_token') {
         //now use it to verify the user's token
-        qString = querystring.stringify({ access_token: chunkArray[1], input_token: token});
+        qString = querystring.stringify({ access_token: chunkArray[1], input_token: req.body.token});
         https.get('https://graph.facebook.com/debug_token?' + qString, function (res) {
           res.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              callback(null, api.getToken(tokenData.user_id, 0));
+              //todo: facebook id shows up as username, different way?
+              req.username = tokenData.user_id;
+              next();
             } else {
-              callback({message: 'Facebook auth failed'});
+              res.status(401).send({error: 'Facebook token auth failed'});
             }
           });
         });
       }
     });
   });
-
-  //use app token to verify user access token
 };
 
 module.exports = api;

@@ -7,59 +7,45 @@ angular.module('jgAccount')
     //tabs create an isolate scope, need these for forms to work properly
     $scope.login = {};
     $scope.signup = {};
+    $scope.credentials = {};
+    $scope.accountFunc = null;
     $scope.showLogin = true;
     $scope.deflists = [];
     $scope.creatingNewList = false;
     $scope.createListName = '';
-    $scope.isLoggingIn = false;
-    $scope.isSigningUp = false;
 
     $scope.loggingIn = function () {
-      return $http.post('/api/deflists', {username: $scope.login.email, password: $scope.login.password})
+      $scope.credentials.username = $scope.login.email;
+      $scope.credentials.password = $scope.login.password;
+      $scope.accountFunc = jgAccountAccount.login;
+
+      return $http.post('/api/deflists', $scope.credentials)
         .then(function (res) {
           $scope.deflists = res.data.deflists;
-          //todo: revenge of the timeout hack, this allows dynamic content to animate properly
+          //this allows dynamic content to animate properly
           $timeout(function () {
-            $scope.isLoggingIn = true;
-            $scope.isSigningUp = false;
             $scope.switchViews();
-          }, 1);
+          }, 100);
         });
     };
 
     $scope.signingUp = function () {
-      $scope.isLoggingIn = false;
-      $scope.isSigningUp = true;
-      $scope.switchViews();
+      if ($scope.signup.password === $scope.signup.passwordconf) {
+        $scope.credentials.username = $scope.signup.email;
+        $scope.credentials.password = $scope.signup.password;
+        $scope.accountFunc = jgAccountAccount.createAccount;
+        $scope.switchViews();
+      } else {
+        //todo: an actual error system
+        console.log('passwords don\'t match');
+      }
     };
 
     $scope.formSubmit = function (deflistIndex) {
-      var credentials;
-      var accountFunc;
-      if ($scope.isLoggingIn) {
-        credentials = {
-          username: $scope.login.email,
-          password: $scope.login.password,
-          deflist: deflistIndex,
-          deflistName: $scope.createListName
-        };
-        accountFunc = jgAccountAccount.login;
-      } else if ($scope.isSigningUp) {
-        if ($scope.signup.password === $scope.signup.passwordconf) {
-          credentials = {
-            username: $scope.signup.email,
-            password: $scope.signup.password,
-            deflist: deflistIndex,
-            deflistName: $scope.createListName
-          };
-          accountFunc = jgAccountAccount.createAccount;
-        } else {
-          //todo: an actual error system
-          console.log('passwords don\'t match');
-          return;
-        }
-      }
-      accountFunc(credentials)
+      $scope.credentials.deflist = deflistIndex;
+      $scope.credentials.deflistName = $scope.createListName;
+
+      $scope.accountFunc($scope.credentials)
         .then(function () {
           $location.path('/main');
         },
@@ -69,17 +55,32 @@ angular.module('jgAccount')
     };
 
     $scope.loginFacebook = function () {
-      jgAccountOauth.loginFacebook()
-        .then(function () {
-          $location.path('/main');
+      //get the oauth token
+        //brings up facebook dialog automatically if needful but delivers token regardless
+      jgAccountOauth.getToken(jgAccountOauth.grantors.Facebook).then(
+        function (token) {
+          $scope.credentials.token = token;
+          //make a call to /api/oauth/deflists
+          //server side this checks token authenticity, returns deflists
+          return $http.post('/api/oauth/deflists', {token: token}).then(
+            function (res) {
+              if (res.data.deflists) {
+                $scope.deflists = res.data.deflists;
+                $scope.credentials.url = '/api/oauth/login';
+                $scope.accountFunc = jgAccountOauth.callURL;
+              } else {
+                //this person has never logged in before
+                $scope.credentials.url = '/api/oauth/newAccount';
+                $scope.accountFunc = jgAccountOauth.callURL;
+              }
+              $scope.switchViews();
+            }
+          );
         },
         function (error) {
           console.log(error);
-        });
-    };
-
-    $scope.getAll = function () {
-      jgAccountAccount.getAll();
+        }
+      );
     };
 
     $scope.switchViews = function () {

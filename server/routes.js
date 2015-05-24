@@ -136,34 +136,42 @@ module.exports.initialize = function(app, dbConnection) {
     return res.status(200).json({token: token});
   });
 
-  app.post('/api/oauth', function (req, res) {
-    var method = req.body.method || '';
-    if (method === 'Google') {
-      auth.getGoogleToken(req.body.code);
-      return res.status(200).json({message: 'yup'});
-    } else if (method === 'Facebook') {
-      auth.verifyFBToken(req.body.token, function (err, token) {
-        if (err) {
-          return res.status(401).json(err);
-        } else {
-          return res.status(200).json({token: token});
-        }
-      });
-    } else {
-      return res.status(400).json({message: 'Bad Request'});
-    }
+  app.post('/api/oauth/deflists', auth.checkOauth, function (req, res) {
+    userDB.getUserByName(req.username, function (err, user) {
+      var deflists = null;
+      if (user) {
+        deflists = [];
+        user.deflists.forEach(function (e) {
+          deflists.push(e.name);
+        });
+      }
+      res.status(200).json({deflists: deflists});
+    });
   });
 
-  app.get('/oauth2callback', function (req, res) {
-    console.log('callback');
-    console.log(req.body);
-    return res.status(200).json({message: 'received'});
+  app.post('/api/oauth/login', auth.checkOauth, function (req, res) {
+    userDB.getUserByName(req.username, function (err, user) {
+      var deflistID;
+      if (req.body.deflist !== null) {
+        deflistID = req.body.deflist;
+      } else {
+        deflistID = userDB.addDeflist(user, req.body.deflistName);
+      }
+      var token = auth.getToken(user._id, deflistID);
+      return res.status(200).json({token: token});
+    });
   });
 
-  app.post('/oauth2callback', function (req, res) {
-    console.log('callback');
-    console.log(req.body);
-    return res.status(200).json({message: 'received'});
+  app.post('/api/oauth/newAccount', auth.checkOauth, function (req, res) {
+    //todo: different password solution
+    userDB.addNewUser({username: req.user_id, password: '1234', deflistName: req.body.deflistName}, function (err, user) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        var token = auth.getToken(user._id, 0);
+        return res.status(200).json({token: token});
+      }
+    });
   });
 
   /***************

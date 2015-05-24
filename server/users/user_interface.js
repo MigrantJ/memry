@@ -71,6 +71,20 @@ module.exports.getAPI = function (Model) {
     });
   };
 
+  api.getUserByName = function (username, callback) {
+    Model.findOne({username: username}, function (err, user) {
+      if (err) {
+        callback('Error occurred: ' + err);
+      } else {
+        if (user) {
+          callback(null, user);
+        } else {
+          callback('User ' + username + ' not found!');
+        }
+      }
+    });
+  };
+
   api.getUserDeflist = function (user_id, deflist_id, callback) {
     Model.findById(user_id, function (err, user) {
       if (err) {
