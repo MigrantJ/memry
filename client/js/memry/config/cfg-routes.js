@@ -9,14 +9,14 @@ angular.module('memry')
     $routeProvider
       .when('/login', {
         templateUrl: 'views/login.html',
-        controller: 'jgAccount-MainController',
+        controller: 'MemryLoginController',
         access: {
           requiresLogin: false
         }
       })
       .when('/main', {
         templateUrl: 'views/main.html',
-        controller: 'MainController',
+        controller: 'MemryMainController',
         access: {
           requiresLogin: true
         }

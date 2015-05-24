@@ -1,7 +1,7 @@
 /*global angular*/
 
-angular.module('jgAccount')
-  .controller('jgAccount-MainController', function ($scope, $location, $http, $timeout, jgAccountAccount, jgAccountOauth) {
+angular.module('memryLogin')
+  .controller('MemryLoginController', function ($scope, $location, $http, $timeout, jgAccountAccount, jgAccountOauth) {
     'use strict';
 
     //tabs create an isolate scope, need these for forms to work properly
@@ -74,6 +74,9 @@ angular.module('jgAccount')
                 $scope.accountFunc = jgAccountOauth.callURL;
               }
               $scope.switchViews();
+            },
+            function (error) {
+              console.log(error);
             }
           );
         },

@@ -1,7 +1,7 @@
 /*global angular, FB*/
 
 angular.module('jgAccount')
-  .factory('jgAccountOauth', function ($http, $q, $window, jgAccountToken) {
+  .factory('jgAccountOauth', function ($http, $q, jgAccountToken) {
     'use strict';
     var api = {};
     api.grantors = {
@@ -11,18 +11,15 @@ angular.module('jgAccount')
 
     api.getToken = function (grantor) {
       var deferred = $q.defer();
-      if ($window.localStorage.oauth_token) {
-        deferred.resolve($window.localStorage.oauth_token);
-      } else if (grantor === api.grantors.Facebook) {
+
+      if (grantor === api.grantors.Facebook) {
         //second param forces FB actually check status, not use cached response
         FB.getLoginStatus(function (res) {
           if (res.status === 'connected') {
-            $window.localStorage.oauth_token = res.authResponse.accessToken;
             deferred.resolve(res.authResponse.accessToken);
           } else {
             FB.login(function (res) {
               if (res.status === 'connected') {
-                $window.localStorage.oauth_token = res.authResponse.accessToken;
                 deferred.resolve(res.authResponse.accessToken);
               } else {
                 deferred.reject('Facebook did not connect');

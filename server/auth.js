@@ -95,14 +95,15 @@ api.checkOauth = function (req, res, next) {
       if (chunkArray[0] === 'access_token') {
         //now use it to verify the user's token
         qString = querystring.stringify({ access_token: chunkArray[1], input_token: req.body.token});
-        https.get('https://graph.facebook.com/debug_token?' + qString, function (res) {
-          res.on('data', function (chunk) {
+        https.get('https://graph.facebook.com/debug_token?' + qString, function (fbres2) {
+          fbres2.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
               //todo: facebook id shows up as username, different way?
               req.username = tokenData.user_id;
               next();
             } else {
+              console.log(JSON.parse(chunk));
               res.status(401).send({error: 'Facebook token auth failed'});
             }
           });

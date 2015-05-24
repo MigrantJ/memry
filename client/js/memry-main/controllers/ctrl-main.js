@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .controller('MainController', function ($scope, $timeout) {
+  .controller('MemryMainController', function ($scope, $timeout) {
     'use strict';
     $scope.events = {
       defAdded: function (title) {

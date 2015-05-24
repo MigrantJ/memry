@@ -146,6 +146,7 @@ module.exports.initialize = function(app, dbConnection) {
         });
       }
       res.status(200).json({deflists: deflists});
+      console.log('there');
     });
   });
 
