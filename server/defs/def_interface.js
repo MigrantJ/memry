@@ -55,9 +55,16 @@ module.exports.getAPI = function (Model) {
 
   //removes a def from the db by its id
   //returns errors if present
-  api.removeDef = function (id, callback) {
-    Model.remove({'_id': id}, function (err) {
-      return callback(err);
+  api.removeDef = function (defs, id, callback) {
+    Model.remove({'_id': id}, function (err, def) {
+      if (err) {
+        return callback(err);
+      } else {
+        defs = defAPI.removeDeflinkFromDescriptions(defs, def);
+        api.saveAllDefs(defs, function (err) {
+          callback(err);
+        });
+      }
     });
   };
 

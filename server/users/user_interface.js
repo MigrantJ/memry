@@ -116,11 +116,13 @@ module.exports.getAPI = function (Model) {
     });
   };
 
-  api.removeDefIDFromDeflist = function (user_id, deflist_id, def_id) {
+  api.removeDefIDFromDeflist = function (user_id, deflist_id, def_id, callback) {
     api.getUser(user_id, function (err, user) {
       var index = user.deflists[deflist_id].defs.indexOf(def_id);
       user.deflists[deflist_id].defs.splice(index, 1);
-      user.save();
+      user.save(function (err) {
+        callback(err);
+      });
     });
   };
 

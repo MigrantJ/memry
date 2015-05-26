@@ -83,13 +83,23 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.delete('/api/defs/:defID', auth.checkReq, function (req, res) {
-    defDB.removeDef(req.params.defID, function (err) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        userDB.removeDefIDFromDeflist(req.memry.user_id, req.memry.deflist_id, req.params.defID);
-        return res.sendStatus(200);
-      }
+    getDeflist(req, res, function (deflist) {
+      defDB.removeDef(deflist, req.params.defID, function (err) {
+        if (err) {
+          return res.status(500).json(err);
+        } else {
+          userDB.removeDefIDFromDeflist(req.memry.user_id, req.memry.deflist_id, req.params.defID, function (err) {
+            if (err) {
+              console.log(err);
+              return res.status(500).json(err);
+            } else {
+              getDeflist(req, res, function (deflist) {
+                return res.send({defs: deflist});
+              });
+            }
+          });
+        }
+      });
     });
   });
 
