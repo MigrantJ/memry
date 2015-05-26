@@ -34,9 +34,10 @@ angular.module('memryMain')
         title: title,
         description: description
       })
-        .then(function (response) {
-          api.getDefs();
-          deferred.resolve(response.data);
+        .then(function (res) {
+          api.data.defs = res.data.defs;
+          deferred.resolve(res.data);
+
         });
       return deferred.promise;
     };
@@ -46,9 +47,8 @@ angular.module('memryMain')
     */
     api.editDefinition = function (definition) {
       defServer.update(definition)
-        .then(function () {
-          //todo: don't require a server get every time we change the data
-          api.getDefs();
+        .then(function (res) {
+          api.data.defs = res.data.defs;
         });
     };
 
@@ -57,9 +57,8 @@ angular.module('memryMain')
      */
     api.deleteDefinition = function (id) {
       defServer.delete(id)
-        .then(function () {
-          //todo: don't require a server get every time we change the data
-          api.getDefs();
+        .then(function (res) {
+          api.data.defs = res.data.defs;
         });
     };
 

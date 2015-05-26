@@ -7,6 +7,24 @@ module.exports.initialize = function(app, dbConnection) {
 
   var auth = require('./auth.js');
 
+  var getDeflist = function (req, res, callback) {
+    userDB.getUserDeflist(req.memry.user_id, req.memry.deflist_id, function (err, defIds) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({error: err});
+      } else {
+        defDB.getDefsByIDs(defIds, function (err, deflist) {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({error: err});
+          } else {
+            callback(deflist);
+          }
+        });
+      }
+    });
+  };
+
   /***************
    * Definition Routes
    */
@@ -51,13 +69,13 @@ module.exports.initialize = function(app, dbConnection) {
         console.log(err);
         return res.status(500).json({error: err});
       } else {
-        defDB.addNewDef(list, req.body, function (err, newDef) {
+        defDB.addNewDef(list, req.body, function (err, data) {
           if (err) {
             console.log(err);
             return res.status(500).json(err);
           } else {
-            userDB.addDefIDToDeflist(user_id, deflist_id, newDef._id);
-            return res.send(newDef);
+            userDB.addDefIDToDeflist(user_id, deflist_id, data.newDef._id);
+            return res.send({defs: data.defs});
           }
         });
       }
@@ -76,12 +94,17 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.put('/api/defs/:defID', auth.checkReq, function (req, res) {
-    defDB.editDef(req.params.defID, req.body, function (err, modifiedDef) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        return res.send(modifiedDef);
-      }
+    getDeflist(req, res, function (deflist) {
+      defDB.editDef(deflist, req.params.defID, req.body, function (err, data) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json(err);
+        } else {
+          getDeflist(req, res, function (deflist) {
+            return res.send({defs: deflist});
+          });
+        }
+      });
     });
   });
 

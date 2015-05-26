@@ -51,7 +51,7 @@ module.exports.getAPI = function (Model) {
                   return callback(err);
                 }
               });
-              return callback(err, newDef);
+              return callback(err, {newDef: newDef, defs: defs});
             });
           }
         }
@@ -67,34 +67,30 @@ module.exports.getAPI = function (Model) {
     });
   };
 
-  api.editDef = function (id, newDef, callback) {
+  api.editDef = function (defs, id, newDef, callback) {
     api.getDefByID(id, function (err, defToModify) {
       if (err) {
         return callback(err);
       } else {
-        //get all the other defs so we can validate the new one
-        api.getAllDefs(function (err, defs) {
-          var processedDef = defAPI.processInputDef(defs, newDef);
+        var processedDef = defAPI.processInputDef(defs, newDef);
 
-          //if the title has been modified, all the links need to be updated
-          if (defToModify.title !== processedDef.title) {
-            defs = defAPI.removeDeflinkFromDescriptions(defs, defToModify);
-            defs = defAPI.addDeflinksToDescriptions(defs, processedDef);
-            api.saveAllDefs(defs, function (err) {
-              if (err) {
-                return callback(err);
-              }
-            });
-          }
-
-          defToModify.title = processedDef.title;
-          defToModify.lowercaseTitle = processedDef.title.toLowerCase();
-          defToModify.description = processedDef.description;
-          defToModify.descriptionURL = processedDef.descriptionURL;
-
-          defToModify.save(function (err, def) {
-            return callback(err, def);
+        //if the title has been modified, all the links need to be updated
+        if (defToModify.title !== processedDef.title) {
+          defs = defAPI.removeDeflinkFromDescriptions(defs, defToModify);
+          defs = defAPI.addDeflinksToDescriptions(defs, processedDef);
+          api.saveAllDefs(defs, function (err) {
+            if (err) {
+              return callback(err);
+            }
           });
+        }
+
+        defToModify.title = processedDef.title;
+        defToModify.lowercaseTitle = processedDef.title.toLowerCase();
+        defToModify.description = processedDef.description;
+        defToModify.descriptionURL = processedDef.descriptionURL;
+        defToModify.save(function (err, def) {
+          return callback(err, {def: def, defs: defs});
         });
       }
     });
