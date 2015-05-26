@@ -31,32 +31,26 @@ module.exports.getAPI = function (Model) {
   //returns the newly added def
   //api.addNewDef = function (defBody, callback) {
   api.addNewDef = function (deflist, defBody, callback) {
-    api.getDefsByIDs(deflist, function (err, defs) {
-      if (err) {
-        return callback(err);
+    if (defAPI.titleExists(deflist, defBody)) {
+      return callback({error: 'Title ' + defBody.title + ' already exists!'});
+    } else {
+      if (!defAPI.defIsValid(deflist, defBody)) {
+        return callback({error: 'Definition is corrupt, missing required parts'});
       } else {
-        if (defAPI.titleExists(defs, defBody)) {
-          return callback({error: 'Title ' + defBody.title + ' already exists!'});
-        } else {
-          if (!defAPI.defIsValid(defs, defBody)) {
-            return callback({error: 'Definition is corrupt, missing required parts'});
-          } else {
-            var processedDef = defAPI.processInputDef(defs, defBody);
-            var def = new Model(processedDef);
+        var processedDef = defAPI.processInputDef(deflist, defBody);
+        var def = new Model(processedDef);
 
-            def.save(function (err, newDef) {
-              defs = defAPI.addDeflinksToDescriptions(defs, newDef);
-              api.saveAllDefs(defs, function (err) {
-                if (err) {
-                  return callback(err);
-                }
-              });
-              return callback(err, {newDef: newDef, defs: defs});
-            });
-          }
-        }
+        def.save(function (err, newDef) {
+          deflist = defAPI.addDeflinksToDescriptions(deflist, newDef);
+          api.saveAllDefs(deflist, function (err) {
+            if (err) {
+              return callback(err);
+            }
+          });
+          return callback(err, {newDef: newDef, defs: deflist});
+        });
       }
-    });
+    }
   };
 
   //removes a def from the db by its id

@@ -107,10 +107,12 @@ module.exports.getAPI = function (Model) {
     return newID;
   };
 
-  api.addDefIDToDeflist = function (user_id, deflist_id, def_id) {
+  api.addDefIDToDeflist = function (user_id, deflist_id, def_id, callback) {
     api.getUser(user_id, function (err, user) {
       user.deflists[deflist_id].defs.push(def_id);
-      user.save();
+      user.save(function (err) {
+        callback(err);
+      });
     });
   };
 

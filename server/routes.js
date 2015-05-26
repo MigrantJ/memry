@@ -61,24 +61,24 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.post('/api/defs', auth.checkReq, function (req, res) {
-    var user_id = req.memry.user_id;
-    var deflist_id = req.memry.deflist_id;
-
-    userDB.getUserDeflist(user_id, deflist_id, function (err, list) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({error: err});
-      } else {
-        defDB.addNewDef(list, req.body, function (err, data) {
-          if (err) {
-            console.log(err);
-            return res.status(500).json(err);
-          } else {
-            userDB.addDefIDToDeflist(user_id, deflist_id, data.newDef._id);
-            return res.send({defs: data.defs});
-          }
-        });
-      }
+    getDeflist(req, res, function (deflist) {
+      defDB.addNewDef(deflist, req.body, function (err, data) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json(err);
+        } else {
+          userDB.addDefIDToDeflist(req.memry.user_id, req.memry.deflist_id, data.newDef._id, function (err) {
+            if (err) {
+              console.log(err);
+              return res.status(500).json(err);
+            } else {
+              getDeflist(req, res, function (deflist) {
+                return res.send({defs: deflist});
+              });
+            }
+          });
+        }
+      });
     });
   });
 
