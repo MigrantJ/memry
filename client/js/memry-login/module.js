@@ -1,6 +1,4 @@
 /*global angular*/
 'use strict';
 
-angular.module('memryLogin', ['jgAccount'], function () {
-
-});
+angular.module('memryLogin', ['jgAccount','ui.bootstrap']);

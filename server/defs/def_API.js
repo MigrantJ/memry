@@ -47,7 +47,19 @@ api.addDeflinksToDescriptions = function (defs, defToAdd) {
   var regex = new RegExp(api.defTitleToRegexStr(defToAdd.title), 'g');
 
   _.forEach(defs, function (d) {
-    d.descriptionURL = d.descriptionURL.replace(regex, '$1<deflink d=\'' + defToAdd._id + '\'>$2</deflink>');
+    var descriptionURL = d.descriptionURL;
+
+    //add spaces to either end of the description if there aren't ones already, for regex purposes
+    if (descriptionURL[0] !== ' ') {
+      descriptionURL = ' ' + descriptionURL;
+    }
+    if (descriptionURL[descriptionURL.length - 1] !== ' ') {
+      descriptionURL += ' ';
+    }
+
+    descriptionURL = descriptionURL.replace(regex, '$1<deflink d=\'' + defToAdd._id + '\'>$2</deflink>');
+
+    d.descriptionURL = _.trim(descriptionURL);
   });
 
   return defs;

@@ -46,17 +46,10 @@ module.exports.getAPI = function (Model) {
 
             def.save(function (err, newDef) {
               defs = defAPI.addDeflinksToDescriptions(defs, newDef);
-              defs.forEach(function (d) {
-                Model.update({_id: d._id}, {
-                  title: d.title,
-                  lowercaseTitle: d.lowercaseTitle,
-                  description: d.description,
-                  descriptionURL: d.descriptionURL
-                }, function (err) {
-                  if (err) {
-                    return callback(err);
-                  }
-                });
+              api.saveAllDefs(defs, function (err) {
+                if (err) {
+                  return callback(err);
+                }
               });
               return callback(err, newDef);
             });

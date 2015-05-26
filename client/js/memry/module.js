@@ -1,6 +1,4 @@
 /*global angular*/
 'use strict';
 
-angular.module('memry', ['ngRoute','memryMain','memryLogin'], function () {
-
-});
+angular.module('memry', ['ngRoute','memryMain','memryLogin']);

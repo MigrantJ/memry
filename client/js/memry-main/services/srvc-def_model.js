@@ -125,7 +125,6 @@ angular.module('memryMain')
         return null;
       }
 
-      //todo: this may not be performant
       var def = null;
       api.data.defs.some(function (d) {
         return d.title === title && (def = d);
