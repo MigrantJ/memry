@@ -1,12 +1,10 @@
-/*global angular*/
+/*global angular, grecaptcha*/
 
 angular.module('memryLogin')
   .controller('MemryLoginController', function ($scope, $location, $http, $timeout, jgAccountAccount, jgAccountOauth) {
     'use strict';
 
     //tabs create an isolate scope, need these for forms to work properly
-    $scope.login = {};
-    $scope.signup = {};
     $scope.credentials = {};
     $scope.accountFunc = null;
     $scope.showLogin = true;
@@ -14,9 +12,9 @@ angular.module('memryLogin')
     $scope.creatingNewList = false;
     $scope.createListName = '';
 
-    $scope.loggingIn = function () {
-      $scope.credentials.username = $scope.login.email;
-      $scope.credentials.password = $scope.login.password;
+    $scope.loggingIn = function (form) {
+      $scope.credentials.username = form.email.$viewValue;
+      $scope.credentials.password = form.pw.$viewValue;
       $scope.accountFunc = jgAccountAccount.login;
 
       return $http.post('/api/deflists', $scope.credentials)
@@ -29,14 +27,23 @@ angular.module('memryLogin')
         });
     };
 
-    $scope.signingUp = function () {
-      if ($scope.signup.password === $scope.signup.passwordconf) {
-        $scope.credentials.username = $scope.signup.email;
-        $scope.credentials.password = $scope.signup.password;
+    $scope.signingUp = function (form) {
+      if (form.pw.$viewValue === form.pwconf.$viewValue) {
+        $scope.credentials.username = form.email.$viewValue;
+        $scope.credentials.password = form.pw.$viewValue;
+        $scope.credentials.captcha = grecaptcha.getResponse();
         $scope.accountFunc = jgAccountAccount.createAccount;
-        $scope.switchViews();
+        $http.post('/api/users/verify', $scope.credentials)
+          .then(function () {
+            $scope.switchViews();
+          })
+          .then(function (err) {
+            console.log(err.error);
+            grecaptcha.reset();
+          });
       } else {
         //todo: an actual error system
+        grecaptcha.reset();
         console.log('passwords don\'t match');
       }
     };

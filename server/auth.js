@@ -122,4 +122,42 @@ api.comparePassword = function (pass, hash) {
   return bcrypt.compareSync(pass, hash);
 };
 
+api.checkCaptcha = function (req, res, next) {
+  /*https.post('https://www.google.com/recaptcha/api/siteverify', {'g-recaptcha-response': req.body.captcha}, function (gRes) {
+    gRes.on('data', function (chunk) {
+      console.log(chunk.toString());
+      res.send({});
+    });
+  });*/
+
+
+  var captchaReqObj = {
+    secret: '6Ld0eQcTAAAAAPz10jJNPv3P6L6uQ0i7r3qbYD1K',
+    response: req.body.captcha
+  };
+  var qString = querystring.stringify(captchaReqObj);
+  //var qString = 'secret=' +  + '&client_secret=' + gTokenReq.client_secret + '&redirect_uri=' + gTokenReq.redirect_uri + '&grant_type=' + gTokenReq.grant_type + '&code=' + code;
+  var cReq = https.request({
+    hostname: 'www.google.com',
+    path: '/recaptcha/api/siteverify',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(qString)
+    }
+  }, function (cRes) {
+    cRes.setEncoding('utf8');
+    cRes.on('data', function (chunk) {
+      if (JSON.parse(chunk).success) {
+        next();
+      } else {
+        res.status(401).send({error: 'No captcha'});
+      }
+    });
+  });
+
+  cReq.write(qString);
+  cReq.end();
+};
+
 module.exports = api;
