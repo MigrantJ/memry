@@ -119,6 +119,13 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   /***************
+   * Token Routes
+   */
+  app.get('/api/token', auth.checkReq, function (req, res) {
+    res.status(200).send();
+  });
+
+  /***************
    * User Routes
    */
 

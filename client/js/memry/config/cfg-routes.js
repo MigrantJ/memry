@@ -28,13 +28,16 @@ angular.module('memry')
   .run(function ($rootScope, $location, jgAccountAccount) {
     'use strict';
 
-    //on refresh / new route, check if user is already logged in
-    $rootScope.$on('$routeChangeStart', function () {
-      if (jgAccountAccount.isLoggedIn()) {
-        //todo: make this work
-        //$location.path('/main');
-        console.log('you are logged in');
-      }
+    //on refresh / new route, check if user is already logged in and forward to main if so
+    $rootScope.$on('$routeChangeStart', function (event, next) {
+      jgAccountAccount.checkToken().then(
+        function () {
+          $location.path('/main');
+        },
+        function () {
+          $location.path('/login');
+        }
+      );
     });
   })
 ;

@@ -14,8 +14,8 @@ angular.module('jgAccount')
     };
 
     //used in main module's route interceptor, in the .run block
-    api.isLoggedIn = function () {
-      return jgAccountToken.getToken();
+    api.checkToken = function () {
+      return $http.get('/api/token');
     };
 
     api.logoff = function () {
