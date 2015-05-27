@@ -29,7 +29,7 @@ angular.module('memry')
     'use strict';
 
     //on refresh / new route, check if user is already logged in and forward to main if so
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$routeChangeStart', function () {
       jgAccountAccount.checkToken().then(
         function () {
           $location.path('/main');

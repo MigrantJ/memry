@@ -3,6 +3,7 @@
 var jwt = require('jsonwebtoken');
 var https = require('https');
 var querystring = require('querystring');
+var bcrypt = require('bcrypt-nodejs');
 
 //this can be any string you want. except 'secret' or 'pass' ;)
 var secret = 'funeolv739t62/3uipblak';
@@ -111,6 +112,14 @@ api.checkOauth = function (req, res, next) {
       }
     });
   });
+};
+
+api.hashPassword = function (pass) {
+  return bcrypt.hashSync(pass);
+};
+
+api.comparePassword = function (pass, hash) {
+  return bcrypt.compareSync(pass, hash);
 };
 
 module.exports = api;

@@ -5,12 +5,12 @@ module.exports.getAPI = function (Model) {
   var api = {};
 
   api.checkLogin = function (req, res, next) {
-    Model.findOne({username: req.body.username, password: req.body.password},
+    Model.findOne({username: req.body.username},
       function (err, user) {
         if (err) {
           res.status(500).send({error: 'Error: ' + err});
         } else {
-          if (user) {
+          if (user && auth.comparePassword(req.body.password, user.password)) {
             req.user = user;
             next();
           } else {
@@ -45,7 +45,7 @@ module.exports.getAPI = function (Model) {
   api.addNewUser = function (reqBody, callback) {
     var user = new Model({
       username: reqBody.username,
-      password: reqBody.password,
+      password: auth.hashPassword(reqBody.password),
       deflists: [{
         name: reqBody.deflistName,
         defs: []

@@ -105,7 +105,7 @@ module.exports.initialize = function(app, dbConnection) {
 
   app.put('/api/defs/:defID', auth.checkReq, function (req, res) {
     getDeflist(req, res, function (deflist) {
-      defDB.editDef(deflist, req.params.defID, req.body, function (err, data) {
+      defDB.editDef(deflist, req.params.defID, req.body, function (err) {
         if (err) {
           console.log(err);
           return res.status(500).json(err);
@@ -203,8 +203,7 @@ module.exports.initialize = function(app, dbConnection) {
   });
 
   app.post('/api/oauth/newAccount', auth.checkOauth, function (req, res) {
-    //todo: different password solution
-    userDB.addNewUser({username: req.user_id, password: '1234', deflistName: req.body.deflistName}, function (err, user) {
+    userDB.addNewUser({username: req.user_id, password: auth.hashPassword(req.user_id), deflistName: req.body.deflistName}, function (err, user) {
       if (err) {
         return res.status(500).json(err);
       } else {
