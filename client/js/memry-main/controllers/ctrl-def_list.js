@@ -5,10 +5,8 @@ angular.module('memryMain')
     'use strict';
 
     //automatically update the def list when the model changes
-    $scope.$watch(function () { return defModel.data.defs; }, function (newVal) {
-      if (typeof newVal !== 'undefined') {
-        $scope.definitions = defModel.data.defs;
-      }
+    defModel.registerObserver(function () {
+      $scope.definitions = defModel.data.defs;
     });
 
     $scope.turnOffEditModeAll = function() {
