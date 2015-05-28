@@ -1,11 +1,14 @@
 <span id="username-dropdown" dropdown on-toggle="toggled(open)">
   <a href="#" class="dropdown-toggle" dropdown-toggle>
-      {{username}}
+      {{currentListName}}
       <span class="caret"></span>
   </a>
   <ul class="dropdown-menu">
-      <li>
-          <a href>Change List</a>
+      <li class="dropdown-header">
+          Switch List
+      </li>
+      <li ng-repeat="listname in listnames">
+          <a href ng-click="switchList(listname)">{{listname}}</a>
       </li>
       <li class="divider"></li>
       <li>
@@ -15,6 +18,9 @@
           <a href>Github</a>
       </li>
       <li class="divider"></li>
+      <li class="dropdown-header">
+          {{username}}
+      </li>
       <li>
           <a href ng-click="logoff()">Log Off</a>
       </li>

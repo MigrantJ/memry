@@ -19,8 +19,9 @@ angular.module('memryMain')
       defServer.getAll().then(
         function (res) {
           api.data.username = res.data.username;
-          api.data.deflist = res.data.deflist;
+          api.data.currentListName = res.data.currentListName;
           api.data.defs = res.data.defs;
+          api.data.listnames = res.data.listnames;
         }
       );
     };

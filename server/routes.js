@@ -51,7 +51,10 @@ module.exports.initialize = function(app, dbConnection) {
           } else {
             return res.send({
               username: user.username,
-              deflist: user.deflists[req.memry.deflist_id].name,
+              currentListName: user.deflists[req.memry.deflist_id].name,
+              listnames: user.deflists.map(function (e) {
+                return e.name;
+              }),
               defs: defs
             });
           }
