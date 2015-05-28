@@ -11,6 +11,7 @@ angular.module('memryLogin')
     $scope.deflists = [];
     $scope.creatingNewList = false;
     $scope.createListName = '';
+    $scope.createButtonDisabled = true;
 
     $scope.loggingIn = function (form) {
       $scope.credentials.username = form.email.$viewValue;
@@ -50,7 +51,7 @@ angular.module('memryLogin')
 
     $scope.formSubmit = function (deflistIndex) {
       $scope.credentials.deflist = deflistIndex;
-      $scope.credentials.deflistName = $scope.createListName;
+      $scope.credentials.deflistName = $scope.createListName.trim();
 
       $scope.accountFunc($scope.credentials)
         .then(function () {
@@ -99,6 +100,12 @@ angular.module('memryLogin')
 
     $scope.showCreateList = function () {
       $scope.creatingNewList = !$scope.creatingNewList;
+    };
+
+    $scope.createListNameChange = function () {
+      $scope.createButtonDisabled = $scope.deflists.some(function (e) {
+        return $scope.createListName.trim() === e || $scope.createListName.trim() === '';
+      });
     };
   })
 ;

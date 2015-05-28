@@ -63,9 +63,14 @@
                 </div>
                 <div class="input-group input-group-lg" ng-show="creatingNewList">
                     <span class="input-group-addon glyphicon glyphicon-th-list"></span>
-                    <input type="text" name="create-list-name" class="form-control" placeholder="Type list name here" ng-model="createListName">
+                    <input type="text"
+                           name="create-list-name"
+                           class="form-control"
+                           placeholder="Type list name here"
+                           ng-model="createListName"
+                           ng-change="createListNameChange()">
                     <span class="input-group-addon">
-                        <button class="btn btn-default" ng-click="formSubmit(null)">Create</button>
+                        <button class="btn btn-default" ng-click="formSubmit(null)" ng-disabled="createButtonDisabled">Create</button>
                     </span>
                 </div>
                 <div class="input-group" ng-repeat="deflist in deflists">
