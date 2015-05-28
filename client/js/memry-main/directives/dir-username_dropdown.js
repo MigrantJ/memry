@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .directive('usernameDropdown', function(defModel, jgAccountAccount) {
+  .directive('usernameDropdown', function($http, $location, defModel, jgAccountAccount, jgAccountToken) {
     'use strict';
     return {
       replace: true,
@@ -9,17 +9,19 @@ angular.module('memryMain')
       templateUrl: 'views/username-dropdown.html',
       scope: {},
       link: function (scope) {
-        //automatically update the def list when the model changes
-        scope.$watch(function () { return defModel.data; }, function (newVal) {
-          if (typeof newVal !== 'undefined') {
-            scope.username = defModel.data.username;
-            scope.currentListName = defModel.data.currentListName;
-            scope.listnames = defModel.data.listnames;
-          }
+        defModel.registerObserver(function () {
+          scope.username = defModel.data.username;
+          scope.currentListName = defModel.data.currentListName;
+          scope.listnames = defModel.data.listnames;
         });
 
-        scope.switchList = function (listname) {
-          console.log(listname);
+        scope.switchList = function (listIndex) {
+          $http.get('/api/token/' + listIndex).then(
+            function (res) {
+              jgAccountToken.setToken(res.data.token);
+              defModel.getDefs();
+            }
+          );
         };
 
         scope.logoff = function () {

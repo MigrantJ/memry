@@ -8,7 +8,7 @@
           Switch List
       </li>
       <li ng-repeat="listname in listnames">
-          <a href ng-click="switchList(listname)">{{listname}}</a>
+          <a href ng-click="switchList($index)">{{listname}}</a>
       </li>
       <li class="divider"></li>
       <li>

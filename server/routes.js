@@ -128,6 +128,11 @@ module.exports.initialize = function(app, dbConnection) {
     res.status(200).send();
   });
 
+  app.get('/api/token/:listIndex', auth.checkReq, function (req, res) {
+    var token = auth.getToken(req.memry.user_id, req.params.listIndex);
+    return res.status(200).json({token: token});
+  });
+
   /***************
    * User Routes
    */

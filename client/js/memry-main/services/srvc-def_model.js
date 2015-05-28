@@ -9,11 +9,22 @@ angular.module('memryMain')
     api.data = {};
     //private data. None yet
     //var data = {};
+    var observerCallbacks = [];
 
     //constructor
     function constructor() {
       api.getDefs();
     }
+
+    var notifyObservers = function () {
+      angular.forEach(observerCallbacks, function (cb) {
+        cb();
+      });
+    };
+
+    api.registerObserver = function (cb) {
+      observerCallbacks.push(cb);
+    };
 
     api.getDefs = function () {
       defServer.getAll().then(
@@ -22,6 +33,7 @@ angular.module('memryMain')
           api.data.currentListName = res.data.currentListName;
           api.data.defs = res.data.defs;
           api.data.listnames = res.data.listnames;
+          notifyObservers();
         }
       );
     };
@@ -38,7 +50,6 @@ angular.module('memryMain')
         .then(function (res) {
           api.data.defs = res.data.defs;
           deferred.resolve(res.data);
-
         });
       return deferred.promise;
     };
