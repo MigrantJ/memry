@@ -35,11 +35,11 @@ angular.module('memryLogin')
         $scope.credentials.captcha = grecaptcha.getResponse();
         $scope.accountFunc = jgAccountAccount.createAccount;
         $http.post('/api/users/verify', $scope.credentials)
-          .then(function () {
+          .success(function () {
             $scope.switchViews();
           })
-          .then(function (err) {
-            console.log(err.error);
+          .error(function (err) {
+            console.log(err);
             grecaptcha.reset();
           });
       } else {

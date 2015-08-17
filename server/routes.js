@@ -164,9 +164,15 @@ module.exports.initialize = function(app, dbConnection) {
   app.post('/api/users/verify', auth.checkCaptcha, function (req, res) {
     userDB.getUserByName(req.body.username, function (err, user) {
       if (user) {
-        return res.status(403).json({error: 'Username already taken!'});
+        return res.status(403).send('Username already taken!');
       } else {
-        console.log('yay');
+        userDB.addNewUser(req.body, function (err) {
+          if (err) {
+            return res.status(500).send('Unknown error while saving user.');
+          } else {
+            res.status(200).send();
+          }
+        });
       }
     });
   });

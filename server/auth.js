@@ -123,20 +123,11 @@ api.comparePassword = function (pass, hash) {
 };
 
 api.checkCaptcha = function (req, res, next) {
-  /*https.post('https://www.google.com/recaptcha/api/siteverify', {'g-recaptcha-response': req.body.captcha}, function (gRes) {
-    gRes.on('data', function (chunk) {
-      console.log(chunk.toString());
-      res.send({});
-    });
-  });*/
-
-
   var captchaReqObj = {
     secret: '6Ld0eQcTAAAAAPz10jJNPv3P6L6uQ0i7r3qbYD1K',
     response: req.body.captcha
   };
   var qString = querystring.stringify(captchaReqObj);
-  //var qString = 'secret=' +  + '&client_secret=' + gTokenReq.client_secret + '&redirect_uri=' + gTokenReq.redirect_uri + '&grant_type=' + gTokenReq.grant_type + '&code=' + code;
   var cReq = https.request({
     hostname: 'www.google.com',
     path: '/recaptcha/api/siteverify',
@@ -151,7 +142,7 @@ api.checkCaptcha = function (req, res, next) {
       if (JSON.parse(chunk).success) {
         next();
       } else {
-        res.status(401).send({error: 'No captcha'});
+        res.status(401).send('No captcha');
       }
     });
   });
