@@ -50,6 +50,7 @@ angular.module('memryMain')
         .then(function (res) {
           api.data.defs = res.data.defs;
           deferred.resolve(res.data);
+          notifyObservers();
         });
       return deferred.promise;
     };
@@ -61,6 +62,7 @@ angular.module('memryMain')
       defServer.update(definition)
         .then(function (res) {
           api.data.defs = res.data.defs;
+          notifyObservers();
         });
     };
 
@@ -71,6 +73,7 @@ angular.module('memryMain')
       defServer.delete(id)
         .then(function (res) {
           api.data.defs = res.data.defs;
+          notifyObservers();
         });
     };
 
