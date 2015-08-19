@@ -105,7 +105,9 @@ api.addLinksToNewDefDesc = function (defs, def) {
 //takes a raw inputted definition from the client
 //returns a processed definition ready to be saved to the database
 api.processInputDef = function (defs, newDef) {
-  var formattedDef = api.formatInput(newDef);
+  //todo: this is causing errors when escaped html is re-escaped
+  //var formattedDef = api.formatInput(newDef);
+  var formattedDef = newDef;
   //create the descriptionURL param by adding links to the input description
   formattedDef.descriptionURL = api.addLinksToNewDefDesc(defs, formattedDef);
   formattedDef.lowercaseTitle = formattedDef.title.toLowerCase();
