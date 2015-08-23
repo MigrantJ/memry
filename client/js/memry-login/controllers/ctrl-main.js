@@ -37,6 +37,7 @@ angular.module('memryLogin')
         $http.post('/api/users/verify', $scope.credentials)
           .success(function () {
             $scope.switchViews();
+            grecaptcha.reset();
           })
           .error(function (err) {
             console.log(err);
