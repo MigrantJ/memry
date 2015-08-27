@@ -84,7 +84,7 @@ gulp.task('clean-html', function (cb) {
 });
 
 gulp.task('clean-css', function (cb) {
-  del(['build/*.css'], function (err) {
+  del(['build/stylesheets'], function (err) {
     cb(err);
   });
 });
@@ -133,7 +133,7 @@ gulp.task('build-css', ['clean-css'], function () {
       includePaths: [conf.bootstrapDir + 'assets/stylesheets'],
       errLogToConsole: true
     }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/stylesheets'));
 });
 
 gulp.task('build-fonts', function() {
