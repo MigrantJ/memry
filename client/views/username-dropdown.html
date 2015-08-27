@@ -1,28 +1,29 @@
 <span id="username-dropdown" dropdown on-toggle="toggled(open)">
   <a href="#" class="dropdown-toggle" dropdown-toggle>
-      {{currentListName}}
+      <span ng-show="currentListName">{{currentListName}}</span>
+      <span ng-hide="currentListName">Menu</span>
       <span class="caret"></span>
   </a>
   <ul class="dropdown-menu">
-      <li class="dropdown-header">
+      <li class="dropdown-header" ng-show="listnames">
           Switch List
       </li>
       <li ng-repeat="listname in listnames">
           <a href ng-click="switchList($index)">{{listname}}</a>
       </li>
-      <li class="divider"></li>
+      <li class="divider" ng-show="listnames"></li>
       <li>
           <a href>About</a>
       </li>
       <li>
           <a href>Github</a>
       </li>
-      <li class="divider"></li>
+      <li class="divider" ng-show="username"></li>
       <li class="dropdown-header">
           {{username}}
       </li>
       <li>
-          <a href ng-click="logoff()">Log Off</a>
+          <a href ng-click="logoff()" ng-show="username">Log Off</a>
       </li>
   </ul>
 </span>

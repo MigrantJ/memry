@@ -76,7 +76,7 @@ textarea {
 #username-dropdown {
   @extend .dropdown;
   @extend .navbar-right;
-  padding: $navbar-padding-vertical $navbar-padding-horizontal $navbar-padding-vertical 0;
+  padding: $navbar-padding-vertical $navbar-padding-horizontal * 2 $navbar-padding-vertical 0;
 }
 
 .description-input {
