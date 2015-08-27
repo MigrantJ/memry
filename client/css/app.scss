@@ -30,8 +30,8 @@ textarea {
   @include make-md-column-offset(3);
 }
 
-#search-container {
-
+#login-container {
+  margin-top: $navbar-height;
 }
 
 .title-input {

@@ -33,6 +33,7 @@ angular.module('memryLogin')
     };
 
     $scope.signingUp = function (form) {
+      $scope.signupError = null;
       if (form.pw.$viewValue === form.pwconf.$viewValue) {
         $scope.credentials.username = form.email.$viewValue;
         $scope.credentials.password = form.pw.$viewValue;
@@ -68,7 +69,7 @@ angular.module('memryLogin')
 
     $scope.loginFacebook = function () {
       //get the oauth token
-        //brings up facebook dialog automatically if needful but delivers token regardless
+      //brings up facebook dialog automatically if needful but delivers token regardless
       jgAccountOauth.getToken(jgAccountOauth.grantors.Facebook).then(
         function (token) {
           $scope.credentials.token = token;
