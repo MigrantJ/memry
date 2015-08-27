@@ -21,18 +21,14 @@ angular.module('memryLogin')
 
       return $http.post('/api/deflists', $scope.credentials)
         .success(function (res) {
-          $scope.deflists = res.data.deflists;
+          $scope.deflists = res.deflists;
           //this allows dynamic content to animate properly
           $timeout(function () {
             $scope.switchViews();
           }, 100);
         })
         .error(function (err) {
-          if (err) {
-            $scope.loginError = err;
-          } else {
-            $scope.loginError = 'Internal server error, please try again later';
-          }
+          $scope.loginError = err;
         });
     };
 
@@ -47,8 +43,7 @@ angular.module('memryLogin')
             $scope.switchViews();
             grecaptcha.reset();
           })
-          .error(function (err) {
-            console.log(err);
+          .error(function () {
             grecaptcha.reset();
           });
       } else {

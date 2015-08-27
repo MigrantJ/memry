@@ -8,7 +8,8 @@ module.exports.getAPI = function (Model) {
     Model.findOne({username: req.body.username},
       function (err, user) {
         if (err) {
-          res.status(500).send();
+          console.log(err);
+          res.status(500).send('Internal server error, please try again!');
         } else {
           if (user && auth.comparePassword(req.body.password, user.password)) {
             req.user = user;
@@ -21,27 +22,12 @@ module.exports.getAPI = function (Model) {
     );
   };
 
-  api.loginUser = function (username, password, callback) {
-    Model.findOne({username: username, password: password}, function (err, user) {
-      if (err) {
-        callback("Error occurred: " + err);
-      } else {
-        if (user) {
-          callback(null, auth.getToken(user._id, 0));
-        } else {
-          callback("Incorrect login");
-        }
-      }
-    });
-  };
-
   api.getAllUsers = function (callback) {
     Model.find().sort('username').exec(function (err, users) {
       return callback(err, users);
     });
   };
 
-  //todo: don't store these passwords in plaintext
   api.addNewUser = function (reqBody, callback) {
     var user = new Model({
       username: reqBody.username,
