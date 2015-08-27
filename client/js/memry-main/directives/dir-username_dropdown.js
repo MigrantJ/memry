@@ -1,7 +1,7 @@
 /*global angular*/
 
 angular.module('memryMain')
-  .directive('usernameDropdown', function($http, $location, defModel, jgAccountAccount, jgAccountToken) {
+  .directive('usernameDropdown', function($http, $location, $modal, defModel, jgAccountAccount, jgAccountToken) {
     'use strict';
     return {
       replace: true,
@@ -14,6 +14,14 @@ angular.module('memryMain')
           scope.currentListName = defModel.data.currentListName;
           scope.listnames = defModel.data.listnames;
         });
+
+        scope.openAbout = function () {
+          $modal.open({
+            templateUrl: 'views/about-popup.html',
+            controller: 'PopupCtrl',
+            animation: false
+          });
+        };
 
         scope.switchList = function (listIndex) {
           $http.get('/api/token/' + listIndex).then(
