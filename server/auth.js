@@ -142,7 +142,7 @@ api.checkCaptcha = function (req, res, next) {
       if (JSON.parse(chunk).success) {
         next();
       } else {
-        res.status(401).send('No captcha');
+        res.status(401).send('Please check the captcha box!');
       }
     });
   });

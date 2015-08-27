@@ -150,25 +150,15 @@ module.exports.initialize = function(app, dbConnection) {
     });
   });
 
-  app.post('/api/users', function (req, res) {
-    userDB.addNewUser(req.body, function (err, user) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        var token = auth.getToken(user._id, 0);
-        return res.status(200).json({token: token});
-      }
-    });
-  });
-
-  app.post('/api/users/verify', auth.checkCaptcha, function (req, res) {
+  app.post('/api/users', auth.checkCaptcha, function (req, res) {
     userDB.getUserByName(req.body.username, function (err, user) {
       if (user) {
-        return res.status(403).send('Username already taken!');
+        return res.status(403).send('That email is already taken! Please use another.');
       } else {
         userDB.addNewUser(req.body, function (err) {
           if (err) {
-            return res.status(500).send('Unknown error while saving user.');
+            console.log(err);
+            return res.status(500).send('Internal server error, please try again!');
           } else {
             res.status(200).send();
           }

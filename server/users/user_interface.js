@@ -60,7 +60,8 @@ module.exports.getAPI = function (Model) {
   api.getUserByName = function (username, callback) {
     Model.findOne({username: username}, function (err, user) {
       if (err) {
-        callback('Error occurred: ' + err);
+        console.log(err);
+        callback('Internal server error, please try again!');
       } else {
         if (user) {
           callback(null, user);

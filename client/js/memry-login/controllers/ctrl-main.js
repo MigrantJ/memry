@@ -38,18 +38,18 @@ angular.module('memryLogin')
         $scope.credentials.password = form.pw.$viewValue;
         $scope.credentials.captcha = grecaptcha.getResponse();
         $scope.accountFunc = jgAccountAccount.createAccount;
-        $http.post('/api/users/verify', $scope.credentials)
+        $http.post('/api/users', $scope.credentials)
           .success(function () {
             $scope.switchViews();
             grecaptcha.reset();
           })
-          .error(function () {
+          .error(function (err) {
+            $scope.signupError = err;
             grecaptcha.reset();
           });
       } else {
-        //todo: an actual error system
+        $scope.signupError = 'Passwords do not match!';
         grecaptcha.reset();
-        console.log('passwords don\'t match');
       }
     };
 
