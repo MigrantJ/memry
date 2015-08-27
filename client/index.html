@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <title>memry</title>
   <link rel="stylesheet" href="app.css"/>
+  <script type="text/javascript">
+    var grecaptchaCallback = function() {
+      grecaptcha.render('g-recaptcha', {
+        'sitekey' : '6Ld0eQcTAAAAALn_hMrslokm7atj8N4dnM5Yzr8l'
+      });
+    };
+  </script>
 </head>
 <body>
   <script>
@@ -31,6 +38,6 @@
   <bottom-bar></bottom-bar>
   <script src="libs.js"></script>
   <script src="bundle.js"></script>
-  <script src='https://www.google.com/recaptcha/api.js' async></script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=grecaptchaCallback&render=explicit" async defer></script>
 </body>
 </html>
