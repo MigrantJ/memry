@@ -8,13 +8,13 @@ module.exports.getAPI = function (Model) {
     Model.findOne({username: req.body.username},
       function (err, user) {
         if (err) {
-          res.status(500).send({error: 'Error: ' + err});
+          res.status(500).send();
         } else {
           if (user && auth.comparePassword(req.body.password, user.password)) {
             req.user = user;
             next();
           } else {
-            res.status(401).send({error: 'Incorrect credentials'});
+            res.status(401).send('Incorrect credentials, please try again!');
           }
         }
       }

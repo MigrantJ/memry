@@ -14,17 +14,25 @@ angular.module('memryLogin')
     $scope.createButtonDisabled = true;
 
     $scope.loggingIn = function (form) {
+      $scope.loginError = null;
       $scope.credentials.username = form.email.$viewValue;
       $scope.credentials.password = form.pw.$viewValue;
       $scope.accountFunc = jgAccountAccount.login;
 
       return $http.post('/api/deflists', $scope.credentials)
-        .then(function (res) {
+        .success(function (res) {
           $scope.deflists = res.data.deflists;
           //this allows dynamic content to animate properly
           $timeout(function () {
             $scope.switchViews();
           }, 100);
+        })
+        .error(function (err) {
+          if (err) {
+            $scope.loginError = err;
+          } else {
+            $scope.loginError = 'Internal server error, please try again later';
+          }
         });
     };
 
