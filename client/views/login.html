@@ -73,9 +73,8 @@
         <form name="selectListForm">
             <div class="form-group">
                 <label>or Select Previous:</label>
-                <select class="form-control">
-                    <option> ----- </option>
-                    <option ng-repeat="deflist in deflists">{{deflist}}</option>
+                <select class="form-control" ng-model="selectList" ng-change="formSubmit(selectList)">
+                    <option ng-repeat="deflist in deflists" value="{{$index}}">{{deflist}}</option>
                 </select>
             </div>
             <button class="btn btn-default btn-lg" ng-click="switchViews()">Go Back</button>
