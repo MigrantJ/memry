@@ -146,3 +146,8 @@ textarea {
   transform: translateX(100%);
   opacity: 0;
 }
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.eot');
+  src: url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('http://memry.herokuapp.com/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg'); }
