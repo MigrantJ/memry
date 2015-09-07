@@ -5,8 +5,7 @@ var https = require('https');
 var querystring = require('querystring');
 var bcrypt = require('bcrypt-nodejs');
 
-//this can be any string you want. except 'secret' or 'pass' ;)
-var secret = 'funeolv739t62/3uipblak';
+var bcrypt_secret = process.env.BCRYPT_SECRET;
 var api = {};
 //in hours
 var expiryTime = 1;
@@ -14,7 +13,7 @@ var expiryTime = 1;
 //Google oauth
 var gTokenReq = {
   client_id: '479937515705-n9mktm5i15aq19p72fda9cnnjp5vp2rj.apps.googleusercontent.com',
-  client_secret: 'Q94mrjjYhOrtVT5jEc_qzHh0',
+  client_secret: process.env.GOOGLE_AUTH_SECRET,
   redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
   grant_type: 'authorization_code'
 };
@@ -22,7 +21,7 @@ var gTokenReq = {
 //FB oauth
 var fbTokenReq = {
   client_id: '1674549109435449',
-  client_secret: '0d72319aeb2c1d235a620f8d0ae23c0f',
+  client_secret: process.env.FB_AUTH_SECRET,
   redirect_uri: 'http://memry.herokuapp.com/oauth2callback',
   grant_type: 'client_credentials'
 };
@@ -33,7 +32,7 @@ function isExpired(time) {
 }
 
 api.getToken = function (user_id, deflist_id) {
-  return jwt.sign({user_id: user_id, deflist_id: deflist_id}, secret);
+  return jwt.sign({user_id: user_id, deflist_id: deflist_id}, bcrypt_secret);
 };
 
 api.checkReq = function (req, res, next) {
@@ -41,7 +40,7 @@ api.checkReq = function (req, res, next) {
   if (typeof bearerHeader !== 'undefined') {
     var bearer = bearerHeader.split(' ');
     var token = bearer[1];
-    jwt.verify(token, secret, function (err, decoded) {
+    jwt.verify(token, bcrypt_secret, function (err, decoded) {
       if (err) {
         res.status(401).json(err);
       } else {
@@ -62,8 +61,6 @@ api.checkReq = function (req, res, next) {
 };
 
 api.getGoogleToken = function (code) {
-  //gTokenReq.code = code;
-  //var qString = querystring.stringify(gTokenReq);
   var qString = 'client_id=' + gTokenReq.client_id + '&client_secret=' + gTokenReq.client_secret + '&redirect_uri=' + gTokenReq.redirect_uri + '&grant_type=' + gTokenReq.grant_type + '&code=' + code;
   var req = https.request({
     hostname: 'www.googleapis.com',
@@ -80,9 +77,6 @@ api.getGoogleToken = function (code) {
       console.log('body: ' + chunk);
     });
   });
-  //  .on('error', function (e) {
-  //  console.error(e);
-  //});
   req.write(qString);
   req.end();
 };
@@ -100,7 +94,6 @@ api.checkOauth = function (req, res, next) {
           fbres2.on('data', function (chunk) {
             var tokenData = JSON.parse(chunk).data;
             if (tokenData.is_valid) {
-              //todo: facebook id shows up as username, different way?
               req.username = tokenData.user_id;
               next();
             } else {
@@ -124,7 +117,7 @@ api.comparePassword = function (pass, hash) {
 
 api.checkCaptcha = function (req, res, next) {
   var captchaReqObj = {
-    secret: '6Ld0eQcTAAAAAPz10jJNPv3P6L6uQ0i7r3qbYD1K',
+    secret: process.env.GOOGLE_CAPTCHA_SECRET,
     response: req.body.captcha
   };
   var qString = querystring.stringify(captchaReqObj);

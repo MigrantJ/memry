@@ -1,13 +1,19 @@
 'use strict';
 
-var   express = require('express'),
-      bodyParser = require('body-parser'),
-      http = require('http'),
-      dbConnection = require('./server/db_connection.js'),
-      routes = require('./server/routes.js'),
-      app = express();
+try {
+    require('./server/local_env.js');
+}
+catch (err) {
+    console.log('Cannot read local config, using server environment vars');
+}
 
-app.set('port', process.env.PORT || 8000);
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    http = require('http'),
+    dbConnection = require('./server/db_connection.js'),
+    routes = require('./server/routes.js'),
+    app = express();
+
 app.set('root', __dirname);
 
 app.use(bodyParser.json());
@@ -19,11 +25,11 @@ routes.initialize(app, dbConnection);
 
 var server = http.createServer(app);
 
-//todo: trying this out to prevent server crashes. should remove before prod
-process.on('uncaughtException', function (err) {
-   console.log(err);
-});
+//prevents server crashes. should remove before prod
+//process.on('uncaughtException', function (err) {
+//   console.log(err);
+//});
 
-server.listen(app.get('port'), function() {
+server.listen(process.env.PORT, function() {
   console.log('Server Ready');
 });

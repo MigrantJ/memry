@@ -24,4 +24,6 @@ After logging in, select **Game of Thrones** from the dropdown.
 2. *npm install*
 3. *bower install*
 4. Make sure MongoDB is running (run *mongod* in a separate terminal)
-5. Run *gulp* to build the project
+5. Rename server/local_env_SAMPLE.js to server/local_env.js
+   * Replace values in the file with the secrets from your Google and Facebook developer accounts
+6. Run *gulp* to build the project
